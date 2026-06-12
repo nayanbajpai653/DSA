@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Library – All Topics (Hinglish) 🔗</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --a1: #c77dff;
+    --a2: #ffd93d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --border: #30363d;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'Baloo 2', system-ui, sans-serif;
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid var(--a1);
+    padding-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    color: var(--a1);
+    letter-spacing: -1px;
+  }
+  header p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .topic-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .topic-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--a1);
+  }
+  .topic-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--a2);
+  }
+  .topic-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  .topic-card a {
+    display: inline-block;
+    background: rgba(199,125,255,0.15);
+    color: var(--a1);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .topic-card a:hover {
+    background: var(--a1);
+    color: #0d1117;
+  }
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .note {
+    background: rgba(255,217,61,0.1);
+    border-left: 3px solid var(--a2);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📚 DSA Complete Library (Hinglish)</h1>
+  </header>
+
+  <div class="topic-grid">
+    <!-- Arrays -->
+    <div class="topic-card">
+      <h3>📦 Arrays</h3>
+      <p>Basic to advanced – memory visual, two pointer, sliding window, Kadane's algo.</p>
+      <a href="arrays_detail_hinglish.html" target="_blank">📖 Open Arrays →</a>
+    </div>
+    <!-- Linked List -->
+    <div class="topic-card">
+      <h3>🔗 Linked List</h3>
+      <p>Singly, Doubly, Circular – reverse, cycle detection, middle element.</p>
+      <a href="03_linked_list.html" target="_blank">🔗 Open Linked List →</a>
+    </div>
+    <!-- Stack & Queue -->
+    <div class="topic-card">
+      <h3>📚 Stack & Queue</h3>
+      <p>LIFO, FIFO, Deque, monotonic stack, sliding window maximum.</p>
+      <a href="04_stack_queue.html" target="_blank">📂 Open Stack & Queue →</a>
+    </div>
+    <!-- Hashing -->
+    <div class="topic-card">
+      <h3>🗂️ Hashing</h3>
+      <p>HashMap, HashSet, collision, frequency count, Two Sum pattern.</p>
+      <a href="05_hashing.html" target="_blank">🗝️ Open Hashing →</a>
+    </div>
+    <!-- Trees -->
+    <div class="topic-card">
+      <h3>🌳 Trees</h3>
+      <p>Binary Tree, BST, traversals (inorder, pre, post, level), LCA, diameter.</p>
+      <a href="06_trees.html" target="_blank">🌲 Open Trees →</a>
+    </div>
+    <!-- Graphs -->
+    <div class="topic-card">
+      <h3>🕸️ Graphs</h3>
+      <p>BFS, DFS, Dijkstra, Topological Sort, Union-Find, cycle detection.</p>
+      <a href="07_graphs.html" target="_blank">🗺️ Open Graphs →</a>
+    </div>
+    <!-- Sorting -->
+    <div class="topic-card">
+      <h3>🔀 Sorting</h3>
+      <p>Bubble, Selection, Insertion, Merge, Quick, Heap – full comparison.</p>
+      <a href="08_sorting.html" target="_blank">⚙️ Open Sorting →</a>
+    </div>
+    <!-- Searching -->
+    <div class="topic-card">
+      <h3>🔍 Searching</h3>
+      <p>Linear Search, Binary Search, first/last occurrence, BS on answer.</p>
+      <a href="09_searching.html" target="_blank">🎯 Open Searching →</a>
+    </div>
+    <!-- Recursion + DP -->
+    <div class="topic-card">
+      <h3>🧠 Recursion & DP</h3>
+      <p>Recursion basics, backtracking, memoization, tabulation, classic DP problems.</p>
+      <a href="10_recursion_dp.html" target="_blank">⚡ Open Recursion+DP →</a>
+    </div>
+    <!-- Master DSA Notes -->
+    <div class="topic-card">
+      <h3>📘 All-in-One Notes</h3>
+      <p>Ek saath sab topics ka quick revision – dsa notes</p>
+      <a href="dsa_notes_hinglish.html" target="_blank">📑 Open Master Notes →</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
