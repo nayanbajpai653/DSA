@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrays – Poori Detail Mein 📦</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --card2: #1c2128;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --border: #30363d;
+    --code-bg: #090d12;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Baloo 2', cursive;
+    line-height: 1.75;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #1a0a0a 0%, #0d1117 60%, #0a0d1a 100%);
+    padding: 52px 24px 40px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent1);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(255,107,107,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 50%, rgba(77,150,255,0.08) 0%, transparent 55%);
+  }
+  header h1 { font-size: clamp(2rem,5vw,3rem); font-weight:800; color: var(--accent1); position:relative; letter-spacing:-1px; text-shadow: 0 0 40px rgba(255,107,107,0.4); }
+  header p { color: var(--muted); font-size:1rem; margin-top:6px; position:relative; }
+  .badge-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:14px; position:relative; }
+  .badge { background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:20px; padding:3px 13px; font-size:0.78rem; color:var(--accent3); }
+
+  /* LAYOUT */
+  .container { max-width: 960px; margin: 0 auto; padding: 36px 20px 64px; }
+
+  /* SECTION CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer; user-select: none;
+    transition: background .2s;
+  }
+  .card-header:hover { background: rgba(255,255,255,0.02); }
+  .card-icon {
+    font-size: 1.5rem; width: 42px; height: 42px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius: 10px; flex-shrink: 0;
+  }
+  .card-title h2 { font-size:1.15rem; font-weight:700; }
+  .card-title span { font-size:0.8rem; color:var(--muted); }
+  .chevron { margin-left:auto; color:var(--muted); transition:transform .3s; font-size:1rem; }
+  .card.open .chevron { transform:rotate(180deg); }
+  .card-body { display:none; padding: 4px 24px 24px; border-top:1px solid var(--border); }
+  .card.open .card-body { display:block; }
+
+  /* CONTENT */
+  .intro-box {
+    background: var(--card2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    border-left: 3px solid;
+  }
+
+  /* VISUAL MEMORY BOX */
+  .mem-visual {
+    display: flex; align-items: center; gap: 0;
+    margin: 18px 0; overflow-x: auto; padding-bottom: 6px;
+  }
+  .mem-cell {
+    display: flex; flex-direction:column; align-items:center;
+    flex-shrink: 0;
+  }
+  .mem-box {
+    width: 60px; height: 52px;
+    border: 2px solid var(--accent4);
+    background: rgba(77,150,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.1rem; font-weight:700;
+    color: var(--accent2);
+    transition: background .2s;
+  }
+  .mem-box:hover { background: rgba(77,150,255,0.18); }
+  .mem-box.highlight { border-color:var(--accent1); background:rgba(255,107,107,0.12); color:var(--accent1); }
+  .mem-index { font-size:0.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:4px; }
+  .mem-addr { font-size:0.65rem; color: rgba(77,150,255,0.5); font-family:'JetBrains Mono',monospace; margin-bottom:4px; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 14px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: #c9d1d9;
+    position: relative;
+  }
+  .lang-tag {
+    position:absolute; top:8px; right:12px;
+    font-size:0.65rem; color:var(--muted);
+    font-family:'JetBrains Mono',monospace;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  pre .kw  { color: #ff79c6; }
+  pre .fn  { color: #50fa7b; }
+  pre .str { color: #f1fa8c; }
+  pre .cm  { color: #6272a4; font-style:italic; }
+  pre .num { color: #bd93f9; }
+  pre .tp  { color: #8be9fd; }
+
+  table.t {
+    width:100%; border-collapse:collapse;
+    margin:14px 0; font-size:0.88rem;
+  }
+  table.t th {
+    background:rgba(77,150,255,0.12);
+    color:var(--accent4);
+    padding:10px 14px; text-align:left;
+    border:1px solid var(--border); font-weight:700;
+  }
+  table.t td {
+    padding:9px 14px; border:1px solid var(--border);
+  }
+  table.t tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+
+  .tip  { background:rgba(107,203,119,0.08); border:1px solid rgba(107,203,119,0.25); border-radius:10px; padding:13px 16px; font-size:0.9rem; color:var(--accent3); margin:12px 0; }
+  .tip::before { content:'💡 Tip: '; font-weight:700; }
+  .warn { background:rgba(255,107,107,0.08); border:1px solid rgba(255,107,107,0.25); border-radius:10px; padding:13px 16px; font-size:0.9rem; color:var(--accent1); margin:12px 0; }
+  .warn::before { content:'⚠️ Dhyan de: '; font-weight:700; }
+  .note { background:rgba(255,217,61,0.08); border:1px solid rgba(255,217,61,0.25); border-radius:10px; padding:13px 16px; font-size:0.9rem; color:var(--accent2); margin:12px 0; }
+  .note::before { content:'📌 Note: '; font-weight:700; }
+
+  h3 { color:var(--accent2); font-size:1rem; margin:20px 0 8px; font-weight:700; }
+  h4 { color:var(--accent4); font-size:0.92rem; margin:14px 0 6px; font-weight:700; }
+
+  .point { display:flex; gap:10px; align-items:flex-start; margin:9px 0; font-size:0.93rem; }
+  .pi { flex-shrink:0; margin-top:2px; }
+
+  code { font-family:'JetBrains Mono',monospace; background:rgba(255,255,255,0.07); border-radius:5px; padding:2px 7px; font-size:0.83rem; color:var(--accent3); }
+
+  .step-box {
+    background: var(--card2);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    border-left: 3px solid var(--accent5);
+  }
+  .step-num { color:var(--accent5); font-weight:800; font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+
+  /* Technique cards */
+  .tech-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin:14px 0; }
+  .tech-card { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .tech-card h4 { margin-top:0; }
+
+  /* Complexity pill */
+  .pill { display:inline-block; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+  .pill-g { background:rgba(107,203,119,0.15); color:var(--accent3); border:1px solid rgba(107,203,119,0.3); }
+  .pill-y { background:rgba(255,217,61,0.15); color:var(--accent2); border:1px solid rgba(255,217,61,0.3); }
+  .pill-r { background:rgba(255,107,107,0.15); color:var(--accent1); border:1px solid rgba(255,107,107,0.3); }
+  .pill-b { background:rgba(77,150,255,0.15); color:var(--accent4); border:1px solid rgba(77,150,255,0.3); }
+
+  /* color accents per card */
+  .c1 .card-header { border-left:4px solid var(--accent1); }
+  .c1 .card-icon   { background:rgba(255,107,107,0.1); }
+  .c2 .card-header { border-left:4px solid var(--accent2); }
+  .c2 .card-icon   { background:rgba(255,217,61,0.1); }
+  .c3 .card-header { border-left:4px solid var(--accent3); }
+  .c3 .card-icon   { background:rgba(107,203,119,0.1); }
+  .c4 .card-header { border-left:4px solid var(--accent4); }
+  .c4 .card-icon   { background:rgba(77,150,255,0.1); }
+  .c5 .card-header { border-left:4px solid var(--accent5); }
+  .c5 .card-icon   { background:rgba(199,125,255,0.1); }
+  .c6 .card-header { border-left:4px solid var(--accent1); }
+  .c6 .card-icon   { background:rgba(255,107,107,0.1); }
+  .c7 .card-header { border-left:4px solid var(--accent3); }
+  .c7 .card-icon   { background:rgba(107,203,119,0.1); }
+  .c8 .card-header { border-left:4px solid var(--accent4); }
+  .c8 .card-icon   { background:rgba(77,150,255,0.1); }
+
+  /* animation */
+  .card-body { animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+  footer { text-align:center; padding:32px; color:var(--muted); font-size:0.85rem; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📦 Arrays </h1>
+  <p>Sab kuch ek jagah – definition se leke interview techniques tak</p>
+  <div class="badge-row">
+    <span class="badge">🇮🇳 Hinglish</span>
+    <span class="badge">📊 Memory Visuals</span>
+    <span class="badge">💻 Code Examples</span>
+    <span class="badge">🎯 Interview Techniques</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════
+       1. WHAT IS AN ARRAY
+  ═══════════════════════════════════════════ -->
+  <div class="card c1 open" id="c1">
+    <div class="card-header" onclick="tog('c1')">
+      <div class="card-icon">🤔</div>
+      <div class="card-title">
+        <h2>1. Array Kya Hota Hai?</h2>
+        <span>Definition, memory layout, aur basic concepts</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="intro-box" style="border-color:var(--accent1);">
+        Array ek <strong>contiguous (lagatar) memory</strong> mein stored elements ka collection hai jisme <strong>same type</strong> ka data hota hai. Har element ko ek unique <strong>index</strong> se access karte hain, jo <code>0</code> se shuru hota hai.
+      </div>
+
+      <h3>🏠 Real Life Example</h3>
+      <div class="point"><span class="pi">🏢</span><span>Sochlo ek building hai jisme flats hain – Flat 0, Flat 1, Flat 2... Saare ek hi building mein hain (contiguous), aur flat number se directly kisi bhi flat mein ja sakte ho!</span></div>
+
+      <h3>🧠 Memory Mein Kaise Dikh'ta Hai?</h3>
+      <p style="font-size:0.88rem; color:var(--muted); margin-bottom:10px;">Example: <code>int arr[] = {10, 25, 37, 48, 56};</code></p>
+      <div class="mem-visual">
+        <div class="mem-cell">
+          <div class="mem-addr">1000</div>
+          <div class="mem-box">10</div>
+          <div class="mem-index">arr[0]</div>
+        </div>
+        <div class="mem-cell">
+          <div class="mem-addr">1004</div>
+          <div class="mem-box">25</div>
+          <div class="mem-index">arr[1]</div>
+        </div>
+        <div class="mem-cell">
+          <div class="mem-addr">1008</div>
+          <div class="mem-box highlight">37</div>
+          <div class="mem-index">arr[2]</div>
+        </div>
+        <div class="mem-cell">
+          <div class="mem-addr">1012</div>
+          <div class="mem-box">48</div>
+          <div class="mem-index">arr[3]</div>
+        </div>
+        <div class="mem-cell">
+          <div class="mem-addr">1016</div>
+          <div class="mem-box">56</div>
+          <div class="mem-index">arr[4]</div>
+        </div>
+      </div>
+      <div class="point"><span class="pi">🔸</span><span>Har <code>int</code> = <strong>4 bytes</strong> — isliye addresses 1000, 1004, 1008... hain</span></div>
+      <div class="point"><span class="pi">🔸</span><span><code>arr[2]</code> ka address = Base Address + (2 × 4) = 1000 + 8 = <strong>1008</strong></span></div>
+      <div class="point"><span class="pi">🔸</span><span>Yahi formula hai: <code>Address = Base + (index × size_of_datatype)</code></span></div>
+
+      <h3>📋 Key Properties</h3>
+      <div class="point"><span class="pi">✅</span><span><strong>Fixed Size</strong> – ek baar declare karo, size change nahi hota (static arrays mein)</span></div>
+      <div class="point"><span class="pi">✅</span><span><strong>Same Datatype</strong> – sab elements same type ke hone chahiye</span></div>
+      <div class="point"><span class="pi">✅</span><span><strong>Random Access</strong> – kisi bhi index pe directly jaao O(1) mein</span></div>
+      <div class="point"><span class="pi">✅</span><span><strong>0-indexed</strong> – pehla element index 0 pe hota hai</span></div>
+      <div class="warn">Last valid index = <code>size - 1</code>. Isse bahar jaoge toh Index Out of Bounds error aayega!</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       2. DECLARATION & INITIALIZATION
+  ═══════════════════════════════════════════ -->
+  <div class="card c2" id="c2">
+    <div class="card-header" onclick="tog('c2')">
+      <div class="card-icon">✍️</div>
+      <div class="card-title">
+        <h2>2. Declaration & Initialization</h2>
+        <span>Array kaise banate hain – C++, Java, Python mein</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <h3>Equivalent (Python)</h3>
+      <pre><span class="lang-tag">Python</span>
+    # Fixed-size-like list (initialized with zeros)
+    arr = [0] * 5
+
+    # Direct initialize
+    arr = [10, 20, 30, 40, 50]
+
+    # Size auto-detected from literal
+    arr = [1, 2, 3, 4, 5]
+
+    # Dynamic list (Python lists grow/shrink automatically)
+    lst = []
+    lst.append(10)
+    lst.append(20)
+
+    # Modern C++ 'vector' ≈ Python list
+    v = [1, 2, 3, 4, 5]</pre>
+
+      <h3>Python mein (converted from Java)</h3>
+      <pre><span class="lang-tag">Python</span>
+    # Array (list) declare + create in Python
+    arr = [0] * 5                    # default zeros-like array
+    arr = [10, 20, 30]               # direct initialize
+
+    # Dynamic size ke liye – Python list
+    lst = []
+    lst.append(10)
+    lst.append(20)</pre>
+
+      <h3>Python mein</h3>
+      <pre><span class="lang-tag">Python</span>
+<span class="cm"># Python mein list = dynamic array</span>
+arr = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>]
+
+<span class="cm"># Zeros se bhari list</span>
+arr = [<span class="num">0</span>] * <span class="num">5</span>     <span class="cm"># [0, 0, 0, 0, 0]</span>
+
+<span class="cm"># Range se</span>
+arr = <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>))   <span class="cm"># [1, 2, 3, 4, 5]</span></pre>
+      <div class="tip">Interview mein mostly Java/C++ use karo. Python mein list already dynamic hai – isliye wahan arrays ke limitations nahi hote.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       3. OPERATIONS & COMPLEXITY
+  ═══════════════════════════════════════════ -->
+  <div class="card c3" id="c3">
+    <div class="card-header" onclick="tog('c3')">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">
+        <h2>3. All Operations & Their Complexity</h2>
+        <span>Kaunsa operation kitna fast hai aur kyun?</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="t">
+        <tr><th>Operation</th><th>Time</th><th>Reason (Hinglish)</th></tr>
+        <tr>
+          <td>Access <code>arr[i]</code></td>
+          <td><span class="pill pill-g">O(1)</span></td>
+          <td>Formula se directly memory address pata chal jaata hai</td>
+        </tr>
+        <tr>
+          <td>Search (unsorted)</td>
+          <td><span class="pill pill-y">O(n)</span></td>
+          <td>Har element check karna padta hai</td>
+        </tr>
+        <tr>
+          <td>Search (sorted)</td>
+          <td><span class="pill pill-g">O(log n)</span></td>
+          <td>Binary search use kar sakte hain</td>
+        </tr>
+        <tr>
+          <td>Insert at end</td>
+          <td><span class="pill pill-g">O(1)</span></td>
+          <td>Seedha last position pe daal do</td>
+        </tr>
+        <tr>
+          <td>Insert at middle/front</td>
+          <td><span class="pill pill-r">O(n)</span></td>
+          <td>Saare baad wale elements ek jagah shift karne padte hain</td>
+        </tr>
+        <tr>
+          <td>Delete at end</td>
+          <td><span class="pill pill-g">O(1)</span></td>
+          <td>Bas size ghata do</td>
+        </tr>
+        <tr>
+          <td>Delete at middle/front</td>
+          <td><span class="pill pill-r">O(n)</span></td>
+          <td>Baad wale elements shift karne padte hain</td>
+        </tr>
+        <tr>
+          <td>Update <code>arr[i] = x</code></td>
+          <td><span class="pill pill-g">O(1)</span></td>
+          <td>Access O(1) + update O(1)</td>
+        </tr>
+      </table>
+
+      <h3>Insert at Middle – Step by Step</h3>
+      <div class="step-box">
+        <div class="step-num">Example: arr = [10, 20, 30, 40], Insert 25 at index 1</div>
+        <div class="mem-visual" style="margin:10px 0 4px;">
+          <div class="mem-cell"><div class="mem-box">10</div><div class="mem-index">[0]</div></div>
+          <div class="mem-cell"><div class="mem-box highlight">20</div><div class="mem-index">[1]</div></div>
+          <div class="mem-cell"><div class="mem-box">30</div><div class="mem-index">[2]</div></div>
+          <div class="mem-cell"><div class="mem-box">40</div><div class="mem-index">[3]</div></div>
+          <div class="mem-cell"><div class="mem-box" style="opacity:0.3; border-style:dashed">__</div><div class="mem-index">[4]</div></div>
+        </div>
+        <div style="font-size:0.85rem; margin-top:8px; color:var(--muted);">
+          Step 1: Index 3 se shuru karke right shift karo → [10,20,30,40,40]<br>
+          Step 2: Index 2 ko right shift → [10,20,30,30,40]<br>
+          Step 3: Index 1 ko right shift → [10,20,20,30,40]<br>
+          Step 4: Index 1 pe 25 daalo → <span style="color:var(--accent3)">[10,<strong>25</strong>,20,30,40] ✅</span>
+        </div>
+      </div>
+      <pre><span class="lang-tag">Python</span>
+    # Insert at position 'pos' – Python provides a built-in
+    arr.insert(pos, value)   # underlying list will shift elements automatically</pre>
+      <div class="warn">Array mein insert/delete costly hai kyunki shifting hoti hai. Iske liye Linked List better hai!</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       4. TYPES OF ARRAYS
+  ═══════════════════════════════════════════ -->
+  <div class="card c4" id="c4">
+    <div class="card-header" onclick="tog('c4')">
+      <div class="card-icon">🗂️</div>
+      <div class="card-title">
+        <h2>4. Types of Arrays</h2>
+        <span>1D, 2D, Multi-D, Static, Dynamic</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <h3>1D Array (Single Dimensional)</h3>
+      <div class="intro-box" style="border-color:var(--accent4);">
+        Sabse simple – ek line mein elements. Jaise: <code>[5, 10, 15, 20, 25]</code>
+      </div>
+      <div class="point"><span class="pi">⌛</span><span>1D array access O(1), traversal O(n), insert/delete middle O(n).</span></div>
+
+      <h3>2D Array (Matrix / Grid)</h3>
+      <div class="intro-box" style="border-color:var(--accent4);">
+        Row aur Column dono hote hain. Sochlo chess board ya Excel sheet.
+        <br><code>arr[row][column]</code> se access karo.
+      </div>
+      <div class="point"><span class="pi">⌛</span><span>2D array access O(1) per element, traversal O(rows * columns), insert/delete O(n) per row shift.</span></div>
+      <pre><span class="lang-tag">Python</span>
+# 3x3 matrix
+mat = [
+  [1, 2, 3],  # Row 0
+  [4, 5, 6],  # Row 1
+  [7, 8, 9],  # Row 2
+]
+print(mat[1][2])  # Output: 6 (Row 1, Col 2)
+
+# Traverse karo
+for i in range(3):
+  for j in range(3):
+    print(mat[i][j], end=' ')</pre>
+
+      <h3>Static vs Dynamic Arrays</h3>
+      <table class="t">
+        <tr><th>Feature</th><th>Static Array</th><th>Dynamic Array (Vector/ArrayList)</th></tr>
+        <tr><td>Size</td><td>Fixed at compile time</td><td>Runtime mein badhta hai</td></tr>
+        <tr><td>Memory</td><td>Stack pe</td><td>Heap pe</td></tr>
+        <tr><td>Speed</td><td>Faster</td><td>Slightly slower (reallocation)</td></tr>
+        <tr><td>Flexibility</td><td>❌ Kam</td><td>✅ Zyada</td></tr>
+        <tr><td>Example</td><td><code>int arr[10]</code></td><td><code>vector&lt;int&gt; v</code></td></tr>
+      </table>
+      <div class="tip">Dynamic array (vector) internally apni size double kar leta hai jab full hota hai. Yeh amortized O(1) insert deta hai!</div>
+      <div class="point"><span class="pi">⌛</span><span>Static array: access O(1), insert/delete O(n). Dynamic array: access O(1), amortized push-back O(1), insert/delete O(n).</span></div>
+
+      <h3>Jagged Array</h3>
+      <div class="point"><span class="pi">🔸</span><span>Har row ki alag length hoti hai. C++ mein vector of vectors use karte hain: <code>vector&lt;vector&lt;int&gt;&gt;</code></span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       5. IMPORTANT TECHNIQUES
+  ═══════════════════════════════════════════ -->
+  <div class="card c5" id="c5">
+    <div class="card-header" onclick="tog('c5')">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">
+        <h2>5. Important Array Techniques</h2>
+        <span>Interview mein aane wali techniques – must know!</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <h3>🔹 Technique 1: Two Pointer</h3>
+      <div class="intro-box" style="border-color:var(--accent5);">
+        Do pointers maintain karo – ek left se, ek right se. Move karo condition ke hisaab se. <span class="pill pill-g">O(n)</span> mein O(n²) problems solve ho jaati hain!
+      </div>
+        <pre><span class="lang-tag">Python</span>
+    # Problem: Sorted array mein pair dhundho jiska sum = target
+    left, right = 0, len(arr) - 1
+    while left < right:
+      s = arr[left] + arr[right]
+      if s == target:
+        print(left, right)
+        break
+      elif s < target:
+        left += 1   # sum badhao
+      else:
+        right -= 1  # sum ghataao</pre>
+      <div class="point"><span class="pi">✅</span><span>Use karo: Pair sum, Triplet sum, Palindrome check, Remove duplicates from sorted array</span></div>
+
+      <h3>🔹 Technique 2: Sliding Window</h3>
+      <div class="intro-box" style="border-color:var(--accent5);">
+        Ek "window" (subarray) maintain karo. Window ko slide karo – pehle wala element hatao, naya add karo. Baar baar recalculate mat karo! <span class="pill pill-g">O(n)</span>
+      </div>
+        <pre><span class="lang-tag">Python</span>
+    # Problem: Size k ka maximum sum subarray
+    windowSum = sum(arr[:k])
+    maxSum = windowSum
+    for i in range(k, len(arr)):
+      windowSum += arr[i]            # naya element add
+      windowSum -= arr[i - k]        # purana element hatao
+      maxSum = max(maxSum, windowSum)
+    # O(n) mein ho gaya!</pre>
+      <div class="point"><span class="pi">✅</span><span>Use karo: Max sum subarray, Longest substring without repeat, Min window substring</span></div>
+
+      <h3>🔹 Technique 3: Prefix Sum</h3>
+      <div class="intro-box" style="border-color:var(--accent5);">
+        Pehle ek prefix sum array banao. Phir kisi bhi range ka sum <span class="pill pill-g">O(1)</span> mein nikalo!
+      </div>
+        <pre><span class="lang-tag">Python</span>
+    # Prefix sum array banao
+    prefix = [0] * (n + 1)
+    for i in range(n):
+      prefix[i+1] = prefix[i] + arr[i]
+
+    # Range [l, r] ka sum = prefix[r+1] - prefix[l]
+    rangeSum = prefix[r+1] - prefix[l]  # O(1)</pre>
+
+      <h3>🔹 Technique 4: Kadane's Algorithm</h3>
+      <div class="intro-box" style="border-color:var(--accent5);">
+        Maximum subarray sum nikalne ka classic O(n) algorithm. DP ka simplest example!
+      </div>
+        <pre><span class="lang-tag">Python</span>
+    # Maximum Subarray Sum (Kadane's)
+    maxSum = curr = arr[0]
+    for x in arr[1:]:
+      curr = max(x, curr + x)
+      maxSum = max(maxSum, curr)
+    # maxSum = answer hai!</pre>
+      <div class="tip">Kadane's Algorithm ek classic hai – "agar current sum negative ho jaaye, toh fresh start karo"!</div>
+
+      <h3>🔹 Technique 5: Dutch National Flag (3-way partition)</h3>
+      <div class="intro-box" style="border-color:var(--accent5);">
+        Array mein teen types ke elements ko sort karo bina extra space ke. Classic example: 0, 1, 2 sort karo.
+      </div>
+        <pre><span class="lang-tag">Python</span>
+    # Dutch National Flag (0/1/2 sort)
+    low, mid, high = 0, 0, len(arr) - 1
+    while mid <= high:
+      if arr[mid] == 0:
+        arr[low], arr[mid] = arr[mid], arr[low]; low += 1; mid += 1
+      elif arr[mid] == 1:
+        mid += 1
+      else:
+        arr[mid], arr[high] = arr[high], arr[mid]; high -= 1</pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       6. COMMON ARRAY PATTERNS
+  ═══════════════════════════════════════════ -->
+  <div class="card c6" id="c6">
+    <div class="card-header" onclick="tog('c6')">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">
+        <h2>6. Common Array Operations (Yaad Karo!)</h2>
+        <span>Reverse, Rotate, Find duplicates, Sort – sab kuch</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <h3>🔄 Array Reverse Karo</h3>
+        <pre><span class="lang-tag">Python</span>
+    def reverse(arr):
+      l, r = 0, len(arr) - 1
+      while l < r:
+        arr[l], arr[r] = arr[r], arr[l]
+        l += 1; r -= 1  # O(n) time, O(1) space</pre>
+
+      <h3>↩️ Array Rotate karo (k steps left)</h3>
+      <pre><span class="lang-tag">Python</span>
+    # Rotate left by k using reverses (or simply slices)
+    # Using slice: arr = arr[k:] + arr[:k]
+    arr = arr[k:] + arr[:k]  # [1,2,3,4,5] with k=2 -> [3,4,5,1,2]</pre>
+
+      <h3>🔢 Duplicates Dhundho</h3>
+        <pre><span class="lang-tag">Python</span>
+    # HashSet se O(n) mein
+    seen = set()
+    for x in arr:
+      if x in seen:
+        print("Duplicate:", x)
+      else:
+        seen.add(x)</pre>
+
+      <h3>📊 Frequency Count</h3>
+      <pre><span class="lang-tag">Python</span>
+    # Har element kitni baar aaya
+    from collections import Counter
+    freq = Counter(arr)
+    # or manual:
+    freq = {}
+    for x in arr:
+        freq[x] = freq.get(x, 0) + 1</pre>
+
+      <h3>🏆 Max & Min Dhundho</h3>
+        <pre><span class="lang-tag">Python</span>
+    mx = arr[0]; mn = arr[0]
+    for x in arr:
+      mx = max(mx, x)
+      mn = min(mn, x)
+    # O(n) – single pass!</pre>
+
+      <h3>🎯 Second Largest Dhundho</h3>
+        <pre><span class="lang-tag">Python</span>
+    first = second = float('-inf')
+    for x in arr:
+      if x > first:
+        second = first; first = x
+      elif x > second and x != first:
+        second = x
+    # O(n) single pass! Sort mat karo.</pre>
+      <div class="note">Sort karke second largest dhundhna O(n log n) hoga. Upar wala approach O(n) hai – interview mein yahi batao!</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       7. ARRAY vs LINKED LIST
+  ═══════════════════════════════════════════ -->
+  <div class="card c7" id="c7">
+    <div class="card-header" onclick="tog('c7')">
+      <div class="card-icon">⚔️</div>
+      <div class="card-title">
+        <h2>7. Array vs Linked List</h2>
+        <span>Kab kaunsa use karein?</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="t">
+        <tr><th>Feature</th><th>Array</th><th>Linked List</th></tr>
+        <tr><td>Memory</td><td>Contiguous (ek saath)</td><td>Scattered (bichri hui)</td></tr>
+        <tr><td>Access</td><td><span class="pill pill-g">O(1)</span> – index se</td><td><span class="pill pill-r">O(n)</span> – traverse karo</td></tr>
+        <tr><td>Insert/Delete (front)</td><td><span class="pill pill-r">O(n)</span> – shift karo</td><td><span class="pill pill-g">O(1)</span> – pointer change</td></tr>
+        <tr><td>Insert/Delete (end)</td><td><span class="pill pill-g">O(1)</span></td><td><span class="pill pill-g">O(1)</span> (tail pointer se)</td></tr>
+        <tr><td>Search</td><td><span class="pill pill-y">O(n)</span> / <span class="pill pill-g">O(log n)</span>*</td><td><span class="pill pill-y">O(n)</span> always</td></tr>
+        <tr><td>Cache Friendly</td><td>✅ Haan (contiguous)</td><td>❌ Nahi (scattered)</td></tr>
+        <tr><td>Extra Memory</td><td>Nahi</td><td>Haan (pointer ke liye)</td></tr>
+        <tr><td>Size</td><td>Fixed (static)</td><td>Dynamic</td></tr>
+      </table>
+      <p style="font-size:0.78rem; color:var(--muted);">* sorted array mein binary search se O(log n)</p>
+
+      <div class="tech-grid" style="margin-top:16px;">
+        <div class="tech-card">
+          <h4>✅ Array Use Karo Jab...</h4>
+          <div class="point"><span class="pi">🔸</span><span>Random access chahiye (arr[i])</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Size pehle se pata hai</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Memory efficient chahiye</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Sorting/searching karna hai</span></div>
+        </div>
+        <div class="tech-card">
+          <h4>✅ Linked List Use Karo Jab...</h4>
+          <div class="point"><span class="pi">🔸</span><span>Frequent insert/delete chahiye</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Size pehle se nahi pata</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Queue/Stack implement karna hai</span></div>
+          <div class="point"><span class="pi">🔸</span><span>Random access zaroori nahi</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       8. TOP INTERVIEW PROBLEMS
+  ═══════════════════════════════════════════ -->
+  <div class="card c8" id="c8">
+    <div class="card-header" onclick="tog('c8')">
+      <div class="card-icon">🎤</div>
+      <div class="card-title">
+        <h2>8. Top Interview Problems</h2>
+        <span>Inhe zaroor practice karo – FAANG mein bar bar aate hain!</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="t">
+        <tr><th>#</th><th>Problem</th><th>Technique</th><th>Difficulty</th></tr>
+        <tr><td>1</td><td>Two Sum</td><td>HashMap</td><td><span class="pill pill-g">Easy</span></td></tr>
+        <tr><td>2</td><td>Best Time to Buy & Sell Stock</td><td>Greedy / Single Pass</td><td><span class="pill pill-g">Easy</span></td></tr>
+        <tr><td>3</td><td>Maximum Subarray (Kadane's)</td><td>DP / Kadane</td><td><span class="pill pill-g">Easy</span></td></tr>
+        <tr><td>4</td><td>Contains Duplicate</td><td>HashSet</td><td><span class="pill pill-g">Easy</span></td></tr>
+        <tr><td>5</td><td>Product of Array Except Self</td><td>Prefix + Suffix</td><td><span class="pill pill-y">Medium</span></td></tr>
+        <tr><td>6</td><td>3Sum</td><td>Two Pointer</td><td><span class="pill pill-y">Medium</span></td></tr>
+        <tr><td>7</td><td>Container With Most Water</td><td>Two Pointer</td><td><span class="pill pill-y">Medium</span></td></tr>
+        <tr><td>8</td><td>Rotate Array</td><td>3-Reverse Trick</td><td><span class="pill pill-y">Medium</span></td></tr>
+        <tr><td>9</td><td>Subarray Sum = K</td><td>Prefix Sum + HashMap</td><td><span class="pill pill-y">Medium</span></td></tr>
+        <tr><td>10</td><td>Trapping Rain Water</td><td>Two Pointer / Stack</td><td><span class="pill pill-r">Hard</span></td></tr>
+        <tr><td>11</td><td>Median of Two Sorted Arrays</td><td>Binary Search</td><td><span class="pill pill-r">Hard</span></td></tr>
+      </table>
+
+      <h3>🌧️ Trapping Rain Water – Must Know!</h3>
+        <pre><span class="lang-tag">Python</span>
+    # Trapping Rain Water two-pointer
+    left, right = 0, n - 1
+    leftMax = rightMax = water = 0
+    while left <= right:
+      if height[left] <= height[right]:
+        if height[left] >= leftMax:
+          leftMax = height[left]
+        else:
+          water += leftMax - height[left]
+        left += 1
+      else:
+        if height[right] >= rightMax:
+          rightMax = height[right]
+        else:
+          water += rightMax - height[right]
+        right -= 1
+    # O(n) time, O(1) space!</pre>
+      <div class="tip">LeetCode pe inhe solve karo: #1 (Two Sum), #53 (Kadane), #42 (Rain Water), #238 (Product except self). Yeh sab classic hain!</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  📦 Arrays – Poori Detail &nbsp;|&nbsp; Practice is the key – theory padho, code likho, repeat karo! 💪
+</footer>
+
+<script>
+  function tog(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
