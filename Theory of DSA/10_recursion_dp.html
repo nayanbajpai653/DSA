@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursion & DP – Poori Detail 🧠</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#f97316;--a2:#ffd93d;--a3:#4ecdc4;--a4:#a78bfa;--a5:#6bcb77;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#1a0800,#0d1117,#0a001a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(249,115,22,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(167,139,250,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(249,115,22,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a5);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(249,115,22,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(249,115,22,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a5);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a1);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a4);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a3);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a3);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a5);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(249,115,22,0.15);color:var(--a1);border:1px solid rgba(249,115,22,0.3);}
+.pp{background:rgba(167,139,250,0.15);color:var(--a4);border:1px solid rgba(167,139,250,0.3);}
+/* Tree call visualization */
+.call-tree{font-family:'JetBrains Mono',monospace;font-size:.8rem;background:var(--card2);border-radius:10px;padding:16px;margin:12px 0;color:var(--muted);line-height:1.9;}
+.call-tree .fn-call{color:var(--a1);}
+.call-tree .cached{color:var(--a5);}
+.call-tree .result{color:var(--a2);}
+.dp-table{border-collapse:collapse;margin:14px 0;font-size:.82rem;}
+.dp-table th{background:rgba(167,139,250,0.15);color:var(--a4);padding:8px 12px;border:1px solid var(--border);font-weight:700;font-family:'JetBrains Mono',monospace;}
+.dp-table td{padding:8px 12px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;text-align:center;}
+.dp-table .hi{background:rgba(249,115,22,0.15);color:var(--a1);font-weight:700;}
+.dp-table .ans{background:rgba(107,203,119,0.2);color:var(--a5);font-weight:700;}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 Recursion & DP </h1>
+  <p>Recursion samjho → Memoize karo → DP banao – Step by Step</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">🌳 Call Tree Visuals</span>
+    <span class="badge">💻 Top-Down + Bottom-Up</span><span class="badge">🎤 Classic DP Problems</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. RECURSION BASICS -->
+<div class="card open" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🔄</div>
+    <div class="ct"><h2>1. Recursion – Basics</h2><span>Function khud ko call kare – Base Case + Recursive Case</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Recursion = function jo apne aap ko call kare. Do cheezein <strong>zaroor</strong> honi chahiye:<br>
+      1. <strong>Base Case</strong> – kab rukna hai (warna infinite loop!)<br>
+      2. <strong>Recursive Case</strong> – problem ko chhhota karo aur apne aap ko call karo
+    </div>
+    <h3>Classic Example – Factorial</h3>
+    <pre><span class="lt">Python</span>
+  # n! = n × (n-1) × (n-2) × ... × 1
+  def factorial(n):
+    if n == 0 or n == 1:
+      return 1  # Base Case – RUK JAO!
+    return n * factorial(n - 1)  # Recursive Case
+  # factorial(4) = 4 × factorial(3) = 24 ✅</pre>
+
+    <h3>Call Stack – Memory mein kya hota hai?</h3>
+    <div class="call-tree">
+      <span class="fn-call">factorial(4)</span> → calls factorial(3)<br>
+      &nbsp;&nbsp;<span class="fn-call">factorial(3)</span> → calls factorial(2)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-call">factorial(2)</span> → calls factorial(1)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-call">factorial(1)</span> → <span class="result">returns 1</span> (Base Case!)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="result">factorial(2) returns 2×1 = 2</span><br>
+      &nbsp;&nbsp;<span class="result">factorial(3) returns 3×2 = 6</span><br>
+      <span class="result">factorial(4) returns 4×6 = 24</span>
+    </div>
+
+    <h3>3 Rules of Recursion</h3>
+    <div class="pt"><span class="pi">1️⃣</span><span><strong>Base Case pehle likho</strong> – bina iske infinite recursion hogi</span></div>
+    <div class="pt"><span class="pi">2️⃣</span><span><strong>Problem chhhota karte jao</strong> – har call mein input size ghato</span></div>
+    <div class="pt"><span class="pi">3️⃣</span><span><strong>Recursion pe trust karo</strong> – assume karo chhoti problem solve ho gayi</span></div>
+    <div class="warn">Stack Overflow! Agar base case galat ho ya recursion bahut deep ho jaaye toh Stack Overflow Exception aayega. Default stack ~10,000 calls handle kar sakta hai.</div>
+
+    <h3>More Examples</h3>
+    <pre><span class="lt">Python</span>
+  # Fibonacci (naive)
+  def fib(n):
+    if n <= 1:
+      return n
+    return fib(n-1) + fib(n-2)  # O(2ⁿ) – bahut slow!
+
+  # Power function – fast exponentiation
+  def power(x, n):
+    if n == 0:
+      return 1
+    if n % 2 == 0:  # Even power – fast exponentiation
+      half = power(x, n//2)
+      return half * half
+    return x * power(x, n-1)  # O(log n)</pre>
+  </div>
+</div>
+
+<!-- 2. BACKTRACKING -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">↩️</div>
+    <div class="ct"><h2>2. Backtracking</h2><span>Try karo, galat laga? Wapas aao aur doosra try karo</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a3);">
+      Backtracking ek special recursion hai jisme hum ek path follow karte hain. Agar dead end mile toh <strong>backtrack</strong> karo (undo last choice) aur doosra path try karo.<br><br>
+      🧩 <em>Maze solve karna – ek direction mein jao, band gali mile toh wapas aao!</em>
+    </div>
+    <h3>Template – Backtracking</h3>
+    <pre><span class="lt">Python</span>
+  def backtrack(state, choices):
+    if goal_reached(state):
+      result.append(list(state))  # answer store karo
+      return
+    for choice in choices:
+      state.append(choice)             # choose
+      backtrack(state, remaining)      # explore
+      state.pop()                      # un-choose (BACKTRACK!)</pre>
+
+    <h3>🔹 Problem: Subsets</h3>
+    <pre><span class="lt">Python</span>
+  def subsets(nums):
+    res = []
+    def backtrack(curr, start):
+      res.append(list(curr))  # har state ek subset hai
+      for i in range(start, len(nums)):
+        curr.append(nums[i])            # choose
+        backtrack(curr, i+1)            # explore
+        curr.pop()                      # un-choose
+    backtrack([], 0)
+    return res</pre>
+
+    <h3>🔹 N-Queens Problem</h3>
+    <pre><span class="lt">Python</span>
+  def solve(row, board, n):
+    if row == n:
+      addSolution(board)
+      return
+    for col in range(n):
+      if isSafe(board, row, col):
+        board[row] = col         # queen rakho
+        solve(row+1, board, n)   # agli row
+        board[row] = -1          # backtrack!</pre>
+    <div class="tip">Backtracking problems: Subsets, Permutations, Combinations, N-Queens, Sudoku Solver – sab same template se solve hote hain!</div>
+  </div>
+</div>
+
+<!-- 3. DP INTRO -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">🧮</div>
+    <div class="ct"><h2>3. Dynamic Programming – Introduction</h2><span>Recursion + Caching = DP. Ek baar solve, baar baar use!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      DP = <strong>Recursion + Memoization</strong>. Ek hi subproblem baar baar solve karne ki jagah, answer store (cache) karo aur reuse karo.<br><br>
+      DP use karo jab problem mein:<br>
+      1. <strong>Overlapping Subproblems</strong> – same subproblem baar baar aata hai<br>
+      2. <strong>Optimal Substructure</strong> – optimal solution smaller optimal solutions se banta hai
+    </div>
+
+    <h3>Fibonacci – Naive vs DP</h3>
+    <h4>Naive Recursion – O(2ⁿ) 😱</h4>
+    <div class="call-tree">
+      <span class="fn-call">fib(5)</span><br>
+      &nbsp;&nbsp;<span class="fn-call">fib(4)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="fn-call">fib(3)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn-call">fib(3)</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="fn-call">fib(2)</span> &nbsp;&nbsp; <span style="color:#ff6b6b">fib(2) ← REPEAT!</span> <span class="fn-call">fib(1)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff6b6b">fib(2) ← REPEAT!</span> <span class="fn-call">fib(1)</span><br>
+      Bahut saare repeated calls → <span style="color:var(--a3)">O(2ⁿ) exponential!</span>
+    </div>
+    <h4>With Memoization – O(n) 🚀</h4>
+    <div class="call-tree">
+      <span class="fn-call">fib(5)</span> calls fib(4) aur fib(3)<br>
+      <span class="fn-call">fib(4)</span> calls fib(3) aur fib(2)<br>
+      <span class="fn-call">fib(3)</span> calls fib(2) aur fib(1)<br>
+      <span class="cached">fib(2) – CACHED → direct return!</span><br>
+      <span class="cached">fib(3) – CACHED → direct return!</span><br>
+      Total calls: sirf n → <span style="color:var(--a5)">O(n)!</span>
+    </div>
+    <pre><span class="lt">Python – Top-Down (Memoization)</span>
+  memo = {}
+  def fib(n):
+    if n <= 1:
+      return n
+    if n in memo:
+      return memo[n]  # Cache hit!
+    memo[n] = fib(n-1) + fib(n-2)
+    return memo[n]
+  </pre>
+    <pre><span class="lt">Python – Bottom-Up (Tabulation)</span>
+  def fib_tab(n):
+    if n <= 1:
+      return n
+    dp = [0] * (n+1)
+    dp[0], dp[1] = 0, 1
+    for i in range(2, n+1):
+      dp[i] = dp[i-1] + dp[i-2]
+    return dp[n]
+  # Space Optimized: sirf 2 variables chahiye!
+  def fib_space_opt(n):
+    if n <= 1:
+      return n
+    a, b = 0, 1
+    for _ in range(2, n+1):
+      a, b = b, a + b
+    return b</pre>
+
+    <table class="t">
+      <tr><th>Approach</th><th>Time</th><th>Space</th><th>Style</th></tr>
+      <tr><td>Naive Recursion</td><td><span class="pill pr">O(2ⁿ)</span></td><td><span class="pill py">O(n)</span></td><td>Simple but slow</td></tr>
+      <tr><td>Top-Down (Memo)</td><td><span class="pill pg">O(n)</span></td><td><span class="pill py">O(n)</span></td><td>Recursion + cache</td></tr>
+      <tr><td>Bottom-Up (Tab)</td><td><span class="pill pg">O(n)</span></td><td><span class="pill pg">O(1)*</span></td><td>Iterative, no stack</td></tr>
+    </table>
+    <div class="note">*Space optimized version mein. General tabulation O(n) space leta hai.</div>
+  </div>
+</div>
+
+<!-- 4. CLASSIC DP PROBLEMS -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🎒</div>
+    <div class="ct"><h2>4. Classic DP Problems</h2><span>Knapsack, LCS, LIS, Coin Change – Full Code!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 1. 0/1 Knapsack</h3>
+    <div class="ib" style="border-color:var(--a1);">
+      N items hain, har ek ka weight aur value hai. Bag ki capacity W hai. Maximum value kaise lo? Har item ya toh lo (1) ya chhodo (0).
+    </div>
+    <pre><span class="lt">Python – Bottom-Up DP</span>
+  def knapsack(wt, val, W, n):
+    dp = [[0] * (W+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+      for w in range(W+1):
+        # Item include mat karo
+        dp[i][w] = dp[i-1][w]
+        # Item include karo (agar fit hota hai)
+        if wt[i-1] <= w:
+          dp[i][w] = max(dp[i][w], val[i-1] + dp[i-1][w-wt[i-1]])
+    return dp[n][W]
+  # Time: O(n×W) | Space: O(n×W)</pre>
+
+    <h3>🔹 2. Longest Common Subsequence (LCS)</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      Do strings ka longest common subsequence dhundho. "ABCBDAB" aur "BDCAB" ka LCS = "BCAB" (length 4).
+    </div>
+    <pre><span class="lt">Python</span>
+  def lcs(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0] * (n+1) for _ in range(m+1)]
+    for i in range(1, m+1):
+      for j in range(1, n+1):
+        if s1[i-1] == s2[j-1]:
+          dp[i][j] = 1 + dp[i-1][j-1]  # match!
+        else:
+          dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]</pre>
+
+    <h3>🔹 3. Longest Increasing Subsequence (LIS)</h3>
+    <pre><span class="lt">Python – O(n²) DP</span>
+  def lis(nums):
+    n = len(nums)
+    if n == 0: return 0
+    dp = [1] * n  # har element ka LIS min = 1
+    for i in range(1, n):
+      for j in range(i):
+        if nums[j] < nums[i]:
+          dp[i] = max(dp[i], dp[j] + 1)
+    return max(dp)
+  # [10,9,2,5,3,7,101,18] → LIS = 4 → [2,3,7,101]</pre>
+
+    <h3>🔹 4. Coin Change – Minimum Coins</h3>
+    <pre><span class="lt">Python</span>
+  def coinChange(coins, amount):
+    dp = [amount + 1] * (amount + 1)  # infinity se initialize
+    dp[0] = 0
+    for i in range(1, amount + 1):
+      for coin in coins:
+        if coin <= i:
+          dp[i] = min(dp[i], dp[i-coin] + 1)
+    return -1 if dp[amount] > amount else dp[amount]
+  # coins=[1,5,6,9], amount=11 → 2 coins (5+6)</pre>
+
+    <h3>🔹 5. Edit Distance (Levenshtein)</h3>
+    <pre><span class="lt">Python</span>
+  def editDistance(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0] * (n+1) for _ in range(m+1)]
+    for i in range(m+1):
+      dp[i][0] = i
+    for j in range(n+1):
+      dp[0][j] = j
+    for i in range(1, m+1):
+      for j in range(1, n+1):
+        if s1[i-1] == s2[j-1]:
+          dp[i][j] = dp[i-1][j-1]
+        else:
+          dp[i][j] = 1 + min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1])
+    return dp[m][n]</pre>
+    <div class="tip">DP mein pehle recurrence relation dhundho – "dp[i] kaise dp[i-1] se banta hai?" Yeh samajh aa gaya toh code likhna aasaan hai!</div>
+  </div>
+</div>
+
+<!-- 5. DP PATTERNS -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">🗺️</div>
+    <div class="ct"><h2>5. DP Patterns – Identify Karna Seekho</h2><span>6 main patterns jo 90% DP problems cover karte hain</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>Pattern</th><th>Keywords</th><th>Example Problems</th></tr>
+      <tr><td>1D DP (Linear)</td><td>Climbing stairs, rob houses</td><td>Fibonacci, House Robber, Decode Ways</td></tr>
+      <tr><td>2D DP (Grid)</td><td>Min path, unique paths</td><td>Unique Paths, Min Path Sum, Triangle</td></tr>
+      <tr><td>Knapsack</td><td>Include/Exclude, weights, capacity</td><td>0/1 Knapsack, Subset Sum, Target Sum</td></tr>
+      <tr><td>String DP</td><td>Two strings, subsequence, substring</td><td>LCS, Edit Distance, Palindrome</td></tr>
+      <tr><td>Interval DP</td><td>Optimal split, burst</td><td>Matrix Chain, Burst Balloons</td></tr>
+      <tr><td>State Machine DP</td><td>States, transitions</td><td>Stock Buy-Sell with cooldown</td></tr>
+    </table>
+
+    <h3>🔹 Pattern: House Robber (1D DP)</h3>
+    <pre><span class="lt">Python</span>
+  # Adjacent ghar nahi loot sakte – max money?
+  def rob(nums):
+    prev2, prev1 = 0, 0
+    for num in nums:
+      curr = max(prev1, prev2 + num)
+      prev2, prev1 = prev1, curr
+    return prev1  # O(n) time, O(1) space!</pre>
+
+    <h3>🔹 Pattern: Unique Paths (2D Grid DP)</h3>
+    <pre><span class="lt">Python</span>
+  # m×n grid mein top-left se bottom-right – kitne paths?
+  def uniquePaths(m, n):
+    dp = [[0] * n for _ in range(m)]
+    for i in range(m):
+      dp[i][0] = 1  # left column
+    for j in range(n):
+      dp[0][j] = 1  # top row
+    for i in range(1, m):
+      for j in range(1, n):
+        dp[i][j] = dp[i-1][j] + dp[i][j-1]  # from top+left
+    return dp[m-1][n-1]</pre>
+    <div class="warn">DP problems mein pehle brute force recursion likho, phir memoize karo, phir tabulate karo – is order mein samajhna aasaan hota hai!</div>
+  </div>
+</div>
+
+<!-- 6. INTERVIEW PROBLEMS -->
+<div class="card" id="c6">
+  <div class="ch" onclick="tog('c6')"><div class="ci">🎤</div>
+    <div class="ct"><h2>6. Top Interview Problems – Recursion & DP</h2><span>LeetCode must-solve list!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>Recursion / Backtracking</h3>
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>78</td><td>Subsets</td><td>Backtracking</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>46</td><td>Permutations</td><td>Backtracking</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>77</td><td>Combinations</td><td>Backtracking</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>39</td><td>Combination Sum</td><td>Backtracking</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>51</td><td>N-Queens</td><td>Backtracking</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>37</td><td>Sudoku Solver</td><td>Backtracking</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <h3>Dynamic Programming</h3>
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Pattern</th><th>Level</th></tr>
+      <tr><td>70</td><td>Climbing Stairs</td><td>1D DP (Fibonacci)</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>121</td><td>Best Time to Buy Stock</td><td>1D DP / Greedy</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>198</td><td>House Robber</td><td>1D DP</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>322</td><td>Coin Change</td><td>1D DP (Unbounded KS)</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>300</td><td>LIS</td><td>1D DP</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>1143</td><td>LCS</td><td>2D String DP</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>72</td><td>Edit Distance</td><td>2D String DP</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>416</td><td>Partition Equal Subset</td><td>0/1 Knapsack</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>312</td><td>Burst Balloons</td><td>Interval DP</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>10</td><td>Regular Expression Match</td><td>2D DP</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="note"><strong>DP Identify karne ka shortcut:</strong> Problem mein "maximum", "minimum", "number of ways", "can we achieve X" – yeh words dikhen toh DP try karo!</div>
+    <div class="tip">LC #70 (Climbing Stairs) se shuru karo → #198 (House Robber) → #322 (Coin Change) → #300 (LIS). Yeh order sabse smooth hai!</div>
+  </div>
+</div>
+
+</div>
+<footer>🧠 Recursion & DP – Poori Detail &nbsp;|&nbsp; Recursion trust karo, DP mein patterns dhundho – sab solve ho jaayega! 💪</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
