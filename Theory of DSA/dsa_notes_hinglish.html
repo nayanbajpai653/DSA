@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Notes – Hinglish mein 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --card: #16162a;
+    --card2: #1e1e35;
+    --accent1: #f7c948;
+    --accent2: #ff6b6b;
+    --accent3: #4ecdc4;
+    --accent4: #a78bfa;
+    --accent5: #34d399;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --border: #2a2a45;
+    --code-bg: #0a0a15;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Baloo 2', cursive;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #1a0533 0%, #0f1a33 50%, #0a1a0a 100%);
+    padding: 48px 24px 36px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent4);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(167,139,250,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(247,201,72,0.08) 0%, transparent 60%);
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--accent1);
+    position: relative;
+    text-shadow: 0 0 40px rgba(247,201,72,0.4);
+    letter-spacing: -1px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-top: 8px;
+    position: relative;
+  }
+  header .badges {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-top: 16px; position: relative;
+  }
+  .badge {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.82rem;
+    color: var(--accent3);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  /* TOC */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent4);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+  }
+  .toc h2 { color: var(--accent4); font-size: 1.1rem; margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 5px 0; }
+  .toc a { color: var(--accent3); text-decoration: none; font-size: 0.95rem; }
+  .toc a:hover { color: var(--accent1); text-decoration: underline; }
+
+  /* SECTION */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .section-header:hover { background: rgba(255,255,255,0.03); }
+  .section-icon {
+    font-size: 1.6rem;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .section-title { flex: 1; }
+  .section-title h2 { font-size: 1.2rem; font-weight: 700; }
+  .section-title span { font-size: 0.82rem; color: var(--muted); }
+  .chevron { color: var(--muted); font-size: 1.2rem; transition: transform 0.3s; }
+  .section.open .chevron { transform: rotate(180deg); }
+  .section-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .section.open .section-body { display: block; }
+
+  /* CONTENT PIECES */
+  .intro-box {
+    background: var(--card2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .point {
+    display: flex; gap: 12px; align-items: flex-start;
+    margin: 10px 0; font-size: 0.95rem;
+  }
+  .point-icon { font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
+
+  code, .code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 0.85rem;
+    color: var(--accent3);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 14px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+  pre .kw { color: #ff79c6; }
+  pre .fn { color: #50fa7b; }
+  pre .str { color: #f1fa8c; }
+  pre .cm { color: #6272a4; font-style: italic; }
+  pre .num { color: #bd93f9; }
+
+  .complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.88rem;
+  }
+  .complexity-table th {
+    background: rgba(167,139,250,0.15);
+    color: var(--accent4);
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .complexity-table td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .complexity-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  .tip {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-size: 0.9rem;
+    color: var(--accent5);
+    margin: 12px 0;
+  }
+  .tip::before { content: '💡 Tip: '; font-weight: 700; }
+
+  .warn {
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-size: 0.9rem;
+    color: var(--accent2);
+    margin: 12px 0;
+  }
+  .warn::before { content: '⚠️ Yaad rakh: '; font-weight: 700; }
+
+  h3 { color: var(--accent1); font-size: 1rem; margin: 18px 0 8px; font-weight: 700; }
+  h4 { color: var(--accent3); font-size: 0.92rem; margin: 14px 0 6px; }
+
+  /* COLOR ACCENTS PER SECTION */
+  .s1 .section-icon { background: rgba(247,201,72,0.12); }
+  .s1 .section-header { border-left: 4px solid var(--accent1); }
+  .s2 .section-icon { background: rgba(255,107,107,0.12); }
+  .s2 .section-header { border-left: 4px solid var(--accent2); }
+  .s3 .section-icon { background: rgba(78,205,196,0.12); }
+  .s3 .section-header { border-left: 4px solid var(--accent3); }
+  .s4 .section-icon { background: rgba(167,139,250,0.12); }
+  .s4 .section-header { border-left: 4px solid var(--accent4); }
+  .s5 .section-icon { background: rgba(52,211,153,0.12); }
+  .s5 .section-header { border-left: 4px solid var(--accent5); }
+  .s6 .section-icon { background: rgba(247,201,72,0.12); }
+  .s6 .section-header { border-left: 4px solid var(--accent1); }
+  .s7 .section-icon { background: rgba(255,107,107,0.12); }
+  .s7 .section-header { border-left: 4px solid var(--accent2); }
+  .s8 .section-icon { background: rgba(78,205,196,0.12); }
+  .s8 .section-header { border-left: 4px solid var(--accent3); }
+  .s9 .section-icon { background: rgba(167,139,250,0.12); }
+  .s9 .section-header { border-left: 4px solid var(--accent4); }
+  .s10 .section-icon { background: rgba(52,211,153,0.12); }
+  .s10 .section-header { border-left: 4px solid var(--accent5); }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 2px;
+  }
+  .tag-g { background: rgba(52,211,153,0.15); color: var(--accent5); border: 1px solid rgba(52,211,153,0.3); }
+  .tag-y { background: rgba(247,201,72,0.15); color: var(--accent1); border: 1px solid rgba(247,201,72,0.3); }
+  .tag-r { background: rgba(255,107,107,0.15); color: var(--accent2); border: 1px solid rgba(255,107,107,0.3); }
+  .tag-p { background: rgba(167,139,250,0.15); color: var(--accent4); border: 1px solid rgba(167,139,250,0.3); }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 DSA Notes – Hinglish mein</h1>
+  <p>Data Structures & Algorithms – Ek dum simple, easy language mein</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span>
+    <span class="badge">⚡ Beginner Friendly</span>
+    <span class="badge">🧠 Concepts + Code</span>
+    <span class="badge">📊 Complexity Tables</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <ol>
+      <li><a href="#" onclick="openSection('s1')">Big-O Notation (Time & Space Complexity)</a></li>
+      <li><a href="#" onclick="openSection('s2')">Arrays</a></li>
+      <li><a href="#" onclick="openSection('s3')">Linked List</a></li>
+      <li><a href="#" onclick="openSection('s4')">Stack & Queue</a></li>
+      <li><a href="#" onclick="openSection('s5')">Hashing (HashMap / HashSet)</a></li>
+      <li><a href="#" onclick="openSection('s6')">Trees (Binary Tree & BST)</a></li>
+      <li><a href="#" onclick="openSection('s7')">Graphs</a></li>
+      <li><a href="#" onclick="openSection('s8')">Sorting Algorithms</a></li>
+      <li><a href="#" onclick="openSection('s9')">Searching Algorithms</a></li>
+      <li><a href="#" onclick="openSection('s10')">Recursion & Dynamic Programming</a></li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1: Big-O -->
+  <div class="section s1 open" id="sec-s1">
+    <div class="section-header" onclick="toggle('s1')">
+      <div class="section-icon">⏱️</div>
+      <div class="section-title">
+        <h2>1. Big-O Notation</h2>
+        <span>Time & Space Complexity – code kitna fast hai?</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent1);">
+        <strong>Kya hai yeh?</strong> Big-O notation se hum measure karte hain ki koi algorithm kitna time aur memory leta hai jab input bada hota hai. Isko hum <em>worst-case performance</em> kehte hain.
+      </div>
+      <h3>Common Complexities (Best to Worst)</h3>
+      <table class="complexity-table">
+        <tr><th>Notation</th><th>Naam</th><th>Example</th><th>Speed</th></tr>
+        <tr><td><code>O(1)</code></td><td>Constant</td><td>Array index access</td><td><span class="tag tag-g">⚡ Best</span></td></tr>
+        <tr><td><code>O(log n)</code></td><td>Logarithmic</td><td>Binary Search</td><td><span class="tag tag-g">✅ Great</span></td></tr>
+        <tr><td><code>O(n)</code></td><td>Linear</td><td>Simple loop</td><td><span class="tag tag-y">👍 OK</span></td></tr>
+        <tr><td><code>O(n log n)</code></td><td>Linearithmic</td><td>Merge Sort</td><td><span class="tag tag-y">🙂 Decent</span></td></tr>
+        <tr><td><code>O(n²)</code></td><td>Quadratic</td><td>Bubble Sort</td><td><span class="tag tag-r">🐢 Slow</span></td></tr>
+        <tr><td><code>O(2ⁿ)</code></td><td>Exponential</td><td>Fibonacci (naive)</td><td><span class="tag tag-r">💀 Very Slow</span></td></tr>
+      </table>
+      <div class="tip">O(1) matlab input chahe kitna bhi bada ho, time same rahega. Jaise array mein arr[5] directly milta hai.</div>
+      <div class="warn">O(n²) loops ke andar loops se aata hai – large inputs pe bohot slow ho jaata hai.</div>
+      <h3>Quick Rules</h3>
+      <div class="point"><span class="point-icon">🔸</span><span>Ek simple loop = <code>O(n)</code></span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Loop ke andar loop = <code>O(n²)</code></span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Har step mein half karo = <code>O(log n)</code></span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Constants drop karo: <code>O(2n)</code> = <code>O(n)</code></span></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Arrays -->
+  <div class="section s2" id="sec-s2">
+    <div class="section-header" onclick="toggle('s2')">
+      <div class="section-icon">📦</div>
+      <div class="section-title">
+        <h2>2. Arrays</h2>
+        <span>Sabse basic data structure – ek line mein data store karo</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent2);">
+        <strong>Kya hai Array?</strong> Array ek <em>contiguous memory</em> block hai jisme same type ke elements store hote hain. Index 0 se shuru hota hai. Sochlo jaise ek numbered shelf – box 0, box 1, box 2...
+      </div>
+      <h3>Key Operations & Complexity</h3>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Time</th><th>Note</th></tr>
+        <tr><td>Access (arr[i])</td><td><code>O(1)</code></td><td>Direct index pe jao</td></tr>
+        <tr><td>Search (unsorted)</td><td><code>O(n)</code></td><td>Sab elements check karo</td></tr>
+        <tr><td>Insert at end</td><td><code>O(1)</code></td><td>Simply add karo</td></tr>
+        <tr><td>Insert at middle</td><td><code>O(n)</code></td><td>Saare shift karne padte hain</td></tr>
+        <tr><td>Delete</td><td><code>O(n)</code></td><td>Shift required hai</td></tr>
+      </table>
+      <h3>Important Array Techniques</h3>
+      <h4>🔹 Two Pointer Technique</h4>
+      <div class="point"><span class="point-icon">→</span><span>Do pointers – ek left se, ek right se. Bohot saari problems solve hoti hain isse. Example: sorted array mein pair dhundna jiska sum target ho.</span></div>
+      <pre><code><span class="cm">// Two Pointer – Target Sum</span>
+<span class="kw">int</span> left = <span class="num">0</span>, right = n - <span class="num">1</span>;
+<span class="kw">while</span> (left &lt; right) {
+  <span class="kw">int</span> sum = arr[left] + arr[right];
+  <span class="kw">if</span> (sum == target) <span class="kw">return</span> <span class="kw">true</span>;
+  <span class="kw">else if</span> (sum &lt; target) left++;
+  <span class="kw">else</span> right--;
+}</code></pre>
+      <h4>🔹 Sliding Window</h4>
+      <div class="point"><span class="point-icon">→</span><span>Ek fixed ya variable size ka window maintain karo. Maximum subarray sum, longest substring – sab mein kaam aata hai.</span></div>
+      <div class="tip">Array questions mein pehle sorted hai ya nahi check karo – isse approach badal jaati hai!</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Linked List -->
+  <div class="section s3" id="sec-s3">
+    <div class="section-header" onclick="toggle('s3')">
+      <div class="section-icon">🔗</div>
+      <div class="section-title">
+        <h2>3. Linked List</h2>
+        <span>Nodes ki chain – ek node doosre ko point karta hai</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent3);">
+        <strong>Kya hai?</strong> Linked List mein <em>Nodes</em> hote hain. Har node mein <strong>data</strong> hota hai aur ek <strong>pointer</strong> jo next node ko point karta hai. Array ki tarah contiguous memory nahi chahiye.
+        <br><br>
+        <code>[ 10 | → ] → [ 20 | → ] → [ 30 | NULL ]</code>
+      </div>
+      <h3>Types</h3>
+      <div class="point"><span class="point-icon">1️⃣</span><span><strong>Singly Linked List</strong> – sirf next pointer. Ek direction mein chalo.</span></div>
+      <div class="point"><span class="point-icon">2️⃣</span><span><strong>Doubly Linked List</strong> – prev aur next dono pointers. Dono taraf ja sakte ho.</span></div>
+      <div class="point"><span class="point-icon">🔄</span><span><strong>Circular Linked List</strong> – last node phir se first ko point karta hai.</span></div>
+      <div class="point"><span class="point-icon">⌛</span><span>Singly: search O(n), head insert O(1). Doubly: insert/delete known position O(1). Circular: similar, tail operations O(1) with tail pointer.</span></div>
+      <h3>Operations & Complexity</h3>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Time</th></tr>
+        <tr><td>Access (kth element)</td><td><code>O(n)</code></td></tr>
+        <tr><td>Insert at head</td><td><code>O(1)</code></td></tr>
+        <tr><td>Insert at tail</td><td><code>O(n)</code> or <code>O(1)</code>*</td></tr>
+        <tr><td>Delete node</td><td><code>O(n)</code></td></tr>
+        <tr><td>Search</td><td><code>O(n)</code></td></tr>
+      </table>
+      <h3>Important Problems</h3>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Cycle detect karo</strong> – Floyd's Algorithm (slow & fast pointer)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Reverse karo</strong> – 3 pointers: prev, curr, next</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Middle dhundho</strong> – slow/fast pointer (slow 1 step, fast 2 steps)</span></div>
+      <pre><code><span class="cm">// Reverse Linked List</span>
+Node* prev = NULL, *curr = head, *next;
+<span class="kw">while</span> (curr != NULL) {
+  next = curr-&gt;next;
+  curr-&gt;next = prev;
+  prev = curr;
+  curr = next;
+}
+head = prev;</code></pre>
+      <div class="tip">Array vs LinkedList: Array fast access deta hai, LinkedList fast insert/delete karta hai beginning mein.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Stack & Queue -->
+  <div class="section s4" id="sec-s4">
+    <div class="section-header" onclick="toggle('s4')">
+      <div class="section-icon">📚</div>
+      <div class="section-title">
+        <h2>4. Stack & Queue</h2>
+        <span>LIFO aur FIFO – real life jaisi structures</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <h3>Stack – LIFO (Last In, First Out)</h3>
+      <div class="intro-box" style="border-color: var(--accent4);">
+        Sochlo ek <strong>plate ki stack</strong> – jo plate upar se daali, wahi pehle nikalti hai. Push = daalo, Pop = nikalo.
+      </div>
+      <div class="point"><span class="point-icon">✅</span><span>Uses: Undo/Redo, Browser back button, Balanced parentheses check, Function call stack</span></div>
+      <div class="point"><span class="point-icon">⚡</span><span>Push, Pop, Peek – sab <code>O(1)</code></span></div>
+      <pre><code><span class="cm">// Stack in Java</span>
+Stack&lt;Integer&gt; st = <span class="kw">new</span> Stack&lt;&gt;();
+st.<span class="fn">push</span>(<span class="num">10</span>);   <span class="cm">// daalo</span>
+st.<span class="fn">pop</span>();     <span class="cm">// nikalo</span>
+st.<span class="fn">peek</span>();    <span class="cm">// dekho, nikalo nahi</span></code></pre>
+      <h3>Queue – FIFO (First In, First Out)</h3>
+      <div class="intro-box" style="border-color: var(--accent4);">
+        Sochlo <strong>bus ki line</strong> – jo pehle aaya, woh pehle jaayega. Enqueue = add, Dequeue = remove.
+      </div>
+      <div class="point"><span class="point-icon">✅</span><span>Uses: BFS traversal, Printer queue, CPU scheduling, Level-order tree traversal</span></div>
+      <pre><code><span class="cm">// Queue in Java</span>
+Queue&lt;Integer&gt; q = <span class="kw">new</span> LinkedList&lt;&gt;();
+q.<span class="fn">offer</span>(<span class="num">10</span>);   <span class="cm">// add karo</span>
+q.<span class="fn">poll</span>();     <span class="cm">// front se nikalo</span>
+q.<span class="fn">peek</span>();     <span class="cm">// front dekho</span></code></pre>
+      <h3>Deque (Double Ended Queue)</h3>
+      <div class="point"><span class="point-icon">🔸</span><span>Dono ends se add aur remove kar sakte ho. Sliding window maximum problem mein kaam aata hai.</span></div>
+      <div class="tip">Monotonic Stack yaad rakho – stock price problems, NGE (Next Greater Element) ke liye super useful hai!</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Hashing -->
+  <div class="section s5" id="sec-s5">
+    <div class="section-header" onclick="toggle('s5')">
+      <div class="section-icon">🗂️</div>
+      <div class="section-title">
+        <h2>5. Hashing (HashMap / HashSet)</h2>
+        <span>O(1) mein dhundho – magic structure!</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent5);">
+        <strong>Kya hai?</strong> HashMap ek key-value store hai. Key se directly value milti hai – jaise dictionary mein word se definition milti hai. Hash function key ko index mein convert karta hai.
+      </div>
+      <h3>HashMap vs HashSet</h3>
+      <div class="point"><span class="point-icon">📗</span><span><strong>HashMap</strong> – key → value pairs store karta hai. Example: naam → phone number</span></div>
+      <div class="point"><span class="point-icon">📘</span><span><strong>HashSet</strong> – sirf unique values store karta hai. Duplicates nahi.</span></div>
+      <h3>Complexity</h3>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Average</th><th>Worst (collision)</th></tr>
+        <tr><td>Insert</td><td><code>O(1)</code></td><td><code>O(n)</code></td></tr>
+        <tr><td>Search</td><td><code>O(1)</code></td><td><code>O(n)</code></td></tr>
+        <tr><td>Delete</td><td><code>O(1)</code></td><td><code>O(n)</code></td></tr>
+      </table>
+      <pre><code><span class="cm">// HashMap – frequency count</span>
+HashMap&lt;Integer, Integer&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();
+<span class="kw">for</span> (<span class="kw">int</span> x : arr)
+  map.<span class="fn">put</span>(x, map.<span class="fn">getOrDefault</span>(x, <span class="num">0</span>) + <span class="num">1</span>);
+<span class="cm">// Ab har element ki count hai O(1) mein!</span></code></pre>
+      <h3>Common Uses</h3>
+      <div class="point"><span class="point-icon">🔸</span><span>Two Sum problem – pair dhundna</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Frequency counting – kaunsa element kitni baar aaya</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Anagram check – dono strings ke chars same hain?</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Duplicate dhundna array mein</span></div>
+      <div class="tip">Jab bhi O(1) lookup chahiye, pehle HashMap sochna!</div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Trees -->
+  <div class="section s6" id="sec-s6">
+    <div class="section-header" onclick="toggle('s6')">
+      <div class="section-icon">🌳</div>
+      <div class="section-title">
+        <h2>6. Trees (Binary Tree & BST)</h2>
+        <span>Hierarchical structure – parent aur child nodes</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent1);">
+        <strong>Tree kya hai?</strong> Ek hierarchical data structure jisme ek <em>root</em> node hota hai aur usse neeche child nodes. Har node ke max 2 children ho sakte hain (Binary Tree mein).
+      </div>
+      <h3>Key Terms</h3>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Root</strong> – sabse upar wala node</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Leaf</strong> – jiske koi children nahi</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Height</strong> – root se deepest leaf tak ki depth</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>BST Rule</strong> – Left &lt; Root &lt; Right (hamesha!)</span></div>
+      <h3>Tree Traversals</h3>
+      <table class="complexity-table">
+        <tr><th>Traversal</th><th>Order</th><th>Use Case</th></tr>
+        <tr><td>Inorder</td><td>Left → Root → Right</td><td>BST mein sorted order milta hai</td></tr>
+        <tr><td>Preorder</td><td>Root → Left → Right</td><td>Tree copy karna</td></tr>
+        <tr><td>Postorder</td><td>Left → Right → Root</td><td>Tree delete karna</td></tr>
+        <tr><td>Level Order</td><td>Level by level (BFS)</td><td>Shortest path, level-wise print</td></tr>
+      </table>
+      <pre><code><span class="cm">// Inorder Traversal (Recursive)</span>
+<span class="kw">void</span> <span class="fn">inorder</span>(Node* root) {
+  <span class="kw">if</span> (root == NULL) <span class="kw">return</span>;
+  <span class="fn">inorder</span>(root-&gt;left);   <span class="cm">// left jaao</span>
+  cout &lt;&lt; root-&gt;val;    <span class="cm">// print karo</span>
+  <span class="fn">inorder</span>(root-&gt;right);  <span class="cm">// right jaao</span>
+}</code></pre>
+      <h3>BST Operations</h3>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Average</th><th>Worst (skewed)</th></tr>
+        <tr><td>Search</td><td><code>O(log n)</code></td><td><code>O(n)</code></td></tr>
+        <tr><td>Insert</td><td><code>O(log n)</code></td><td><code>O(n)</code></td></tr>
+        <tr><td>Delete</td><td><code>O(log n)</code></td><td><code>O(n)</code></td></tr>
+      </table>
+      <div class="tip">Binary Search Tree mein Inorder traversal karo – sorted array milega! Yeh ek classic interview question hai.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Graphs -->
+  <div class="section s7" id="sec-s7">
+    <div class="section-header" onclick="toggle('s7')">
+      <div class="section-icon">🕸️</div>
+      <div class="section-title">
+        <h2>7. Graphs</h2>
+        <span>Nodes aur Edges – connections ka network</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="intro-box" style="border-color: var(--accent2);">
+        <strong>Graph kya hai?</strong> Vertices (nodes) aur Edges (connections) ka collection. Real life mein – social network, maps, internet – sab graphs hain!
+      </div>
+      <h3>Types of Graphs</h3>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Undirected</strong> – edges dono direction mein (friendship)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Directed (Digraph)</strong> – edges ek hi direction mein (Instagram follow)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Weighted</strong> – edges pe cost/weight hota hai (GPS routes)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Cyclic / Acyclic</strong> – cycle hai ya nahi</span></div>
+      <div class="point"><span class="point-icon">⌛</span><span>Graph traversal time mostly O(V + E) with adjacency list. Adjacency matrix can cost O(V²) in dense graphs.</span></div>
+      <h3>Representation</h3>
+      <div class="point"><span class="point-icon">📊</span><span><strong>Adjacency Matrix</strong> – 2D array, O(V²) space. Dense graphs ke liye.</span></div>
+      <div class="point"><span class="point-icon">📋</span><span><strong>Adjacency List</strong> – Array of lists, O(V+E) space. Sparse graphs ke liye. <em>Zyada use hota hai!</em></span></div>
+      <h3>Graph Traversals</h3>
+      <h4>🔹 BFS (Breadth First Search) – Level by Level</h4>
+      <div class="point"><span class="point-icon">→</span><span>Queue use karta hai. Shortest path (unweighted) ke liye best hai.</span></div>
+      <pre><code><span class="cm">// BFS</span>
+Queue&lt;Integer&gt; q; q.<span class="fn">push</span>(start);
+visited[start] = <span class="kw">true</span>;
+<span class="kw">while</span> (!q.empty()) {
+  <span class="kw">int</span> node = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>();
+  <span class="kw">for</span> (<span class="kw">int</span> neighbor : adj[node])
+    <span class="kw">if</span> (!visited[neighbor]) {
+      visited[neighbor] = <span class="kw">true</span>;
+      q.<span class="fn">push</span>(neighbor);
+    }
+}</code></pre>
+      <h4>🔹 DFS (Depth First Search) – Deep jaao</h4>
+      <div class="point"><span class="point-icon">→</span><span>Stack / Recursion use karta hai. Cycle detection, connected components ke liye.</span></div>
+      <h3>Important Algorithms</h3>
+      <div class="point"><span class="point-icon">🗺️</span><span><strong>Dijkstra's</strong> – Weighted graph mein shortest path. Priority Queue use karta hai. O((V+E) log V)</span></div>
+      <div class="point"><span class="point-icon">🌲</span><span><strong>Kruskal's / Prim's</strong> – Minimum Spanning Tree (MST)</span></div>
+      <div class="point"><span class="point-icon">🔄</span><span><strong>Topological Sort</strong> – DAG (Directed Acyclic Graph) mein dependencies ka order</span></div>
+      <div class="warn">Cycle detection important hai – DFS se directed graphs mein, Union-Find se undirected mein.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Sorting -->
+  <div class="section s8" id="sec-s8">
+    <div class="section-header" onclick="toggle('s8')">
+      <div class="section-icon">🔀</div>
+      <div class="section-title">
+        <h2>8. Sorting Algorithms</h2>
+        <span>Data ko order mein arrange karo</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <table class="complexity-table">
+        <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th></tr>
+        <tr><td>Bubble Sort</td><td><code>O(n)</code></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>✅</td></tr>
+        <tr><td>Selection Sort</td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>❌</td></tr>
+        <tr><td>Insertion Sort</td><td><code>O(n)</code></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>✅</td></tr>
+        <tr><td>Merge Sort</td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(n)</code></td><td>✅</td></tr>
+        <tr><td>Quick Sort</td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(n²)</code></td><td><code>O(log n)</code></td><td>❌</td></tr>
+        <tr><td>Heap Sort</td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(1)</code></td><td>❌</td></tr>
+      </table>
+      <h3>Kab kaunsa use karein?</h3>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Small array (~10 elements)</strong> – Insertion Sort (low overhead)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>General use</strong> – Quick Sort (practical fastest)</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Guaranteed O(n log n) chahiye</strong> – Merge Sort</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span><strong>Nearly sorted</strong> – Insertion Sort (best case O(n))</span></div>
+      <h3>Merge Sort – Divide & Conquer</h3>
+      <pre><code><span class="cm">// Array ko do halves mein baanto</span>
+<span class="cm">// Dono ko sort karo recursively</span>
+<span class="cm">// Phir merge karo</span>
+<span class="fn">mergeSort</span>(arr, 0, n-<span class="num">1</span>):
+  mid = (l+r)/<span class="num">2</span>
+  <span class="fn">mergeSort</span>(arr, l, mid)
+  <span class="fn">mergeSort</span>(arr, mid+<span class="num">1</span>, r)
+  <span class="fn">merge</span>(arr, l, mid, r)  <span class="cm">// O(n)</span></code></pre>
+      <div class="tip">Production code mein languages built-in sort use karta hai jo usually Timsort hai (Merge + Insertion ka combination).</div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: Searching -->
+  <div class="section s9" id="sec-s9">
+    <div class="section-header" onclick="toggle('s9')">
+      <div class="section-icon">🔍</div>
+      <div class="section-title">
+        <h2>9. Searching Algorithms</h2>
+        <span>Data mein element dhundho efficiently</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <h3>Linear Search</h3>
+      <div class="intro-box" style="border-color: var(--accent4);">
+        Ek ek element check karo. <code>O(n)</code>. Unsorted array ke liye yahi option hai.
+      </div>
+      <h3>Binary Search ⚡</h3>
+      <div class="intro-box" style="border-color: var(--accent4);">
+        <strong>Sorted array mein hi kaam karta hai!</strong> Har step mein search space half ho jaata hai – isliye <code>O(log n)</code>. 1 billion elements mein sirf ~30 steps!
+      </div>
+      <pre><code><span class="kw">int</span> <span class="fn">binarySearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target) {
+  <span class="kw">int</span> low = <span class="num">0</span>, high = arr.length - <span class="num">1</span>;
+  <span class="kw">while</span> (low &lt;= high) {
+    <span class="kw">int</span> mid = low + (high - low) / <span class="num">2</span>;
+    <span class="kw">if</span> (arr[mid] == target) <span class="kw">return</span> mid;
+    <span class="kw">else if</span> (arr[mid] &lt; target) low = mid + <span class="num">1</span>;
+    <span class="kw">else</span> high = mid - <span class="num">1</span>;
+  }
+  <span class="kw">return</span> -<span class="num">1</span>; <span class="cm">// nahi mila</span>
+}</code></pre>
+      <h3>Binary Search Applications</h3>
+      <div class="point"><span class="point-icon">🔸</span><span>Sorted array mein element dhundna</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>First / Last occurrence dhundna</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>"Answer pe Binary Search" – minimum/maximum value dhundna jisme condition satisfy ho</span></div>
+      <div class="point"><span class="point-icon">🔸</span><span>Square root find karna</span></div>
+      <div class="warn">mid = (low + high)/2 mat likho – integer overflow ho sakta hai! mid = low + (high-low)/2 use karo.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: Recursion & DP -->
+  <div class="section s10" id="sec-s10">
+    <div class="section-header" onclick="toggle('s10')">
+      <div class="section-icon">🧠</div>
+      <div class="section-title">
+        <h2>10. Recursion & Dynamic Programming</h2>
+        <span>Problem ko chhote parts mein todo aur reuse karo</span>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <h3>Recursion</h3>
+      <div class="intro-box" style="border-color: var(--accent5);">
+        Function khud apne aap ko call karta hai! Har recursion mein do cheezein honi chahiye:<br>
+        1. <strong>Base Case</strong> – kab rukna hai<br>
+        2. <strong>Recursive Case</strong> – chota problem banao
+      </div>
+      <pre><code><span class="cm">// Factorial – N! = N × (N-1)!</span>
+<span class="kw">int</span> <span class="fn">fact</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n == <span class="num">0</span>) <span class="kw">return</span> <span class="num">1</span>;  <span class="cm">// Base case</span>
+  <span class="kw">return</span> n * <span class="fn">fact</span>(n-<span class="num">1</span>);   <span class="cm">// Recursive case</span>
+}</code></pre>
+      <h3>Dynamic Programming (DP)</h3>
+      <div class="intro-box" style="border-color: var(--accent5);">
+        DP = <strong>Recursion + Memoization</strong>. Ek hi subproblem baar baar solve karne ki jagah, answer store karke reuse karo. 
+      </div>
+      <h4>🔹 Two Approaches</h4>
+      <div class="point"><span class="point-icon">1️⃣</span><span><strong>Top-Down (Memoization)</strong> – Recursion + HashMap mein results store karo</span></div>
+      <div class="point"><span class="point-icon">2️⃣</span><span><strong>Bottom-Up (Tabulation)</strong> – Chhote problems pehle solve karo, bade ke liye use karo</span></div>
+      <pre><code><span class="cm">// Fibonacci – Naive: O(2ⁿ), DP: O(n)</span>
+
+<span class="cm">// Memoization (Top-Down)</span>
+<span class="kw">int</span>[] memo = <span class="kw">new int</span>[n+<span class="num">1</span>];
+<span class="kw">int</span> <span class="fn">fib</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> n;
+  <span class="kw">if</span> (memo[n] != <span class="num">0</span>) <span class="kw">return</span> memo[n]; <span class="cm">// cache!</span>
+  <span class="kw">return</span> memo[n] = <span class="fn">fib</span>(n-<span class="num">1</span>) + <span class="fn">fib</span>(n-<span class="num">2</span>);
+}
+
+<span class="cm">// Tabulation (Bottom-Up)</span>
+dp[<span class="num">0</span>] = <span class="num">0</span>; dp[<span class="num">1</span>] = <span class="num">1</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i=<span class="num">2</span>; i&lt;=n; i++)
+  dp[i] = dp[i-<span class="num">1</span>] + dp[i-<span class="num">2</span>];</code></pre>
+      <h3>Classic DP Problems</h3>
+      <div class="point"><span class="point-icon">🎒</span><span><strong>0/1 Knapsack</strong> – items le ya mat le, max value nikalo</span></div>
+      <div class="point"><span class="point-icon">🔤</span><span><strong>Longest Common Subsequence (LCS)</strong> – do strings mein common subsequence</span></div>
+      <div class="point"><span class="point-icon">📈</span><span><strong>Longest Increasing Subsequence (LIS)</strong></span></div>
+      <div class="point"><span class="point-icon">🪙</span><span><strong>Coin Change</strong> – minimum coins se amount banana</span></div>
+      <div class="point"><span class="point-icon">📐</span><span><strong>Matrix Chain Multiplication, Edit Distance</strong></span></div>
+      <div class="tip">DP problem identify kaise karein? Agar problem overlapping subproblems aur optimal substructure dono hain – toh DP lagao!</div>
+      <div class="warn">Pehle recursion samjho phir DP optimize karo. Direct DP mat socho – confused ho jaoge!</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  🚀 DSA Notes – Hinglish mein &nbsp;|&nbsp; Practice karo, consistent raho, aur ek din sab easy lagega! 💪
+</footer>
+
+<script>
+function toggle(id) {
+  const sec = document.getElementById('sec-' + id);
+  sec.classList.toggle('open');
+}
+function openSection(id) {
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.add('open'); sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  return false;
+}
+</script>
+</body>
+</html>
