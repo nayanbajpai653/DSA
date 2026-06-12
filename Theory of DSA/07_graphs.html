@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphs – Poori Detail 🕸️</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#ff6b6b;--a2:#ffd93d;--a3:#6bcb77;--a4:#4d96ff;--a5:#c77dff;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#1a0000,#0d1117,#000a1a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,107,107,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(77,150,255,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(255,107,107,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a3);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(255,107,107,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(255,107,107,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a1);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a4);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a3);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a3);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a1);border:1px solid rgba(255,107,107,0.3);}
+.pb{background:rgba(77,150,255,0.15);color:var(--a4);border:1px solid rgba(77,150,255,0.3);}
+.graph-vis{background:var(--card2);border-radius:12px;padding:20px;margin:14px 0;overflow-x:auto;text-align:center;}
+.gedge{stroke:var(--muted);stroke-width:2;}
+.gedge-w{stroke:var(--a2);stroke-width:2;}
+.gnode circle{fill:rgba(255,107,107,0.15);stroke:var(--a1);stroke-width:2;}
+.gnode text{fill:var(--a1);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-anchor:middle;dominant-baseline:central;}
+.gedge-label{fill:var(--a2);font-family:'JetBrains Mono',monospace;font-size:11px;text-anchor:middle;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;}
+.col-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🕸️ Graphs </h1>
+  <p>Nodes + Edges = Real World ka model – Social Networks se GPS tak</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">🗺️ Visual Diagrams</span>
+    <span class="badge">💻 BFS + DFS Code</span><span class="badge">🎤 Algorithms</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. BASICS -->
+<div class="card open" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🤔</div>
+    <div class="ct"><h2>1. Graph Kya Hai? Basic Terms</h2><span>Vertices, Edges, Types – sab kuch</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Graph ek data structure hai jisme <strong>Vertices (Nodes)</strong> aur <strong>Edges (Connections)</strong> hote hain. Tree bhi ek special graph hai (connected + acyclic)!<br><br>
+      🌍 Real life: Google Maps (cities = nodes, roads = edges), Facebook (users = nodes, friendship = edges), Internet (servers = nodes, links = edges)
+    </div>
+    <h3>Visual – Undirected Weighted Graph</h3>
+    <div class="graph-vis">
+      <svg viewBox="0 0 380 220" width="380" height="220" xmlns="http://www.w3.org/2000/svg">
+        <line class="gedge-w" x1="80" y1="60" x2="200" y2="60"/>
+        <line class="gedge-w" x1="80" y1="60" x2="80" y2="160"/>
+        <line class="gedge-w" x1="200" y1="60" x2="300" y2="130"/>
+        <line class="gedge-w" x1="200" y1="60" x2="80" y2="160"/>
+        <line class="gedge-w" x1="80" y1="160" x2="300" y2="130"/>
+        <line class="gedge-w" x1="300" y1="130" x2="200" y2="185"/>
+        <text class="gedge-label" x="140" y="50">4</text>
+        <text class="gedge-label" x="60" y="115">2</text>
+        <text class="gedge-label" x="255" y="80">5</text>
+        <text class="gedge-label" x="130" y="125">3</text>
+        <text class="gedge-label" x="200" y="155">1</text>
+        <text class="gedge-label" x="260" y="175">6</text>
+        <g class="gnode"><circle cx="80" cy="60" r="22"/><text x="80" y="60">A</text></g>
+        <g class="gnode"><circle cx="200" cy="60" r="22"/><text x="200" y="60">B</text></g>
+        <g class="gnode"><circle cx="80" cy="160" r="22"/><text x="80" y="160">C</text></g>
+        <g class="gnode"><circle cx="300" cy="130" r="22"/><text x="300" y="130">D</text></g>
+        <g class="gnode"><circle cx="200" cy="185" r="22"/><text x="200" y="185">E</text></g>
+      </svg>
+    </div>
+    <h3>Important Terms</h3>
+    <table class="t">
+      <tr><th>Term</th><th>Matlab</th></tr>
+      <tr><td>Vertex / Node</td><td>Graph ka point (A, B, C...)</td></tr>
+      <tr><td>Edge</td><td>Do nodes ko connect karne wali line</td></tr>
+      <tr><td>Degree</td><td>Node se kitne edges nikale hain</td></tr>
+      <tr><td>Path</td><td>Ek node se doosre tak ka route</td></tr>
+      <tr><td>Cycle</td><td>Start aur end same node – loop</td></tr>
+      <tr><td>Connected Graph</td><td>Har node se har node reachable hai</td></tr>
+      <tr><td>Weighted Graph</td><td>Edges pe cost/weight hoti hai</td></tr>
+      <tr><td>DAG</td><td>Directed Acyclic Graph – no cycles, directed</td></tr>
+    </table>
+    <h3>Types of Graphs</h3>
+    <div class="pt"><span class="pi">⌛</span><span>Graph traversal with adjacency list: O(V + E). With adjacency matrix, traversal cost can become O(V²) for dense graphs.</span></div>
+    <div class="two-col">
+      <div class="col-box">
+        <h4>Undirected Graph</h4>
+        <div class="pt"><span class="pi">🔸</span><span>Edges dono directions mein – A-B matlab A→B aur B→A dono</span></div>
+        <div class="pt"><span class="pi">🔸</span><span>Example: Facebook friendship</span></div>
+      </div>
+      <div class="col-box">
+        <h4>Directed Graph (Digraph)</h4>
+        <div class="pt"><span class="pi">🔸</span><span>Edges ek hi direction mein – A→B matlab sirf A se B ja sakte hain</span></div>
+        <div class="pt"><span class="pi">🔸</span><span>Example: Twitter follow, Instagram</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. REPRESENTATION -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">💾</div>
+    <div class="ct"><h2>2. Graph Representation</h2><span>Adjacency Matrix vs Adjacency List – kab kaunsa?</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>1️⃣ Adjacency Matrix</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      V×V ka 2D array. <code>matrix[i][j] = 1</code> agar i aur j ke beech edge hai.<br>
+      Space: <span class="pill pr">O(V²)</span> | Dense graphs ke liye theek hai.
+    </div>
+    <pre><span class="lt">Python</span>
+  matrix = [[0] * V for _ in range(V)]
+  # Edge A-B add karo (undirected)
+  matrix[A][B] = 1
+  matrix[B][A] = 1
+  # Weighted edge
+  matrix[A][B] = weight
+  # Edge hai ya nahi: O(1) check
+  if matrix[u][v] != 0:
+    ...</pre>
+    <div class="pt"><span class="pi">✅</span><span>Edge existence O(1) mein check karo</span></div>
+    <div class="pt"><span class="pi">❌</span><span>O(V²) space – sparse graphs mein waste hai</span></div>
+    <div class="pt"><span class="pi">❌</span><span>Neighbors nikalne mein O(V) lagta hai</span></div>
+
+    <h3>2️⃣ Adjacency List ⭐ (Most Used)</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      Har vertex ki ek list hoti hai jisme uske neighbors hote hain.<br>
+      Space: <span class="pill pg">O(V + E)</span> | Sparse graphs ke liye best!
+    </div>
+    <pre><span class="lt">Python</span>
+  # Adjacency List banao
+  adj = [[] for _ in range(V)]
+
+  # Edge add karo (undirected)
+  adj[u].append(v)
+  adj[v].append(u)
+
+  # Weighted edge (pair store karo)
+  adj = [[] for _ in range(V)]
+  adj[u].append((v, weight))
+
+  # Neighbors traverse karo
+  for neighbor in adj[node]:
+    ...  # O(degree)</pre>
+    <div class="pt"><span class="pi">✅</span><span>Space efficient – O(V+E)</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Neighbors quickly milte hain</span></div>
+    <div class="pt"><span class="pi">❌</span><span>Edge existence O(degree) mein – O(1) nahi</span></div>
+    <div class="note">Interview mein hamesha Adjacency List se shuru karo – yeh real-world mein zyada useful hai!</div>
+  </div>
+</div>
+
+<!-- 3. BFS -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">🌊</div>
+    <div class="ct"><h2>3. BFS – Breadth First Search</h2><span>Level by level traverse – Queue use karta hai</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      BFS pehle starting node ke saare neighbors visit karta hai, phir unke neighbors, phir unke... Level by level! <strong>Queue</strong> use hoti hai.<br><br>
+      🏘️ <em>Sochlo ghar se shuru karo – pehle padosi ghar, phir unke padosi, phir unke...</em>
+    </div>
+    <h3>BFS Steps</h3>
+    <div class="pt"><span class="pi">1️⃣</span><span>Start node ko queue mein daalo, visited mark karo</span></div>
+    <div class="pt"><span class="pi">2️⃣</span><span>Queue se node nikalo, uske saare unvisited neighbors queue mein daalo</span></div>
+    <div class="pt"><span class="pi">3️⃣</span><span>Queue khaali hone tak repeat karo</span></div>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+
+  def bfs(adj, start, V):
+    visited = [False] * V
+    q = deque()
+    visited[start] = True
+    q.append(start)
+    while q:
+      node = q.popleft()
+      print(node, end=' ')
+      for neighbor in adj[node]:
+        if not visited[neighbor]:
+          visited[neighbor] = True
+          q.append(neighbor)
+  # Time: O(V+E) | Space: O(V)</pre>
+    <h3>BFS ke Uses</h3>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Shortest Path</strong> – unweighted graph mein BFS shortest path guarantee karta hai</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Level Order Traversal</strong> – Tree mein</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Connected Components</strong> – kaun-kaun se nodes connected hain</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Bipartite Check</strong></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Multi-source BFS</strong> – multiple starting points (e.g., Rotten Oranges problem)</span></div>
+    <div class="tip">BFS = Shortest Path (unweighted). Weighted graph mein Dijkstra use karo!</div>
+  </div>
+</div>
+
+<!-- 4. DFS -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🌀</div>
+    <div class="ct"><h2>4. DFS – Depth First Search</h2><span>Deep jao phir backtrack – Stack/Recursion use karta hai</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a5);">
+      DFS ek path pe jitna deep ja sake jaata hai, phir backtrack karta hai aur doosra path try karta hai. <strong>Stack ya Recursion</strong> use hoti hai.<br><br>
+      🌳 <em>Sochlo maze mein ek direction mein jaate raho jab tak dead-end na mile, phir wapas aao!</em>
+    </div>
+    <pre><span class="lt">Python – Recursive DFS</span>
+  def dfs(adj, visited, node):
+    visited[node] = True
+    print(node, end=' ')
+    for neighbor in adj[node]:
+      if not visited[neighbor]:
+        dfs(adj, visited, neighbor)
+  # Time: O(V+E) | Space: O(V) recursion stack</pre>
+    <pre><span class="lt">Python – Iterative DFS (Stack)</span>
+  def dfsIterative(adj, start, V):
+    visited = [False] * V
+    st = [start]
+    while st:
+      node = st.pop()
+      if not visited[node]:
+        visited[node] = True
+        print(node, end=' ')
+        for n in adj[node]:
+          st.append(n)
+  </pre>
+    <h3>DFS ke Uses</h3>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Cycle Detection</strong> – directed aur undirected dono mein</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Topological Sort</strong> – dependencies ka order</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Connected Components / Islands</strong></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Path finding</strong> – koi bhi path dhundna</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Strongly Connected Components</strong> (Kosaraju's)</span></div>
+
+    <h3>BFS vs DFS – Kab Kaunsa?</h3>
+    <table class="t">
+      <tr><th>Situation</th><th>Use</th></tr>
+      <tr><td>Shortest path (unweighted)</td><td><span class="pill pb">BFS</span></td></tr>
+      <tr><td>Sab nodes explore karo</td><td><span class="pill py">DFS</span></td></tr>
+      <tr><td>Cycle detect karo</td><td><span class="pill py">DFS</span></td></tr>
+      <tr><td>Level-by-level processing</td><td><span class="pill pb">BFS</span></td></tr>
+      <tr><td>Topological sort</td><td><span class="pill py">DFS</span></td></tr>
+      <tr><td>Connected components</td><td><span class="pill pg">Both</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 5. IMPORTANT ALGORITHMS -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">🗺️</div>
+    <div class="ct"><h2>5. Important Graph Algorithms</h2><span>Dijkstra, Topo Sort, Union-Find, Cycle Detection</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 Dijkstra's Algorithm – Shortest Path (Weighted)</h3>
+    <div class="ib" style="border-color:var(--a2);">
+      Weighted graph mein ek source se sab nodes ka shortest path nikalta hai. <strong>Priority Queue (Min-Heap)</strong> use karta hai.
+    </div>
+    <pre><span class="lt">Python</span>
+  import heapq
+
+  def dijkstra(adj, src, V):
+    dist = [float('inf')] * V
+    dist[src] = 0
+    pq = [(0, src)]  # (distance, node)
+    while pq:
+      d, u = heapq.heappop(pq)
+      if d > dist[u]:
+        continue  # stale entry
+      for v, w in adj[u]:
+        if dist[u] + w < dist[v]:
+          dist[v] = dist[u] + w
+          heapq.heappush(pq, (dist[v], v))
+    return dist  # O((V+E) log V)</pre>
+    <div class="warn">Dijkstra negative weights ke saath kaam nahi karta! Negative edges ke liye Bellman-Ford use karo.</div>
+
+    <h3>🔹 Topological Sort (Kahn's Algorithm – BFS)</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      DAG (Directed Acyclic Graph) mein nodes ko aise order karo ki agar A→B edge hai toh A, B se pehle aaye. Dependencies resolve karne ke liye!<br>
+      Example: Course prerequisites, Build systems
+    </div>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+
+  def topoSort(adj, V):
+    inDegree = [0] * V
+    for u in range(V):
+      for v in adj[u]:
+        inDegree[v] += 1
+    q = deque()
+    for i in range(V):
+      if inDegree[i] == 0:
+        q.append(i)  # no dependency
+    order = []
+    while q:
+      node = q.popleft()
+      order.append(node)
+      for v in adj[node]:
+        inDegree[v] -= 1
+        if inDegree[v] == 0:
+          q.append(v)
+    return order  # size < V matlab cycle hai!</pre>
+
+    <h3>🔹 Union-Find (Disjoint Set) – Cycle Detection</h3>
+    <div class="ib" style="border-color:var(--a1);">
+      Groups (sets) maintain karta hai. Do nodes ek hi group mein hain? Union-Find O(α) ≈ O(1) mein batata hai!
+    </div>
+    <pre><span class="lt">Python</span>
+  parent = []
+  rank = []
+
+  def init(n):
+    global parent, rank
+    parent = list(range(n))
+    rank = [0] * n
+
+  def find(x):  # path compression
+    if parent[x] != x:
+      parent[x] = find(parent[x])
+    return parent[x]
+
+  def union(x, y):  # returns False if cycle
+    px, py = find(x), find(y)
+    if px == py:
+      return False  # already same – cycle!
+    if rank[px] < rank[py]:
+      parent[px] = py
+    elif rank[px] > rank[py]:
+      parent[py] = px
+    else:
+      parent[py] = px
+      rank[px] += 1
+    return True</pre>
+    <div class="tip">Union-Find Kruskal's MST algorithm mein bhi use hota hai – zaroor practice karo!</div>
+  </div>
+</div>
+
+<!-- 6. CLASSIC PROBLEMS -->
+<div class="card" id="c6">
+  <div class="ch" onclick="tog('c6')"><div class="ci">🎤</div>
+    <div class="ct"><h2>6. Top Interview Problems</h2><span>Islands, BFS shortest path, Course Schedule – classics</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🏝️ Number of Islands – DFS/BFS on Grid</h3>
+    <pre><span class="lt">Python</span>
+  def numIslands(grid):
+    count = 0
+    rows = len(grid)
+    cols = len(grid[0]) if rows else 0
+    def dfs(i, j):
+      if i < 0 or i >= rows or j < 0 or j >= cols or grid[i][j] != '1':
+        return
+      grid[i][j] = '0'  # visited mark karo
+      dfs(i+1, j); dfs(i-1, j); dfs(i, j+1); dfs(i, j-1)
+    for i in range(rows):
+      for j in range(cols):
+        if grid[i][j] == '1':
+          dfs(i, j)
+          count += 1
+    return count</pre>
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>200</td><td>Number of Islands</td><td>DFS/BFS on Grid</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>207</td><td>Course Schedule</td><td>Topo Sort (Cycle detect)</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>210</td><td>Course Schedule II</td><td>Topo Sort (Kahn's)</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>994</td><td>Rotten Oranges</td><td>Multi-source BFS</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>417</td><td>Pacific Atlantic Water Flow</td><td>BFS/DFS</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>684</td><td>Redundant Connection</td><td>Union-Find</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>743</td><td>Network Delay Time</td><td>Dijkstra</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>127</td><td>Word Ladder</td><td>BFS</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>269</td><td>Alien Dictionary</td><td>Topo Sort</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="note">Grid problems (Islands, Rotten Oranges) essentially graph problems hain – cells = nodes, adjacent cells = edges!</div>
+  </div>
+</div>
+
+</div>
+<footer>🕸️ Graphs – Poori Detail &nbsp;|&nbsp; BFS = shortest, DFS = deep explore. Dono yaad rakho! 🗺️</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
