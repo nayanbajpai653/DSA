@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linked List – Poori Detail 🔗</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#4ecdc4;--a2:#ffd93d;--a3:#ff6b6b;--a4:#a78bfa;--a5:#6bcb77;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#0a1a1a,#0d1117,#0a0a1a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(78,205,196,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(167,139,250,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(78,205,196,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:0.78rem;color:var(--a5);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.card-header{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.card-header:hover{background:rgba(255,255,255,0.02);}
+.card-icon{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(78,205,196,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:0.8rem;color:var(--muted);}
+.chev{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chev{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(78,205,196,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a5);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a1);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a1);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a5);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a3);border:1px solid rgba(255,107,107,0.3);}
+/* Node visual */
+.node-row{display:flex;align-items:center;gap:0;overflow-x:auto;padding:16px 0;margin:10px 0;}
+.node{display:flex;align-items:center;}
+.node-box{border:2px solid var(--a1);border-radius:8px;overflow:hidden;display:flex;}
+.node-data{padding:10px 14px;background:rgba(78,205,196,0.1);font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--a2);font-size:1rem;min-width:44px;text-align:center;}
+.node-ptr{padding:10px 12px;background:rgba(78,205,196,0.05);font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a1);border-left:1px solid var(--a1);}
+.arrow{color:var(--a1);font-size:1.4rem;padding:0 6px;flex-shrink:0;}
+.null-box{border:2px dashed var(--muted);border-radius:8px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--muted);}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔗 Linked List </h1>
+  <p>Nodes ki chain – pointer se pointer tak</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span>
+    <span class="badge">🔗 Visual Diagrams</span>
+    <span class="badge">💻 Code + Logic</span>
+    <span class="badge">🎤 Interview Problems</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. WHAT IS LL -->
+<div class="card open" id="c1">
+  <div class="card-header" onclick="tog('c1')">
+    <div class="card-icon">🤔</div>
+    <div class="ct"><h2>1. Linked List Kya Hai?</h2><span>Definition, structure, array se comparison</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Linked List ek <strong>linear data structure</strong> hai jisme data <strong>Nodes</strong> mein store hota hai. Har node mein <strong>2 cheezein</strong> hoti hain:<br>
+      1. <strong>Data</strong> – actual value<br>
+      2. <strong>Next Pointer</strong> – agli node ka address<br><br>
+      Array ke unlike, memory contiguous nahi hoti – nodes memory mein kahin bhi ho sakte hain!
+    </div>
+    <h3>📊 Visual Structure</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:4px;">Singly Linked List: <code>10 → 20 → 30 → 40 → NULL</code></p>
+    <div class="node-row">
+      <div class="node"><div class="node-box"><div class="node-data">10</div><div class="node-ptr">next→</div></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><div class="node-box"><div class="node-data">20</div><div class="node-ptr">next→</div></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><div class="node-box"><div class="node-data">30</div><div class="node-ptr">next→</div></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><div class="node-box"><div class="node-data">40</div><div class="node-ptr">next→</div></div></div>
+      <span class="arrow">→</span>
+      <div class="null-box">NULL</div>
+    </div>
+    <h3>Node ka Structure</h3>
+    <pre><span class="lt">Python</span>
+  class Node:
+    def __init__(self, val):
+      self.data = val
+      self.next = None</pre>
+    <h3>Array vs Linked List – Main Difference</h3>
+    <table class="t">
+      <tr><th>Feature</th><th>Array</th><th>Linked List</th></tr>
+      <tr><td>Memory</td><td>Contiguous</td><td>Scattered</td></tr>
+      <tr><td>Access</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Insert at front</td><td><span class="pill pr">O(n)</span></td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td>Size</td><td>Fixed</td><td>Dynamic</td></tr>
+      <tr><td>Cache Performance</td><td>✅ Better</td><td>❌ Poor</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 2. TYPES -->
+<div class="card" id="c2">
+  <div class="card-header" onclick="tog('c2')">
+    <div class="card-icon">🗂️</div>
+    <div class="ct"><h2>2. Types of Linked Lists</h2><span>Singly, Doubly, Circular – teeno detail mein</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <h3>1️⃣ Singly Linked List</h3>
+    <div class="ib" style="border-color:var(--a1);">Har node ka sirf <strong>next</strong> pointer hota hai. Ek hi direction mein travel kar sakte ho – forward.</div>
+    <div class="pt"><span class="pi">⌛</span><span><strong>Time:</strong> Search/Access O(n), insert at head O(1), insert at tail O(n) without tail pointer.</span></div>
+    <div class="node-row">
+      <div class="node"><div class="node-box"><div class="node-data">A</div><div class="node-ptr">next</div></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><div class="node-box"><div class="node-data">B</div><div class="node-ptr">next</div></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><div class="node-box"><div class="node-data">C</div><div class="node-ptr">next</div></div></div>
+      <span class="arrow">→</span>
+      <div class="null-box">NULL</div>
+    </div>
+    <h3>2️⃣ Doubly Linked List</h3>
+    <div class="ib" style="border-color:var(--a4);">Har node mein <strong>prev</strong> aur <strong>next</strong> dono pointers hote hain. Dono directions mein travel karo!</div>
+    <pre><span class="lt">Python</span>
+  class DNode:
+    def __init__(self, val):
+    self.data = val
+    self.prev = None
+    self.next = None</pre>
+    <div class="pt"><span class="pi">✅</span><span>Dono taraf traverse ho sakta hai</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Delete operation easier hai (prev pointer available hai)</span></div>
+    <div class="pt"><span class="pi">❌</span><span>Extra memory (extra pointer ki wajah se)</span></div>
+    <div class="pt"><span class="pi">⌛</span><span><strong>Time:</strong> Search O(n), insert/delete at known position O(1), head/tail operations O(1).</span></div>
+    <h3>3️⃣ Circular Linked List</h3>
+    <div class="ib" style="border-color:var(--a3);">Last node ka next <strong>NULL ki jagah pehle node</strong> ko point karta hai. Ek loop ban jaata hai!</div>
+    <div class="pt"><span class="pi">✅</span><span>Use: Round-robin scheduling, Music playlist loop, Circular buffer</span></div>
+    <div class="pt"><span class="pi">⌛</span><span><strong>Time:</strong> Search O(n), insert/delete head or tail O(1) if tail pointer maintained.</span></div>
+    <div class="warn">Circular LL mein traverse karte waqt NULL check nahi chalega – starting node check karna padega warna infinite loop!</div>
+  </div>
+</div>
+
+<!-- 3. OPERATIONS -->
+<div class="card" id="c3">
+  <div class="card-header" onclick="tog('c3')">
+    <div class="card-icon">⚙️</div>
+    <div class="ct"><h2>3. Operations with Code</h2><span>Insert, Delete, Search – poori detail mein</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <h3>📌 Insert at Head – O(1)</h3>
+    <pre><span class="lt">Python</span>
+  def insertAtHead(head, val):
+    newNode = Node(val)
+    newNode.next = head
+    return newNode  # new head</pre>
+
+    <h3>📌 Insert at Tail – O(n)</h3>
+    <pre><span class="lt">Python</span>
+def insertAtTail(head, val):
+  newNode = Node(val)
+  if not head:
+    return newNode
+  curr = head
+  while curr.next:
+    curr = curr.next
+  curr.next = newNode
+  return head</pre>
+
+    <h3>📌 Delete a Node – O(n)</h3>
+    <pre><span class="lt">Python</span>
+def deleteNode(head, val):
+  if not head:
+    return None
+  if head.data == val:
+    return head.next
+  curr = head
+  while curr.next and curr.next.data != val:
+    curr = curr.next
+  if curr.next:
+    curr.next = curr.next.next
+  return head</pre>
+
+    <h3>📌 Traverse / Print – O(n)</h3>
+    <pre><span class="lt">Python</span>
+def printList(head):
+  curr = head
+  while curr:
+    print(f"{curr.data} → ", end='')
+    curr = curr.next
+  print('NULL')</pre>
+    <table class="t">
+      <tr><th>Operation</th><th>Time</th><th>Note</th></tr>
+      <tr><td>Insert at Head</td><td><span class="pill pg">O(1)</span></td><td>Seedha head badlo</td></tr>
+      <tr><td>Insert at Tail</td><td><span class="pill py">O(n)</span></td><td>Last tak traverse karo</td></tr>
+      <tr><td>Insert at Middle</td><td><span class="pill py">O(n)</span></td><td>Position tak jao phir insert</td></tr>
+      <tr><td>Delete at Head</td><td><span class="pill pg">O(1)</span></td><td>Head pointer update karo</td></tr>
+      <tr><td>Delete at Tail/Middle</td><td><span class="pill py">O(n)</span></td><td>Traverse + bypass</td></tr>
+      <tr><td>Search</td><td><span class="pill py">O(n)</span></td><td>Linear scan</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 4. IMPORTANT PROBLEMS -->
+<div class="card" id="c4">
+  <div class="card-header" onclick="tog('c4')">
+    <div class="card-icon">🧠</div>
+    <div class="ct"><h2>4. Important Problems (Must Know!)</h2><span>Reverse, Cycle detect, Middle, Merge – sab code ke saath</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <h3>🔄 1. Reverse a Linked List – O(n)</h3>
+    <div class="ib" style="border-color:var(--a3);">3 pointers use karo: <strong>prev</strong>, <strong>curr</strong>, <strong>next</strong>. Har step mein curr ka next, prev ko point karo.</div>
+    <pre><span class="lt">Python</span>
+def reverse(head):
+  prev, curr = None, head
+  while curr:
+    nxt = curr.next
+    curr.next = prev
+    prev = curr
+    curr = nxt
+  return prev  # new head</pre>
+
+    <h3>🔁 2. Detect Cycle – Floyd's Algorithm</h3>
+    <div class="ib" style="border-color:var(--a4);">Slow pointer 1 step aage jaata hai, Fast pointer 2 steps. Agar cycle hai toh woh zaroor milenge!</div>
+    <pre><span class="lt">Python</span>
+def hasCycle(head):
+  slow = fast = head
+  while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+    if slow == fast:
+      return True
+  return False</pre>
+
+    <h3>🎯 3. Middle of Linked List</h3>
+    <div class="ib" style="border-color:var(--a5);">Slow 1 step, Fast 2 steps. Jab fast end pe pahunche, slow middle pe hoga!</div>
+    <pre><span class="lt">Python</span>
+def findMiddle(head):
+  slow = fast = head
+  while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+  return slow  # middle node</pre>
+
+    <h3>🔀 4. Merge Two Sorted Lists</h3>
+    <pre><span class="lt">Python</span>
+  def mergeSorted(l1, l2):
+    if not l1: return l2
+    if not l2: return l1
+    if l1.data <= l2.data:
+      l1.next = mergeSorted(l1.next, l2)
+      return l1
+    else:
+      l2.next = mergeSorted(l1, l2.next)
+      return l2</pre>
+
+    <h3>🔢 5. Kth Node from End – O(n)</h3>
+    <pre><span class="lt">Python</span>
+  # Two pointer trick – advance fast by k steps
+  def kthFromEnd(head, k):
+    fast = slow = head
+    for _ in range(k):
+      fast = fast.next
+    while fast:
+      slow = slow.next
+      fast = fast.next
+    return slow  # slow now at kth-from-end</pre>
+
+    <h3>🔁 6. Palindrome Check</h3>
+    <div class="pt"><span class="pi">🔸</span><span>Middle dhundho → Second half reverse karo → Compare karo → O(n) time, O(1) space</span></div>
+
+    <h3>🔗 7. Intersection of Two Lists</h3>
+    <div class="pt"><span class="pi">🔸</span><span>Dono lists ki length nikaalo → Lamba wala advance karo → Phir saath chalo – jahan mile woh intersection!</span></div>
+
+    <table class="t">
+      <tr><th>Problem</th><th>Technique</th><th>Complexity</th></tr>
+      <tr><td>Reverse LL</td><td>3 Pointers</td><td><span class="pill pg">O(n)</span></td></tr>
+      <tr><td>Detect Cycle</td><td>Floyd's (slow/fast)</td><td><span class="pill pg">O(n)</span></td></tr>
+      <tr><td>Find Middle</td><td>Slow/Fast Pointer</td><td><span class="pill pg">O(n)</span></td></tr>
+      <tr><td>Kth from End</td><td>Two Pointer</td><td><span class="pill pg">O(n)</span></td></tr>
+      <tr><td>Merge Sorted</td><td>Recursion</td><td><span class="pill pg">O(n+m)</span></td></tr>
+      <tr><td>Palindrome</td><td>Reverse half</td><td><span class="pill pg">O(n), O(1)</span></td></tr>
+    </table>
+    <div class="tip">Linked List ke 90% problems slow/fast pointer ya pehle reverse karne se solve ho jaate hain!</div>
+  </div>
+</div>
+
+<!-- 5. INTERVIEW TABLE -->
+<div class="card" id="c5">
+  <div class="card-header" onclick="tog('c5')">
+    <div class="card-icon">🎤</div>
+    <div class="ct"><h2>5. Top Interview Problems</h2><span>LeetCode wali classic problems</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>206</td><td>Reverse Linked List</td><td>3 Pointers</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>21</td><td>Merge Two Sorted Lists</td><td>Recursion</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>141</td><td>Linked List Cycle</td><td>Floyd's</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>876</td><td>Middle of Linked List</td><td>Slow/Fast</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>19</td><td>Remove Nth from End</td><td>Two Pointer</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>2</td><td>Add Two Numbers</td><td>Carry logic</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>142</td><td>Cycle Detection II</td><td>Floyd's + Math</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>23</td><td>Merge K Sorted Lists</td><td>Min Heap</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>25</td><td>Reverse K Group</td><td>Recursion</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="note">LeetCode pe #206, #21, #141, #876 se shuru karo – yeh sab easy hain aur foundation banate hain!</div>
+  </div>
+</div>
+
+</div>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
