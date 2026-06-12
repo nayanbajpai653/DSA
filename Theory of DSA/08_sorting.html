@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorting Algorithms – Poori Detail 🔀</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#4d96ff;--a2:#ffd93d;--a3:#ff6b6b;--a4:#6bcb77;--a5:#c77dff;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#000a1a,#0d1117,#0a1500);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(77,150,255,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(107,203,119,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(77,150,255,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a4);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(77,150,255,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;}
+table.t th{background:rgba(77,150,255,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a4);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a1);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a1);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a4);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a3);border:1px solid rgba(255,107,107,0.3);}
+.pb{background:rgba(77,150,255,0.15);color:var(--a1);border:1px solid rgba(77,150,255,0.3);}
+/* Sort visual bars */
+.bar-vis{display:flex;align-items:flex-end;gap:5px;height:100px;padding:10px 0;margin:10px 0;}
+.bar{background:var(--a1);border-radius:4px 4px 0 0;min-width:28px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#fff;font-weight:700;opacity:.85;transition:all .3s;}
+.bar.swap{background:var(--a3);}
+.bar.sorted{background:var(--a4);}
+.bar.pivot{background:var(--a2);}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔀 Sorting Algorithms </h1>
+  <p>Bubble se Quick Sort tak – har algorithm step by step</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">📊 Visual Bars</span>
+    <span class="badge">💻 Full Code</span><span class="badge">📈 Complexity Tables</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 0. MASTER COMPARISON -->
+<div class="card open" id="c0">
+  <div class="ch" onclick="tog('c0')"><div class="ci">📊</div>
+    <div class="ct"><h2>0. Master Comparison Table</h2><span>Ek nazar mein sabka comparison</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th><th>Use When</th></tr>
+      <tr><td>Bubble Sort</td><td><span class="pill pg">O(n)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pg">O(1)</span></td><td>✅</td><td>Learning only</td></tr>
+      <tr><td>Selection Sort</td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pg">O(1)</span></td><td>❌</td><td>Small arrays</td></tr>
+      <tr><td>Insertion Sort</td><td><span class="pill pg">O(n)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pg">O(1)</span></td><td>✅</td><td>Nearly sorted</td></tr>
+      <tr><td>Merge Sort</td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n)</span></td><td>✅</td><td>Stable sort needed</td></tr>
+      <tr><td>Quick Sort</td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n log n)</span></td><td><span class="pill pr">O(n²)</span></td><td><span class="pill pg">O(log n)</span></td><td>❌</td><td>General purpose</td></tr>
+      <tr><td>Heap Sort</td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n log n)</span></td><td><span class="pill py">O(n log n)</span></td><td><span class="pill pg">O(1)</span></td><td>❌</td><td>In-place + guaranteed</td></tr>
+      <tr><td>Counting Sort</td><td><span class="pill pg">O(n+k)</span></td><td><span class="pill pg">O(n+k)</span></td><td><span class="pill pg">O(n+k)</span></td><td><span class="pill py">O(k)</span></td><td>✅</td><td>Small integer range</td></tr>
+      <tr><td>Radix Sort</td><td><span class="pill pg">O(nk)</span></td><td><span class="pill pg">O(nk)</span></td><td><span class="pill pg">O(nk)</span></td><td><span class="pill py">O(n+k)</span></td><td>✅</td><td>Large integers</td></tr>
+    </table>
+    <div class="note"><strong>Stable Sort kya hai?</strong> – Agar do elements equal hain, toh unka original order maintain hota hai. Merge Sort stable hai, Quick Sort nahi.</div>
+    <div class="tip">Interview mein Quick Sort ya Merge Sort explain karo – yeh dono most important hain!</div>
+  </div>
+</div>
+
+<!-- 1. BUBBLE SORT -->
+<div class="card" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🫧</div>
+    <div class="ct"><h2>1. Bubble Sort</h2><span>Adjacent elements compare karo aur swap karo – O(n²)</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Har pass mein adjacent elements compare hote hain. Bada element right ki taraf "bubble up" karta hai. N-1 passes mein sort ho jaata hai.
+    </div>
+    <h3>Example: [64, 34, 25, 12, 22]</h3>
+    <div class="bar-vis">
+      <div class="bar sorted" style="height:80px">64</div>
+      <div class="bar" style="height:42px">34</div>
+      <div class="bar" style="height:31px">25</div>
+      <div class="bar" style="height:15px">12</div>
+      <div class="bar" style="height:27px">22</div>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);">Pass 1: 64 sabse right mein bubble up karega → [34,25,12,22,<span style="color:var(--a4)">64</span>]</p>
+    <pre><span class="lt">Python</span>
+  def bubbleSort(arr):
+    n = len(arr)
+    for i in range(n-1):
+      swapped = False
+      for j in range(n-i-1):
+        if arr[j] > arr[j+1]:
+          arr[j], arr[j+1] = arr[j+1], arr[j]
+          swapped = True
+      if not swapped:
+        break  # Already sorted! O(n) best case</pre>
+    <div class="pt"><span class="pi">✅</span><span>Simple to understand, in-place, stable</span></div>
+    <div class="pt"><span class="pi">❌</span><span>O(n²) average/worst – real use mein avoid karo</span></div>
+  </div>
+</div>
+
+<!-- 2. SELECTION SORT -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">🎯</div>
+    <div class="ct"><h2>2. Selection Sort</h2><span>Minimum element dhundho aur sahi jagah rakho – O(n²)</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a2);">
+      Har pass mein unsorted part ka minimum element dhundho aur pehle position pe rakho. N-1 passes chahiye.
+    </div>
+    <pre><span class="lt">Python</span>
+  def selectionSort(arr):
+    n = len(arr)
+    for i in range(n-1):
+      minIdx = i
+      for j in range(i+1, n):
+        if arr[j] < arr[minIdx]:
+          minIdx = j
+      arr[i], arr[minIdx] = arr[minIdx], arr[i]
+  # [64,25,12,22,11] → [11,25,12,22,64] (1st pass)</pre>
+    <div class="pt"><span class="pi">✅</span><span>Minimum swaps (O(n)) – swap cost zyada hone pe useful</span></div>
+    <div class="pt"><span class="pi">❌</span><span>Always O(n²) – even if sorted. Not stable.</span></div>
+  </div>
+</div>
+
+<!-- 3. INSERTION SORT -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">🃏</div>
+    <div class="ct"><h2>3. Insertion Sort</h2><span>Cards sort karne ki tarah – O(n) best case!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      Cards ki tarah – left side sorted rakhte hain, naya element sahi jagah insert karo. Already sorted array mein O(n)!<br>
+      🃏 <em>Sochlo: Haath mein cards ko sorted order mein rakhna</em>
+    </div>
+    <pre><span class="lt">Python</span>
+  def insertionSort(arr):
+    n = len(arr)
+    for i in range(1, n):
+      key = arr[i]
+      j = i - 1
+      while j >= 0 and arr[j] > key:
+        arr[j+1] = arr[j]
+        j -= 1
+      arr[j+1] = key
+  # [5,1,4,2,8] example</pre>
+    <div class="pt"><span class="pi">✅</span><span>Nearly sorted data pe O(n) – best in class</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Online sort – ek ek element aane pe sort karo</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Small arrays ke liye preferred (real libraries bhi yahi use karti hain &lt;10 elements ke liye)</span></div>
+  </div>
+</div>
+
+<!-- 4. MERGE SORT -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🔀</div>
+    <div class="ct"><h2>4. Merge Sort ⭐</h2><span>Divide & Conquer – Guaranteed O(n log n), Stable</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a5);">
+      Array ko do halves mein baanto → dono ko recursively sort karo → merge karo. Divide & Conquer ka classic example!<br><br>
+      Guaranteed O(n log n) – worst case bhi. Stable sort. Extra space chahiye O(n).
+    </div>
+    <h3>Visual Breakdown</h3>
+    <div class="ib" style="border-color:var(--a1);font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:2;">
+      <span style="color:var(--a2)">[38, 27, 43, 3, 9, 82, 10]</span><br>
+      <span style="color:var(--a1)">↓ Split</span><br>
+      <span style="color:var(--a4)">[38,27,43,3]</span> &nbsp;&nbsp;&nbsp; <span style="color:var(--a5)">[9,82,10]</span><br>
+      <span style="color:var(--a1)">↓ Split again...</span><br>
+      <span style="color:var(--muted)">[38,27] [43,3] [9,82] [10]</span><br>
+      <span style="color:var(--a1)">↓ Merge sorted pairs</span><br>
+      <span style="color:var(--muted)">[27,38] [3,43] [9,82] [10]</span><br>
+      <span style="color:var(--a1)">↓ Merge again</span><br>
+      <span style="color:var(--muted)">[3,27,38,43] [9,10,82]</span><br>
+      <span style="color:var(--a1)">↓ Final merge</span><br>
+      <span style="color:var(--a4)">[3, 9, 10, 27, 38, 43, 82] ✅</span>
+    </div>
+    <pre><span class="lt">Python</span>
+  def mergeSort(arr):
+    if len(arr) <= 1:
+      return arr
+    mid = len(arr) // 2
+    left = mergeSort(arr[:mid])
+    right = mergeSort(arr[mid:])
+    return merge(left, right)
+
+  def merge(L, R):
+    i = j = 0
+    res = []
+    while i < len(L) and j < len(R):
+      if L[i] <= R[j]:
+        res.append(L[i]); i += 1
+      else:
+        res.append(R[j]); j += 1
+    res.extend(L[i:]); res.extend(R[j:])
+    return res</pre>
+    <div class="tip">Merge Sort + Inversion Count ek classic problem hai. Merge step mein count karo kitni baar right element left se pehle aata hai!</div>
+  </div>
+</div>
+
+<!-- 5. QUICK SORT -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">⚡</div>
+    <div class="ct"><h2>5. Quick Sort ⭐</h2><span>Pivot choose karo, partition karo – Average O(n log n)</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a2);">
+      Ek <strong>pivot</strong> element choose karo. Pivot se chhote elements left mein, bade right mein. Phir dono sides pe recursively apply karo. In-place sorting!
+    </div>
+    <h3>Partition Step Visual</h3>
+    <div class="ib" style="border-color:var(--a2);font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:2;">
+      Array: <span style="color:var(--text)">[3, 6, 8, 10, 1, 2, 1]</span> &nbsp; Pivot = <span style="color:var(--a2)">1</span> (last)<br>
+      <span style="color:var(--a4)">Elements &lt; pivot:</span> [1] &nbsp;|&nbsp; <span style="color:var(--a2)">Pivot: 1</span> &nbsp;|&nbsp; <span style="color:var(--a3)">Elements &gt; pivot:</span> [3,6,8,10,2]<br>
+      Phir recursion: dono sides pe dobara QuickSort!
+    </div>
+    <pre><span class="lt">Python</span>
+  def quickSort(arr, low, high):
+    if low < high:
+      pi = partition(arr, low, high)  # pivot index
+      quickSort(arr, low, pi-1)       # left part
+      quickSort(arr, pi+1, high)      # right part
+
+  def partition(arr, low, high):
+    pivot = arr[high]  # last element pivot
+    i = low - 1
+    for j in range(low, high):
+      if arr[j] <= pivot:
+        i += 1
+        arr[i], arr[j] = arr[j], arr[i]
+    arr[i+1], arr[high] = arr[high], arr[i+1]
+    return i+1</pre>
+    <div class="warn">Quick Sort ka worst case O(n²) tab hota hai jab already sorted array ho aur last/first element pivot ho. Isliye random pivot ya median-of-three use karo!</div>
+    <div class="pt"><span class="pi">✅</span><span>Average O(n log n) aur O(log n) space – practically fastest</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Cache friendly – in-place hai</span></div>
+    <div class="pt"><span class="pi">❌</span><span>Worst case O(n²), not stable</span></div>
+  </div>
+</div>
+
+<!-- 6. HEAP SORT -->
+<div class="card" id="c6">
+  <div class="ch" onclick="tog('c6')"><div class="ci">🏔️</div>
+    <div class="ct"><h2>6. Heap Sort</h2><span>Max Heap banao, ek ek element extract karo – O(n log n)</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a3);">
+      Pehle array se Max-Heap banao. Phir baar baar max element (root) nikaalte jao aur end mein rakhte jao. Guaranteed O(n log n), in-place!
+    </div>
+    <pre><span class="lt">Python</span>
+  import heapq
+  def heapSort(arr):
+    # Using heapq for simplicity (returns sorted list)
+    h = arr[:]
+    heapq.heapify(h)
+    return [heapq.heappop(h) for _ in range(len(h))]</pre>
+  </div>
+</div>
+
+<!-- 7. COUNTING + RADIX -->
+<div class="card" id="c7">
+  <div class="ch" onclick="tog('c7')"><div class="ci">🔢</div>
+    <div class="ct"><h2>7. Counting Sort & Radix Sort</h2><span>O(n) sorts – comparison nahi karte!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>Counting Sort – O(n + k)</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      Har element ki frequency count karo, phir cumulative sum se final position nikalo. <strong>Comparison hi nahi hota!</strong><br>
+      Condition: Elements non-negative integers hone chahiye aur range (k) bahut badi nahi honi chahiye.
+    </div>
+    <pre><span class="lt">Python</span>
+  def countingSort(arr, maxv):
+    count = [0] * (maxv + 1)
+    for x in arr:
+      count[x] += 1
+    idx = 0
+    for i in range(maxv + 1):
+      while count[i] > 0:
+        arr[idx] = i
+        idx += 1
+        count[i] -= 1
+  # [4,2,2,8,3,3,1] → count → sorted!</pre>
+    <h3>Radix Sort – O(nk)</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      Pehle units digit pe sort karo, phir tens, phir hundreds... Counting Sort ka use karta hai each digit pe. Large integers ke liye O(n)!
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Example: [170,45,75,90,802,24,2,66] → units sort → tens sort → hundreds sort → sorted!</span></div>
+    <div class="tip">Counting Sort best hai jab values 0-1000 range mein hain (k small ho). Radix Sort best hai large numbers ke liye!</div>
+  </div>
+</div>
+
+<!-- 8. WHEN TO USE WHICH -->
+<div class="card" id="c8">
+  <div class="ch" onclick="tog('c8')"><div class="ci">🎯</div>
+    <div class="ct"><h2>8. Kab Kaunsa Sort Use Karein?</h2><span>Decision guide – interview mein yeh answer do</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>Situation</th><th>Best Choice</th><th>Why</th></tr>
+      <tr><td>General purpose, large array</td><td><span class="pill py">Quick Sort</span></td><td>Practical fastest, cache friendly</td></tr>
+      <tr><td>Stable sort chahiye</td><td><span class="pill pb">Merge Sort</span></td><td>Guaranteed O(n log n), stable</td></tr>
+      <tr><td>Nearly sorted data</td><td><span class="pill pg">Insertion Sort</span></td><td>O(n) best case</td></tr>
+      <tr><td>Small array (&lt;20)</td><td><span class="pill pg">Insertion Sort</span></td><td>Low overhead</td></tr>
+      <tr><td>Linked List sort</td><td><span class="pill pb">Merge Sort</span></td><td>No random access needed</td></tr>
+      <tr><td>Memory limited</td><td><span class="pill py">Heap Sort</span></td><td>O(1) space, O(n log n)</td></tr>
+      <tr><td>Integers, small range</td><td><span class="pill pg">Counting Sort</span></td><td>O(n) – no comparison!</td></tr>
+      <tr><td>External sort (disk pe)</td><td><span class="pill pb">Merge Sort</span></td><td>Sequential access pattern</td></tr>
+    </table>
+    <div class="note">Java ka <code>Arrays.sort()</code> integers ke liye Dual-Pivot Quick Sort use karta hai, objects ke liye TimSort (Merge+Insertion ka combination). Python bhi TimSort use karta hai!</div>
+    <div class="warn">Interview mein agar "best sorting algorithm" poocha jaaye toh "depends on use case" kaho – yahi sahi answer hai!</div>
+  </div>
+</div>
+
+<div class="card" id="c9">
+  <div class="ch" onclick="tog('c9')"><div class="ci">🎤</div>
+    <div class="ct"><h2>9. Top Interview Problems</h2><span>Sorting-related LeetCode questions – must solve!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>75</td><td>Sort Colors</td><td>Two Pointers</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>215</td><td>Kth Largest Element in Array</td><td>Heap / Quickselect</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>56</td><td>Merge Intervals</td><td>Sort + Sweep</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>347</td><td>Top K Frequent Elements</td><td>Heap / Sort</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>179</td><td>Largest Number</td><td>Custom Sort</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>452</td><td>Minimum Number of Arrows to Burst Balloons</td><td>Greedy + Sort</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>164</td><td>Maximum Gap</td><td>Sort / Radix</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>253</td><td>Meeting Rooms II</td><td>Sort + Min Heap</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="tip">Sorting questions peaks tab ache hote hain jab aap problem ko "sort input then apply greedy/heap" mein dekhte ho. Yahi pattern sabse zyada repeat hota hai.</div>
+  </div>
+</div>
+
+</div>
+<footer>🔀 Sorting – Poori Detail &nbsp;|&nbsp; Quick + Merge yaad rakho – yahi 90% interviews mein kaam aate hain! ⚡</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
