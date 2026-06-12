@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stack & Queue – Poori Detail 📚</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#f7c948;--a2:#ff6b6b;--a3:#6bcb77;--a4:#4d96ff;--a5:#c77dff;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#1a1400,#0d1117,#0a001a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(247,201,72,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(199,125,255,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(247,201,72,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:0.78rem;color:var(--a3);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(247,201,72,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a1);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a1);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a4);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a3);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a3);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(247,201,72,0.15);color:var(--a1);border:1px solid rgba(247,201,72,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a2);border:1px solid rgba(255,107,107,0.3);}
+/* Stack visual */
+.stack-vis{display:inline-flex;flex-direction:column;gap:0;border:2px solid var(--a1);border-radius:10px;overflow:hidden;min-width:120px;}
+.stack-item{padding:10px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--a1);border-bottom:1px solid var(--border);font-size:.95rem;}
+.stack-item:last-child{border-bottom:none;}
+.stack-item.top{background:rgba(247,201,72,0.15);color:var(--a2);}
+.stack-item.empty{color:var(--muted);font-size:.75rem;padding:8px 20px;}
+.queue-vis{display:flex;gap:0;border:2px solid var(--a4);border-radius:10px;overflow:hidden;}
+.queue-item{padding:10px 16px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--a4);border-right:1px solid var(--border);font-size:.95rem;}
+.queue-item:last-child{border-right:none;}
+.queue-item.front{background:rgba(77,150,255,0.15);color:var(--a2);}
+.vis-row{display:flex;align-items:center;gap:20px;margin:14px 0;flex-wrap:wrap;}
+.vis-label{font-size:.8rem;color:var(--muted);}
+.arrow-label{font-size:1.3rem;color:var(--a1);}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+.c1 .ch{border-left:4px solid var(--a1);}.c1 .ci{background:rgba(247,201,72,0.1);}
+.c2 .ch{border-left:4px solid var(--a4);}.c2 .ci{background:rgba(77,150,255,0.1);}
+.c3 .ch{border-left:4px solid var(--a2);}.c3 .ci{background:rgba(255,107,107,0.1);}
+.c4 .ch{border-left:4px solid var(--a5);}.c4 .ci{background:rgba(199,125,255,0.1);}
+.c5 .ch{border-left:4px solid var(--a3);}.c5 .ci{background:rgba(107,203,119,0.1);}
+.c6 .ch{border-left:4px solid var(--a1);}.c6 .ci{background:rgba(247,201,72,0.1);}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 Stack & Queue </h1>
+  <p>LIFO aur FIFO – Real life se lekar DSA problems tak</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span>
+    <span class="badge">📊 Visual Diagrams</span>
+    <span class="badge">💻 Full Code</span>
+    <span class="badge">🎤 Interview Ready</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. STACK -->
+<div class="card c1 open" id="c1">
+  <div class="ch" onclick="tog('c1')">
+    <div class="ci">📚</div>
+    <div class="ct"><h2>1. Stack – LIFO (Last In, First Out)</h2><span>Jo last mein aaya, woh pehle jaayega</span></div>
+    <span class="chv">▼</span>
+  </div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Stack ek data structure hai jisme sirf <strong>ek end (top)</strong> se insert aur remove hota hai. Jo element sabse baad aaya, woh sabse pehle niklega – <strong>LIFO</strong>!<br><br>
+      🥞 <em>Real life: Plate ki stack – upar se daalo, upar se nikalo!</em>
+    </div>
+    <h3>Visual – Stack Operation</h3>
+    <div class="vis-row">
+      <div>
+        <div class="vis-label" style="margin-bottom:6px;">Push 10, 20, 30 ke baad:</div>
+        <div class="stack-vis">
+          <div class="stack-item top">30 ← TOP (Last In)</div>
+          <div class="stack-item">20</div>
+          <div class="stack-item">10</div>
+          <div class="stack-item empty">BOTTOM</div>
+        </div>
+      </div>
+      <div style="font-size:1.8rem; color:var(--a1); align-self:center;">→</div>
+      <div>
+        <div class="vis-label" style="margin-bottom:6px;">Pop karo (30 niklega):</div>
+        <div class="stack-vis">
+          <div class="stack-item top">20 ← TOP</div>
+          <div class="stack-item">10</div>
+          <div class="stack-item empty">BOTTOM</div>
+        </div>
+      </div>
+    </div>
+    <h3>Stack Operations</h3>
+    <table class="t">
+      <tr><th>Operation</th><th>Description</th><th>Time</th></tr>
+      <tr><td><code>push(x)</code></td><td>Top pe element daalo</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>pop()</code></td><td>Top se element nikalo</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>peek()/top()</code></td><td>Top element dekho, remove mat karo</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>isEmpty()</code></td><td>Stack khaali hai?</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>size()</code></td><td>Kitne elements hain</td><td><span class="pill pg">O(1)*</span></td></tr>
+    </table>
+    <div class="note">size() complexity depends on implementation: If you maintain a <code>counter</code> variable (increment on push, decrement on pop), it's O(1). If you count elements every time, it's <span class="pill pr"> O(n) </span> – for n = 450, you'd traverse all 450 elements!</div>
+    <h3>Stack Implementation</h3>
+    <pre><span class="lt">Python</span>
+  # Built-in list as stack
+  st = []
+  st.append(10)          # [10]
+  st.append(20)          # [10, 20]
+  st.append(30)          # [10, 20, 30]
+  st.pop()               # 30 nikla -> [10, 20]
+  st[-1]                 # 20 (peek)
+  len(st) == 0           # isEmpty check
+
+  # Using collections.deque if needed
+  from collections import deque
+  stack = deque()
+  stack.append(10)
+  stack.pop()</pre>
+    <pre><span class="lt">Python</span>
+  # Using Python list as a stack
+  st = []
+  st.append(10)
+  st.append(20)
+  print(st[-1])   # 20 (top)
+  st.pop()        # removes 20</pre>
+    <h3>Stack ke Uses</h3>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Function Call Stack</strong> – jab function call karte ho, current state stack mein push hoti hai</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Undo/Redo</strong> – text editor mein Ctrl+Z</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Browser Back Button</strong> – visited pages ki stack</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Expression Evaluation</strong> – calculator apps</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Balanced Parentheses</strong> – compiler mein syntax check</span></div>
+  </div>
+</div>
+
+<!-- 2. QUEUE -->
+<div class="card c2" id="c2">
+  <div class="ch" onclick="tog('c2')">
+    <div class="ci">🚶</div>
+    <div class="ct"><h2>2. Queue – FIFO (First In, First Out)</h2><span>Jo pehle aaya, woh pehle jaayega</span></div>
+    <span class="chv">▼</span>
+  </div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      Queue ek data structure hai jisme <strong>rear (back)</strong> se insert aur <strong>front</strong> se remove hota hai. Jo element pehle aaya, woh pehle niklega – <strong>FIFO</strong>!<br><br>
+      🚌 <em>Real life: Bus ki line – jo pehle queue mein aaya, woh pehle bus mein chadhega!</em>
+    </div>
+    <h3>Visual – Queue</h3>
+    <div class="vis-row">
+      <div>
+        <div class="vis-label" style="margin-bottom:6px;">Enqueue 10, 20, 30:</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:.75rem;color:var(--a3)">DEQUEUE→</span>
+          <div class="queue-vis">
+            <div class="queue-item front">10 (Front)</div>
+            <div class="queue-item">20</div>
+            <div class="queue-item">30</div>
+          </div>
+          <span style="font-size:.75rem;color:var(--a2)">←ENQUEUE</span>
+        </div>
+      </div>
+    </div>
+    <h3>Queue Operations</h3>
+    <table class="t">
+      <tr><th>Operation</th><th>Description</th><th>Time</th></tr>
+      <tr><td><code>enqueue/offer(x)</code></td><td>Rear se add karo</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>dequeue/poll()</code></td><td>Front se remove karo</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>peek()/front()</code></td><td>Front element dekho</td><td><span class="pill pg">O(1)</span></td></tr>
+      <tr><td><code>isEmpty()</code></td><td>Queue khaali hai?</td><td><span class="pill pg">O(1)</span></td></tr>
+    </table>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+  q = deque()
+  q.append(10)    # enqueue -> [10]
+  q.append(20)    # enqueue -> [10, 20]
+  q.append(30)    # enqueue -> [10, 20, 30]
+  q.popleft()     # dequeue -> 10 removed, [20, 30]
+  q[0]            # peek -> 20 (no remove)</pre>
+    <h3>Queue ke Uses</h3>
+    <div class="pt"><span class="pi">🔸</span><span><strong>BFS (Graph/Tree Traversal)</strong> – level by level traverse karna</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>CPU Scheduling</strong> – OS mein process scheduling</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Printer Queue</strong> – print jobs ka order</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Level Order Tree Traversal</strong></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Sliding Window Maximum</strong> – Deque se</span></div>
+  </div>
+</div>
+
+<!-- 3. DEQUE -->
+<div class="card c4" id="c3">
+  <div class="ch" onclick="tog('c3')">
+    <div class="ci">↔️</div>
+    <div class="ct"><h2>3. Deque (Double-Ended Queue)</h2><span>Dono ends se add/remove – versatile structure</span></div>
+    <span class="chv">▼</span>
+  </div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a5);">
+      Deque (Double Ended Queue) mein <strong>dono ends</strong> se insert aur delete kar sakte ho. Stack aur Queue dono ki properties ek saath!
+    </div>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+  dq = deque()
+  dq.appendleft(10)   # front pe add
+  dq.append(20)       # back pe add
+  dq[0]               # peekFirst (front)
+  dq[-1]              # peekLast (back)
+  dq.popleft()        # pollFirst (remove front)
+  dq.pop()            # pollLast (remove back)</pre>
+    <h3>Deque as Stack</h3>
+    <pre><span class="lt">Python</span>
+  # Use deque as stack (push/pop from left)
+  dq.appendleft(10)   # push
+  dq.popleft()        # pop</pre>
+    <h3>Classic Problem: Sliding Window Maximum</h3>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+  def maxSlidingWindow(nums, k):
+    dq = deque()
+    res = []
+    for i, val in enumerate(nums):
+      if dq and dq[0] < i - k + 1:
+        dq.popleft()
+      while dq and nums[dq[-1]] < val:
+        dq.pop()
+      dq.append(i)
+      if i >= k - 1:
+        res.append(nums[dq[0]])
+    return res</pre>
+    <div class="tip">Deque, Stack aur Queue dono replace kar sakta hai – interview mein monotonic deque bahut kaam aata hai!</div>
+  </div>
+</div>
+
+<!-- 4. IMPORTANT PROBLEMS -->
+<div class="card c3" id="c4">
+  <div class="ch" onclick="tog('c4')">
+    <div class="ci">🧠</div>
+    <div class="ct"><h2>4. Stack ke Important Problems</h2><span>Classic problems jo har interview mein aate hain</span></div>
+    <span class="chv">▼</span>
+  </div>
+  <div class="cb">
+    <h3>✅ 1. Valid Parentheses – O(n)</h3>
+    <div class="ib" style="border-color:var(--a2);">Opening bracket aaya? Push karo. Closing aaya? Top se match karo. Agar match nahi toh invalid!</div>
+    <pre><span class="lt">Python</span>
+  def isValid(s):
+    st = []
+    for c in s:
+      if c in '({[':
+        st.append(c)
+      else:
+        if not st:
+          return False
+        top = st.pop()
+        if c == ')' and top != '(': return False
+        if c == '}' and top != '{': return False
+        if c == ']' and top != '[': return False
+    return len(st) == 0</pre>
+
+    <h3>✅ 2. Next Greater Element – O(n)</h3>
+    <div class="ib" style="border-color:var(--a2);">Monotonic Stack use karo. Har element ke liye, stack mein chhote elements pop karte jao – current element unka NGE hai!</div>
+    <pre><span class="lt">Python</span>
+  def nextGreater(arr):
+    n = len(arr)
+    res = [-1] * n
+    st = []  # store indices
+    for i, val in enumerate(arr):
+      while st and arr[st[-1]] < val:
+        res[st.pop()] = val
+      st.append(i)
+    return res</pre>
+
+    <h3>✅ 3. Min Stack – O(1) min access</h3>
+    <pre><span class="lt">Python</span>
+  class MinStack:
+    def __init__(self):
+      self.st = []
+      self.minSt = []
+    def push(self, val):
+      self.st.append(val)
+      m = val if not self.minSt else min(val, self.minSt[-1])
+      self.minSt.append(m)
+    def pop(self):
+      self.st.pop(); self.minSt.pop()
+    def getMin(self):
+      return self.minSt[-1]</pre>
+
+    <h3>✅ 4. Stock Span Problem</h3>
+    <div class="pt"><span class="pi">🔸</span><span>Har din ke liye kitne consecutive pichle din price kam ya equal thi. Monotonic Stack O(n) solution.</span></div>
+
+    <h3>✅ 5. Queue using 2 Stacks</h3>
+    <pre><span class="lt">Python</span>
+  class QueueUsing2Stacks:
+    def __init__(self):
+      self.s1 = []
+      self.s2 = []
+    def enqueue(self, x):
+      self.s1.append(x)
+    def dequeue(self):
+      if not self.s2:
+        while self.s1:
+          self.s2.append(self.s1.pop())
+      return self.s2.pop()</pre>
+    <div class="tip">Monotonic Stack (Decreasing/Increasing) – jab "next greater/smaller" type problems dikhein, yahi use karo!</div>
+  </div>
+</div>
+
+<!-- 5. PRIORITY QUEUE -->
+<div class="card c5" id="c5">
+  <div class="ch" onclick="tog('c5')">
+    <div class="ci">⭐</div>
+    <div class="ct"><h2>5. Priority Queue (Heap)</h2><span>Queue mein priority ke hisaab se order – Min/Max Heap</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a3);">
+      Normal Queue mein pehle aaya pehle gaya. Priority Queue mein <strong>priority ke hisaab se</strong> nikalta hai. Andar Min-Heap ya Max-Heap hota hai.<br><br>
+      🏥 <em>Real life: Hospital emergency – serious patient pehle jaayega chahe baad mein aaya ho!</em>
+    </div>
+    <pre><span class="lt">Python</span>
+  import heapq
+  # Min-heap (default)
+  minPQ = []
+  heapq.heappush(minPQ, 30)
+  heapq.heappush(minPQ, 10)
+  heapq.heappush(minPQ, 20)
+  heapq.heappop(minPQ)   # 10 niklega (minimum)
+
+  # Max-heap using negatives
+  maxPQ = []
+  heapq.heappush(maxPQ, -30)
+  heapq.heappush(maxPQ, -10)
+  heapq.heappush(maxPQ, -20)
+  -heapq.heappop(maxPQ)  # 30 niklega (maximum)</pre>
+    <h3>Priority Queue ke Uses</h3>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Dijkstra's Algorithm</strong> – shortest path</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Top K elements</strong> – array mein K largest/smallest</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Merge K Sorted Lists</strong></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Median of Stream</strong> – do heaps se</span></div>
+    <div class="note">PQ ka insert aur delete O(log n) hai – array ke O(1) se slow, lekin O(n) sorted array se fast!</div>
+  </div>
+</div>
+
+<!-- 6. INTERVIEW TABLE -->
+<div class="card c6" id="c6">
+  <div class="ch" onclick="tog('c6')">
+    <div class="ci">🎤</div>
+    <div class="ct"><h2>6. Top Interview Problems</h2><span>LeetCode classics – Stack & Queue se</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>20</td><td>Valid Parentheses</td><td>Stack</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>232</td><td>Queue using Stacks</td><td>2 Stacks</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>225</td><td>Stack using Queues</td><td>2 Queues</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>155</td><td>Min Stack</td><td>Auxiliary Stack</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>496</td><td>Next Greater Element</td><td>Monotonic Stack</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>739</td><td>Daily Temperatures</td><td>Monotonic Stack</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>239</td><td>Sliding Window Maximum</td><td>Deque</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>84</td><td>Largest Rectangle Histogram</td><td>Stack</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>42</td><td>Trapping Rain Water</td><td>Stack / Two Ptr</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="warn">Largest Rectangle in Histogram (LC #84) Stack ka sabse important hard problem hai – zaroor practice karo!</div>
+  </div>
+</div>
+
+</div>
+<footer>📚 Stack & Queue – Poori Detail &nbsp;|&nbsp; Monotonic Stack yaad rakho – interview mein gold hai! 🏆</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
