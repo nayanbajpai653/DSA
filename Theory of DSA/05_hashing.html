@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hashing – Poori Detail 🗂️</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#34d399;--a2:#ffd93d;--a3:#ff6b6b;--a4:#4d96ff;--a5:#c77dff;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#001a0f,#0d1117,#0a001a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(52,211,153,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(199,125,255,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(52,211,153,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a1);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(52,211,153,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(52,211,153,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a1);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a4);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a1);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(52,211,153,0.15);color:var(--a1);border:1px solid rgba(52,211,153,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a3);border:1px solid rgba(255,107,107,0.3);}
+/* Hash visual */
+.hash-vis{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0;}
+.hash-bucket{background:var(--card2);border:1px solid var(--border);border-radius:8px;min-width:100px;overflow:hidden;}
+.hb-head{background:rgba(52,211,153,0.1);padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--a1);border-bottom:1px solid var(--border);}
+.hb-item{padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text);}
+.hb-empty{padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗂️ Hashing </h1>
+  <p>O(1) mein dhundho, daalo, hatao – Magic Data Structure!</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">⚡ O(1) Operations</span>
+    <span class="badge">💻 Code Examples</span><span class="badge">🎤 Top Problems</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. WHAT IS HASHING -->
+<div class="card open" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🤔</div>
+    <div class="ct"><h2>1. Hashing Kya Hai?</h2><span>Hash function, bucket, aur O(1) ka raaz</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Hashing ek technique hai jisme ek <strong>Hash Function</strong> key ko ek index (bucket) mein convert karta hai. Phir value us index pe store hoti hai. Isliye koi bhi value <strong>O(1)</strong> mein milti hai – bina saari values scan kiye!<br><br>
+      📚 <em>Sochlo dictionary – "apple" word directly 'A' section mein jaata hai, poora dictionary scan nahi karte!</em>
+    </div>
+    <h3>Hash Function Kaise Kaam Karta Hai?</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      <code>index = hashFunction(key) % tableSize</code><br><br>
+      Example: keys = {10, 22, 37}, tableSize = 7<br>
+      • 10 % 7 = <strong>3</strong> → bucket 3<br>
+      • 22 % 7 = <strong>1</strong> → bucket 1<br>
+      • 37 % 7 = <strong>2</strong> → bucket 2
+    </div>
+    <h3>Visual – Hash Table</h3>
+    <div class="hash-vis">
+      <div class="hash-bucket"><div class="hb-head">Bucket 0</div><div class="hb-empty">empty</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 1</div><div class="hb-item">22</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 2</div><div class="hb-item">37</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 3</div><div class="hb-item">10</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 4</div><div class="hb-empty">empty</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 5</div><div class="hb-empty">empty</div></div>
+      <div class="hash-bucket"><div class="hb-head">Bucket 6</div><div class="hb-empty">empty</div></div>
+    </div>
+    <h3>Collision Kya Hoti Hai?</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      Jab do alag keys ka hash same bucket pe aaye – yeh <strong>collision</strong> hai!<br>
+      Example: 10 % 7 = 3, aur 17 % 7 = 3 → dono ek hi bucket mein!<br><br>
+      <strong>Solutions:</strong><br>
+      1. <strong>Chaining</strong> – bucket mein linked list rakho (Java HashMap yahi karta hai)<br>
+      2. <strong>Open Addressing</strong> – agle khaali bucket mein rakho
+    </div>
+    <div class="warn">Bohot zyada collisions ho toh performance O(1) se O(n) ho jaati hai – worst case mein!</div>
+  </div>
+</div>
+
+<!-- 2. HASHMAP vs HASHSET -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">⚔️</div>
+    <div class="ct"><h2>2. HashMap vs HashSet vs LinkedHashMap</h2><span>Kab kaunsa use karein?</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>Feature</th><th>HashMap</th><th>HashSet</th><th>LinkedHashMap</th><th>TreeMap</th></tr>
+      <tr><td>Stores</td><td>Key → Value</td><td>Only Keys</td><td>Key → Value</td><td>Key → Value</td></tr>
+      <tr><td>Duplicates</td><td>Keys unique</td><td>No duplicates</td><td>Keys unique</td><td>Keys unique</td></tr>
+      <tr><td>Order</td><td>No order</td><td>No order</td><td>Insertion order</td><td>Sorted order</td></tr>
+      <tr><td>Get/Put</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pg">O(1)</span></td><td><span class="pill pg">O(1)</span></td><td><span class="pill py">O(log n)</span></td></tr>
+      <tr><td>Null key</td><td>1 null key ✅</td><td>1 null ✅</td><td>1 null key ✅</td><td>❌ No null</td></tr>
+    </table>
+    <h3>HashMap – Full Usage</h3>
+    <pre><span class="lt">Python</span>
+  map = {}
+  # Insert / Update
+  map["apple"] = 3
+  map["banana"] = 5
+  # Get
+  map.get("apple")                # 3
+  map.get("mango", 0)             # 0 (default if not found)
+  # Check existence
+  "apple" in map                  # True
+  5 in map.values()                # True (checks values)
+  # Delete
+  map.pop("banana", None)
+  # Iterate
+  for k, v in map.items():
+    print(f"{k} → {v}")
+  # Size / isEmpty
+  len(map); not bool(map)</pre>
+    <h3>HashSet – Full Usage</h3>
+    <pre><span class="lt">Python</span>
+  s = set()
+  s.add(10); s.add(20); s.add(10)   # duplicate ignored
+  10 in s                           # True
+  s.remove(20)
+  print(s)                           # {10}</pre>
+    <div class="tip">Jab sirf "kya yeh element exist karta hai?" check karna ho – HashSet best hai. Key-Value chahiye toh HashMap.</div>
+  </div>
+</div>
+
+<!-- 3. COMPLEXITY -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">⏱️</div>
+    <div class="ct"><h2>3. Complexity Analysis</h2><span>Average vs Worst case – kyun O(1) average hai</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>Operation</th><th>Average Case</th><th>Worst Case (many collisions)</th></tr>
+      <tr><td>Insert (put)</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Search (get)</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Delete (remove)</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Contains</td><td><span class="pill pg">O(1)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Iteration</td><td><span class="pill py">O(n)</span></td><td><span class="pill py">O(n)</span></td></tr>
+    </table>
+    <div class="note">Java ka HashMap jab 75% full hota hai (load factor = 0.75), toh automatically rehash karta hai – size double ho jaata hai. Yeh O(n) operation hai lekin rarely hota hai.</div>
+    <h3>Space Complexity</h3>
+    <div class="pt"><span class="pi">🔸</span><span>HashMap: <span class="pill py">O(n)</span> – n = number of key-value pairs</span></div>
+    <div class="pt"><span class="pi">🔸</span><span>HashSet: <span class="pill py">O(n)</span> – n = number of elements</span></div>
+  </div>
+</div>
+
+<!-- 4. IMPORTANT PATTERNS -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🎯</div>
+    <div class="ct"><h2>4. Important Hashing Patterns</h2><span>Frequency count, Two Sum, Anagram – sab patterns</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 Pattern 1: Frequency Counting</h3>
+    <div class="ib" style="border-color:var(--a1);">Array mein har element kitni baar aaya – HashMap se O(n) mein!</div>
+    <pre><span class="lt">Python</span>
+  # Frequency count – most common pattern
+  from collections import Counter
+  freq = Counter(arr)
+  # or manual:
+  freq = {}
+  for x in arr:
+    freq[x] = freq.get(x, 0) + 1
+  # Now frequency of each element is O(1) lookup</pre>
+
+    <h3>🔹 Pattern 2: Two Sum – Classic!</h3>
+    <pre><span class="lt">Python</span>
+  def twoSum(nums, target):
+    mp = {}
+    for i, num in enumerate(nums):
+      complement = target - num
+      if complement in mp:
+        return [mp[complement], i]
+      mp[num] = i
+    return []
+  # O(n) time, O(n) space</pre>
+
+    <h3>🔹 Pattern 3: Anagram Check</h3>
+    <pre><span class="lt">Python</span>
+  def isAnagram(s, t):
+    if len(s) != len(t): return False
+    from collections import Counter
+    return Counter(s) == Counter(t)
+  # Or manual counting with dicts for O(n) time</pre>
+
+    <h3>🔹 Pattern 4: Subarray Sum = K</h3>
+    <pre><span class="lt">Python</span>
+  def subarraySum(nums, k):
+    mp = {0: 1}
+    count = 0
+    prefix = 0
+    for x in nums:
+      prefix += x
+      count += mp.get(prefix - k, 0)
+      mp[prefix] = mp.get(prefix, 0) + 1
+    return count
+  # O(n) time</pre>
+
+    <h3>🔹 Pattern 5: Longest Consecutive Sequence</h3>
+    <pre><span class="lt">Python</span>
+  def longestConsecutive(nums):
+    s = set(nums)
+    maxLen = 0
+    for x in s:
+      if x - 1 not in s:  # sequence start
+        length = 1
+        while x + length in s:
+          length += 1
+        maxLen = max(maxLen, length)
+    return maxLen
+  # O(n) expected</pre>
+    <div class="tip">Subarray sum = k type problems mein Prefix Sum + HashMap combo bohot powerful hai – O(n) mein solve ho jaata hai!</div>
+  </div>
+</div>
+
+<!-- 5. INTERVIEW PROBLEMS -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">🎤</div>
+    <div class="ct"><h2>5. Top Interview Problems</h2><span>HashMap/HashSet se solve hone wale classics</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>1</td><td>Two Sum</td><td>HashMap (complement)</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>217</td><td>Contains Duplicate</td><td>HashSet</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>242</td><td>Valid Anagram</td><td>HashMap frequency</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>349</td><td>Intersection of Arrays</td><td>HashSet</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>49</td><td>Group Anagrams</td><td>HashMap (sorted key)</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>560</td><td>Subarray Sum = K</td><td>Prefix + HashMap</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>128</td><td>Longest Consecutive Seq</td><td>HashSet</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>347</td><td>Top K Frequent Elements</td><td>HashMap + Heap</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>76</td><td>Minimum Window Substring</td><td>Sliding + HashMap</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="warn">Group Anagrams (#49) mein sorted string ko key ki tarah use karo – "eat","tea","ate" sab "aet" ban jaate hain!</div>
+  </div>
+</div>
+
+</div>
+<footer>🗂️ Hashing – Poori Detail &nbsp;|&nbsp; O(1) lookup = interview ka sabse bada weapon! ⚡</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
