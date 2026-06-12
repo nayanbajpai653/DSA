@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trees – Poori Detail 🌳</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#f7c948;--a2:#4ecdc4;--a3:#ff6b6b;--a4:#a78bfa;--a5:#6bcb77;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#1a1400,#0d1117,#000a1a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(247,201,72,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(78,205,196,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(247,201,72,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a5);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(247,201,72,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(247,201,72,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a5);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a2);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a1);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a2);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a2);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a5);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(247,201,72,0.15);color:var(--a1);border:1px solid rgba(247,201,72,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a3);border:1px solid rgba(255,107,107,0.3);}
+/* Tree SVG visual */
+.tree-vis{background:var(--card2);border-radius:12px;padding:20px;margin:14px 0;text-align:center;overflow-x:auto;}
+.tree-vis svg{max-width:100%;}
+.tnode circle{fill:rgba(247,201,72,0.15);stroke:var(--a1);stroke-width:2;}
+.tnode text{fill:var(--a1);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-anchor:middle;dominant-baseline:central;}
+.tedge{stroke:var(--muted);stroke-width:1.5;}
+.bst-node circle{fill:rgba(78,205,196,0.15);stroke:var(--a2);stroke-width:2;}
+.bst-node text{fill:var(--a2);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-anchor:middle;dominant-baseline:central;}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌳 Trees </h1>
+  <p>Binary Tree, BST, Traversals, Balanced Trees – sab ek jagah</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">🌳 Visual Diagrams</span>
+    <span class="badge">💻 Full Code</span><span class="badge">🎤 Interview Ready</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. BASICS -->
+<div class="card open" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🤔</div>
+    <div class="ct"><h2>1. Tree Kya Hai? Basic Terms</h2><span>Root, Leaf, Height, Depth – sab terminology</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Tree ek <strong>hierarchical (non-linear)</strong> data structure hai. Ek <strong>Root</strong> node hota hai, aur usse neeche children hote hain. Real life mein – company hierarchy, file system, HTML DOM – sab trees hain!
+    </div>
+    <h3>Visual – Binary Tree</h3>
+    <div class="tree-vis">
+      <svg viewBox="0 0 400 220" width="400" height="220" xmlns="http://www.w3.org/2000/svg">
+        <!-- edges -->
+        <line class="tedge" x1="200" y1="40" x2="120" y2="100"/>
+        <line class="tedge" x1="200" y1="40" x2="280" y2="100"/>
+        <line class="tedge" x1="120" y1="100" x2="70" y2="165"/>
+        <line class="tedge" x1="120" y1="100" x2="170" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="230" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="330" y2="165"/>
+        <!-- nodes -->
+        <g class="tnode"><circle cx="200" cy="40" r="24"/><text x="200" y="40">1</text></g>
+        <g class="tnode"><circle cx="120" cy="100" r="24"/><text x="120" y="100">2</text></g>
+        <g class="tnode"><circle cx="280" cy="100" r="24"/><text x="280" y="100">3</text></g>
+        <g class="tnode"><circle cx="70" cy="165" r="24"/><text x="70" y="165">4</text></g>
+        <g class="tnode"><circle cx="170" cy="165" r="24"/><text x="170" y="165">5</text></g>
+        <g class="tnode"><circle cx="230" cy="165" r="24"/><text x="230" y="165">6</text></g>
+        <g class="tnode"><circle cx="330" cy="165" r="24"/><text x="330" y="165">7</text></g>
+        <!-- labels -->
+        <text x="200" y="12" fill="#f7c948" font-size="11" text-anchor="middle" font-family="JetBrains Mono">ROOT</text>
+        <text x="70" y="200" fill="#7d8590" font-size="10" text-anchor="middle" font-family="JetBrains Mono">LEAF</text>
+        <text x="170" y="200" fill="#7d8590" font-size="10" text-anchor="middle" font-family="JetBrains Mono">LEAF</text>
+        <text x="230" y="200" fill="#7d8590" font-size="10" text-anchor="middle" font-family="JetBrains Mono">LEAF</text>
+        <text x="330" y="200" fill="#7d8590" font-size="10" text-anchor="middle" font-family="JetBrains Mono">LEAF</text>
+        <text x="340" y="40" fill="#4ecdc4" font-size="11" font-family="JetBrains Mono">Level 0</text>
+        <text x="340" y="100" fill="#4ecdc4" font-size="11" font-family="JetBrains Mono">Level 1</text>
+        <text x="340" y="165" fill="#4ecdc4" font-size="11" font-family="JetBrains Mono">Level 2</text>
+      </svg>
+    </div>
+    <h3>Important Terms</h3>
+    <table class="t">
+      <tr><th>Term</th><th>Matlab</th><th>Example (upar se)</th></tr>
+      <tr><td>Root</td><td>Sabse upar ka node</td><td>Node 1</td></tr>
+      <tr><td>Leaf</td><td>Jiske koi children nahi</td><td>4, 5, 6, 7</td></tr>
+      <tr><td>Parent</td><td>Jiske children hain</td><td>1 is parent of 2,3</td></tr>
+      <tr><td>Child</td><td>Kisi node ka subnode</td><td>2,3 are children of 1</td></tr>
+      <tr><td>Height</td><td>Root se deepest leaf tak</td><td>Height = 2</td></tr>
+      <tr><td>Depth</td><td>Root se us node tak</td><td>Depth of 4 = 2</td></tr>
+      <tr><td>Subtree</td><td>Koi node + uske saare descendants</td><td>Node 2 + {4,5}</td></tr>
+      <tr><td>Degree</td><td>Node ke kitne children hain</td><td>Degree of 1 = 2</td></tr>
+    </table>
+    <h3>Node ka Structure</h3>
+    <pre><span class="lt">Python</span>
+  class TreeNode:
+    def __init__(self, val):
+      self.val = val
+      self.left = None
+      self.right = None</pre>
+  </div>
+</div>
+
+<!-- 2. TRAVERSALS -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">🚶</div>
+    <div class="ct"><h2>2. Tree Traversals – 4 Types</h2><span>Inorder, Preorder, Postorder, Level Order – code ke saath</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a2);">
+      Tree traverse karna matlab har node ko ek baar visit karna. Alag-alag order mein karo toh alag results milte hain!<br>
+      Example tree: <code>1(2(4,5), 3(6,7))</code>
+    </div>
+    <div class="pt"><span class="pi">⌛</span><span>Har traversal type O(n) time leta hai kyunki har node ek baar visit hoti hai. Level order bhi O(n) hi hai.</span></div>
+    <h3>🔹 Inorder – Left → Root → Right</h3>
+    <div class="pt"><span class="pi">📌</span><span>Result: <code>4 → 2 → 5 → 1 → 6 → 3 → 7</code> | BST mein yeh sorted order deta hai!</span></div>
+    <pre><span class="lt">Python</span>
+  def inorder(root):
+    if not root:
+      return
+    inorder(root.left)            # Left subtree
+    print(root.val, end=' ')      # Root
+    inorder(root.right)           # Right subtree</pre>
+    <h3>🔹 Preorder – Root → Left → Right</h3>
+    <div class="pt"><span class="pi">📌</span><span>Result: <code>1 → 2 → 4 → 5 → 3 → 6 → 7</code> | Tree copy karne mein useful</span></div>
+    <pre><span class="lt">Python</span>
+  def preorder(root):
+    if not root:
+      return
+    print(root.val, end=' ')  # Root pehle
+    preorder(root.left)
+    preorder(root.right)</pre>
+    <h3>🔹 Postorder – Left → Right → Root</h3>
+    <div class="pt"><span class="pi">📌</span><span>Result: <code>4 → 5 → 2 → 6 → 7 → 3 → 1</code> | Tree delete karne mein / expression evaluation</span></div>
+    <pre><span class="lt">Python</span>
+  def postorder(root):
+    if not root:
+      return
+    postorder(root.left)
+    postorder(root.right)
+    print(root.val, end=' ')  # Root last mein</pre>
+    <h3>🔹 Level Order (BFS) – Level by Level</h3>
+    <div class="pt"><span class="pi">📌</span><span>Result: <code>1 → 2 3 → 4 5 6 7</code> | Queue use hota hai. Shortest path, level-wise problems.</span></div>
+    <pre><span class="lt">Python</span>
+  from collections import deque
+
+  def levelOrder(root):
+    res = []
+    if not root:
+      return res
+    q = deque([root])
+    while q:
+      size = len(q)
+      level = []
+      for _ in range(size):
+        node = q.popleft()
+        level.append(node.val)
+        if node.left: q.append(node.left)
+        if node.right: q.append(node.right)
+      res.append(level)
+    return res</pre>
+    <div class="tip">BST mein Inorder = Sorted Array! Yeh fact 50+ problems mein kaam aata hai.</div>
+  </div>
+</div>
+
+<!-- 3. BST -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">🔍</div>
+    <div class="ct"><h2>3. Binary Search Tree (BST)</h2><span>Left &lt; Root &lt; Right – O(log n) search</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      BST ek special Binary Tree hai jisme <strong>har node ke liye:</strong><br>
+      • Left subtree ke saare values &lt; node value<br>
+      • Right subtree ke saare values &gt; node value<br><br>
+      Yeh rule recursively har node pe apply hota hai!
+    </div>
+    <h3>Visual – BST Example</h3>
+    <div class="tree-vis">
+      <svg viewBox="0 0 400 210" width="400" height="210" xmlns="http://www.w3.org/2000/svg">
+        <line class="tedge" x1="200" y1="40" x2="120" y2="100"/>
+        <line class="tedge" x1="200" y1="40" x2="280" y2="100"/>
+        <line class="tedge" x1="120" y1="100" x2="75" y2="165"/>
+        <line class="tedge" x1="120" y1="100" x2="160" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="240" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="325" y2="165"/>
+        <g class="bst-node"><circle cx="200" cy="40" r="24"/><text x="200" y="40">8</text></g>
+        <g class="bst-node"><circle cx="120" cy="100" r="24"/><text x="120" y="100">3</text></g>
+        <g class="bst-node"><circle cx="280" cy="100" r="24"/><text x="280" y="100">10</text></g>
+        <g class="bst-node"><circle cx="75" cy="165" r="24"/><text x="75" y="165">1</text></g>
+        <g class="bst-node"><circle cx="160" cy="165" r="24"/><text x="160" y="165">6</text></g>
+        <g class="bst-node"><circle cx="240" cy="165" r="24"/><text x="240" y="165">9</text></g>
+        <g class="bst-node"><circle cx="325" cy="165" r="24"/><text x="325" y="165">14</text></g>
+        <text x="60" y="12" fill="#4ecdc4" font-size="10" font-family="JetBrains Mono">All &lt; 8</text>
+        <text x="295" y="12" fill="#4ecdc4" font-size="10" font-family="JetBrains Mono">All &gt; 8</text>
+        <text x="5" y="100" fill="#7d8590" font-size="10" font-family="JetBrains Mono">Inorder:</text>
+        <text x="5" y="115" fill="#f7c948" font-size="10" font-family="JetBrains Mono">1,3,6,8,9,10,14</text>
+      </svg>
+    </div>
+    <h3>BST Operations</h3>
+    <pre><span class="lt">Python</span>
+  def search(root, key):
+    if not root or root.val == key:
+      return root
+    if key < root.val:
+      return search(root.left, key)
+    return search(root.right, key)
+
+  def insert(root, val):
+    if not root:
+      return TreeNode(val)
+    if val < root.val:
+      root.left = insert(root.left, val)
+    else:
+      root.right = insert(root.right, val)
+    return root</pre>
+    <table class="t">
+      <tr><th>Operation</th><th>Average (Balanced)</th><th>Worst (Skewed)</th></tr>
+      <tr><td>Search</td><td><span class="pill pg">O(log n)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Insert</td><td><span class="pill pg">O(log n)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+      <tr><td>Delete</td><td><span class="pill pg">O(log n)</span></td><td><span class="pill pr">O(n)</span></td></tr>
+    </table>
+    <div class="warn">Agar BST skewed ho jaaye (e.g., sorted order mein insert karo) toh height O(n) ho jaati hai – essentially ek linked list ban jaata hai! Isliye AVL ya Red-Black Tree use karte hain.</div>
+  </div>
+</div>
+
+<!-- 4. IMPORTANT PROBLEMS -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🧠</div>
+    <div class="ct"><h2>4. Important Tree Problems</h2><span>Height, Diameter, LCA, Path Sum – code ke saath</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 1. Height of Tree</h3>
+    <pre><span class="lt">Python</span>
+  def height(root):
+    if not root:
+      return 0
+    return 1 + max(height(root.left), height(root.right))</pre>
+    <h3>🔹 2. Diameter of Binary Tree</h3>
+    <div class="pt"><span class="pi">🔸</span><span>Longest path between any two nodes. Har node pe: leftHeight + rightHeight. Max woh answer hai!</span></div>
+    <pre><span class="lt">Python</span>
+  def diameter(root):
+    maxDia = 0
+    def dfs(node):
+      nonlocal maxDia
+      if not node:
+        return 0
+      L = dfs(node.left)
+      R = dfs(node.right)
+      maxDia = max(maxDia, L + R)
+      return 1 + max(L, R)
+    dfs(root)
+    return maxDia</pre>
+    <h3>🔹 3. Lowest Common Ancestor (LCA)</h3>
+    <pre><span class="lt">Python</span>
+  def lca(root, p, q):
+    if not root or root == p or root == q:
+      return root
+    left = lca(root.left, p, q)
+    right = lca(root.right, p, q)
+    if left and right:
+      return root  # dono sides mein mile
+    return left if left else right</pre>
+    <h3>🔹 4. Check Balanced Tree</h3>
+    <pre><span class="lt">Python</span>
+  def isBalanced(root):
+    def checkHeight(node):
+      if not node:
+        return 0
+      L = checkHeight(node.left)
+      if L == -1: return -1
+      R = checkHeight(node.right)
+      if R == -1: return -1
+      if abs(L - R) > 1: return -1
+      return 1 + max(L, R)
+    return checkHeight(root) != -1</pre>
+    <h3>🔹 5. Path Sum</h3>
+    <pre><span class="lt">Python</span>
+  def hasPathSum(root, target):
+    if not root:
+      return False
+    if not root.left and not root.right:
+      return root.val == target
+    return hasPathSum(root.left, target - root.val) or hasPathSum(root.right, target - root.val)</pre>
+    <h3>🔹 6. Validate BST</h3>
+    <pre><span class="lt">Python</span>
+  def isValidBST(root):
+    def validate(node, low, high):
+      if not node:
+        return True
+      if not (low < node.val < high):
+        return False
+      return validate(node.left, low, node.val) and validate(node.right, node.val, high)
+    return validate(root, float('-inf'), float('inf'))</pre>
+    <div class="tip">Tree problems mein zyada tar recursion use hoti hai. Base case = null node, phir left aur right recursively solve karo!</div>
+  </div>
+</div>
+
+<!-- 5. SPECIAL TREES -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">🏗️</div>
+    <div class="ct"><h2>5. Special Trees – AVL, Red-Black, B-Tree, Heap, Trie</h2><span>Advanced trees – jab BST kafi nahi hota</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>AVL Tree (Self-Balancing BST)</h3>
+    <div class="ib" style="border-color:var(--a5);">
+      AVL tree automatically balanced rehta hai – har node ke liye |leftHeight - rightHeight| ≤ 1. Guaranteed O(log n) operations!
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Rotations (Left/Right/LeftRight/RightLeft) se balance maintain karta hai</span></div>
+    <div class="pt"><span class="pi">🔸</span><span>Stricter balance than Red-Black, lekin zyada rotations hote hain</span></div>
+
+    <h3>Red-Black Tree (Self-Balancing BST)</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      <strong>Color property wala BST!</strong> Har node ke paas ek color hota hai – Red ya Black. Balance maintain karta hai:<br>
+      <strong>Properties:</strong><br>
+      1. Root hamesha Black<br>
+      2. Null nodes Black maane jaate hain<br>
+      3. Red node ke children hamesha Black (no two reds in a row)<br>
+      4. Root se har path mein Black nodes ki count same honi chahiye
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Insert/Delete/Search: <span class="pill pg">O(log n)</span> guaranteed</span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Used in:</strong> Java <code>TreeMap</code>, C++ <code>std::map</code>, Linux kernel</span></div>
+    <div class="pt"><span class="pi">🔸</span><span>Zyada flexible hai AVL se – rotations kam hote hain, recoloring zyada</span></div>
+    <h3>Visual – Red-Black Tree</h3>
+    <div class="tree-vis">
+      <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg">
+        <!-- edges -->
+        <line class="tedge" x1="200" y1="40" x2="120" y2="100"/>
+        <line class="tedge" x1="200" y1="40" x2="280" y2="100"/>
+        <line class="tedge" x1="120" y1="100" x2="75" y2="165"/>
+        <line class="tedge" x1="120" y1="100" x2="160" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="240" y2="165"/>
+        <line class="tedge" x1="280" y1="100" x2="325" y2="165"/>
+        <!-- Root (Black) -->
+        <circle cx="200" cy="40" r="24" fill="rgba(0,0,0,0.5)" stroke="#7d8590" stroke-width="2"/>
+        <text x="200" y="40" fill="#e6edf3" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">15</text>
+        <!-- Red nodes -->
+        <circle cx="120" cy="100" r="24" fill="rgba(255,107,107,0.2)" stroke="#ff6b6b" stroke-width="2"/>
+        <text x="120" y="100" fill="#ff6b6b" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">10</text>
+        <circle cx="280" cy="100" r="24" fill="rgba(255,107,107,0.2)" stroke="#ff6b6b" stroke-width="2"/>
+        <text x="280" y="100" fill="#ff6b6b" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">20</text>
+        <!-- Black nodes -->
+        <circle cx="75" cy="165" r="24" fill="rgba(0,0,0,0.5)" stroke="#7d8590" stroke-width="2"/>
+        <text x="75" y="165" fill="#e6edf3" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">5</text>
+        <circle cx="160" cy="165" r="24" fill="rgba(0,0,0,0.5)" stroke="#7d8590" stroke-width="2"/>
+        <text x="160" y="165" fill="#e6edf3" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">12</text>
+        <circle cx="240" cy="165" r="24" fill="rgba(0,0,0,0.5)" stroke="#7d8590" stroke-width="2"/>
+        <text x="240" y="165" fill="#e6edf3" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">17</text>
+        <circle cx="325" cy="165" r="24" fill="rgba(0,0,0,0.5)" stroke="#7d8590" stroke-width="2"/>
+        <text x="325" y="165" fill="#e6edf3" font-family="JetBrains Mono" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central">25</text>
+        <!-- Labels -->
+        <text x="15" y="15" fill="#ff6b6b" font-size="11" font-family="JetBrains Mono">Red</text>
+        <text x="15" y="30" fill="#7d8590" font-size="11" font-family="JetBrains Mono">Black</text>
+        <text x="200" y="225" fill="#f7c948" font-size="10" text-anchor="middle" font-family="JetBrains Mono">No two reds adjacent | Black-height same</text>
+      </svg>
+    </div>
+    <pre><span class="lt">Python</span>
+  # Red-Black Tree insertion
+  class RBNode:
+    def __init__(self, val):
+      self.val = val
+      self.color = "RED"  # naya node hamesha red
+      self.left = None
+      self.right = None
+      self.parent = None
+  
+  # Insert ke baad 3 cases check karo:
+  # Case 1: Uncle red → recolor karo
+  # Case 2: Uncle black (triangle) → rotate karo
+  # Case 3: Uncle black (line) → rotate + recolor karo</pre>
+
+    <h3>B-Tree (Multi-way Search Tree)</h3>
+    <div class="ib" style="border-color:var(--a1);">
+      <strong>Database aur File Systems mein king!</strong> Ek node mein multiple keys aur children rakh sakta hai.<br>
+      <strong>Properties (degree m):</strong><br>
+      • Har node mein max m children (min ⌈m/2⌉)<br>
+      • Har node mein max m-1 keys<br>
+      • Root mein min 1 key<br>
+      • Saare leaves same level pe hain<br>
+      • Keys sorted order mein
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Disk I/O reduce karte hain kyunki ek node mein bohat sare keys</span></div>
+    <div class="pt"><span class="pi">🔸</span><span>Search/Insert/Delete: <span class="pill pg">O(log n)</span></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Used in:</strong> MySQL, PostgreSQL indices, file systems (NTFS, ext4)</span></div>
+    <h3>Visual – B-Tree (Degree 3)</h3>
+    <div class="tree-vis">
+      <svg viewBox="0 0 500 220" width="500" height="220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Root node (3 keys, 4 children pointers) -->
+        <rect x="140" y="20" width="220" height="50" fill="var(--card2)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <line x1="180" y1="20" x2="180" y2="70" stroke="var(--a1)" stroke-width="1"/>
+        <line x1="250" y1="20" x2="250" y2="70" stroke="var(--a1)" stroke-width="1"/>
+        <text x="160" y="55" fill="var(--a1)" font-family="JetBrains Mono" font-size="13" font-weight="700">20</text>
+        <text x="215" y="55" fill="var(--a1)" font-family="JetBrains Mono" font-size="13" font-weight="700">40</text>
+        <text x="280" y="55" fill="var(--a1)" font-family="JetBrains Mono" font-size="13" font-weight="700">60</text>
+        
+        <!-- Edges to children -->
+        <line x1="155" y1="70" x2="70" y2="120" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="215" y1="70" x2="165" y2="120" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="280" y1="70" x2="285" y2="120" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="345" y1="70" x2="410" y2="120" stroke="var(--muted)" stroke-width="1.5"/>
+        
+        <!-- Child 1 -->
+        <rect x="30" y="120" width="80" height="40" fill="var(--card2)" stroke="var(--a2)" stroke-width="2" rx="5"/>
+        <line x1="60" y1="120" x2="60" y2="160" stroke="var(--a2)" stroke-width="1"/>
+        <text x="40" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">10</text>
+        <text x="70" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">15</text>
+        
+        <!-- Child 2 -->
+        <rect x="125" y="120" width="80" height="40" fill="var(--card2)" stroke="var(--a2)" stroke-width="2" rx="5"/>
+        <line x1="155" y1="120" x2="155" y2="160" stroke="var(--a2)" stroke-width="1"/>
+        <text x="135" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">25</text>
+        <text x="165" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">30</text>
+        
+        <!-- Child 3 -->
+        <rect x="245" y="120" width="80" height="40" fill="var(--card2)" stroke="var(--a2)" stroke-width="2" rx="5"/>
+        <line x1="275" y1="120" x2="275" y2="160" stroke="var(--a2)" stroke-width="1"/>
+        <text x="255" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">50</text>
+        <text x="285" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">55</text>
+        
+        <!-- Child 4 -->
+        <rect x="370" y="120" width="80" height="40" fill="var(--card2)" stroke="var(--a2)" stroke-width="2" rx="5"/>
+        <line x1="400" y1="120" x2="400" y2="160" stroke="var(--a2)" stroke-width="1"/>
+        <text x="380" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">70</text>
+        <text x="410" y="150" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">80</text>
+        
+        <!-- Labels -->
+        <text x="250" y="200" fill="#f7c948" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Root: 3 keys, 4 children | 20 ke left: 10-15, 20-40 beech: 25-30</text>
+      </svg>
+    </div>
+    <pre><span class="lt">Python</span>
+  # B-Tree Node
+  class BNode:
+    def __init__(self, leaf=True):
+      self.keys = []        # max m-1 keys
+      self.children = []    # max m children
+      self.leaf = leaf
+  
+  # Insert mein agar node full (m-1 keys) ho toh split karo
+  # Search simple hai: linear search keys, phir appropriate child ko go karo</pre></pre>
+
+    <h3>B+ Tree (Enhanced B-Tree)</h3>
+    <div class="ib" style="border-color:var(--a2);">
+      <strong>B-Tree ka advanced version!</strong> Database mein sabse zyada use hota hai.<br>
+      <strong>Key Difference:</strong><br>
+      • Internal nodes sirf routing ke liye (keys store karte hain)<br>
+      • Actual data/values sirf leaf nodes mein<br>
+      • Saare leaf nodes ek linked list se connected hote hain<br>
+      • Range queries superfast ban jaati hain!
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Insert/Delete/Search: <span class="pill pg">O(log n)</span></span></div>
+    <div class="pt"><span class="pi">🔸</span><span><strong>Used in:</strong> Almost all relational databases (MySQL, PostgreSQL, Oracle)</span></div>
+    <div class="pt"><span class="pi">🔸</span><span>B-Tree se better kyunki range queries (SELECT ... WHERE age BETWEEN 20 AND 30) leaf nodes ke through fast ho jaati hain</span></div>
+    <h3>Visual – B+ Tree</h3>
+    <div class="tree-vis">
+      <svg viewBox="0 0 500 280" width="500" height="280" xmlns="http://www.w3.org/2000/svg">
+        <!-- Internal Nodes (Routing only) -->
+        <!-- Root -->
+        <rect x="160" y="10" width="180" height="45" fill="rgba(78,205,196,0.1)" stroke="var(--a2)" stroke-width="2" rx="5"/>
+        <line x1="210" y1="10" x2="210" y2="55" stroke="var(--a2)" stroke-width="1"/>
+        <text x="175" y="40" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">30</text>
+        <text x="230" y="40" fill="var(--a2)" font-family="JetBrains Mono" font-size="12" font-weight="700">60</text>
+        <text x="290" y="25" fill="var(--muted)" font-size="9" font-family="JetBrains Mono">Internal</text>
+        
+        <!-- Edges to internal children -->
+        <line x1="175" y1="55" x2="90" y2="90" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="250" y1="55" x2="250" y2="90" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="325" y1="55" x2="410" y2="90" stroke="var(--muted)" stroke-width="1.5"/>
+        
+        <!-- Internal level -->
+        <rect x="40" y="90" width="100" height="35" fill="rgba(78,205,196,0.1)" stroke="var(--a2)" stroke-width="1.5" rx="5"/>
+        <text x="55" y="115" fill="var(--a2)" font-family="JetBrains Mono" font-size="11" font-weight="700">15</text>
+        
+        <rect x="200" y="90" width="100" height="35" fill="rgba(78,205,196,0.1)" stroke="var(--a2)" stroke-width="1.5" rx="5"/>
+        <text x="220" y="115" fill="var(--a2)" font-family="JetBrains Mono" font-size="11" font-weight="700">45</text>
+        
+        <rect x="360" y="90" width="100" height="35" fill="rgba(78,205,196,0.1)" stroke="var(--a2)" stroke-width="1.5" rx="5"/>
+        <text x="380" y="115" fill="var(--a2)" font-family="JetBrains Mono" font-size="11" font-weight="700">75</text>
+        
+        <!-- Edges to leaf level -->
+        <line x1="60" y1="125" x2="40" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="100" y1="125" x2="140" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="235" y1="125" x2="205" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="265" y1="125" x2="295" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="395" y1="125" x2="360" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="435" y1="125" x2="420" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+        
+        <!-- LEAF NODES (Data) -->
+        <rect x="15" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="28" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">10</text>
+        
+        <rect x="75" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="88" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">20</text>
+        
+        <rect x="135" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="148" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">40</text>
+        
+        <rect x="195" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="208" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">50</text>
+        
+        <rect x="255" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="268" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">70</text>
+        
+        <rect x="315" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="328" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">80</text>
+        
+        <rect x="375" y="160" width="50" height="35" fill="rgba(251,191,36,0.1)" stroke="var(--a1)" stroke-width="2" rx="5"/>
+        <text x="388" y="183" fill="var(--a1)" font-family="JetBrains Mono" font-size="11" font-weight="700">90</text>
+        
+        <!-- Linked List connections -->
+        <path d="M 65 177.5 L 75 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 125 177.5 L 135 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 185 177.5 L 195 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 245 177.5 L 255 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 305 177.5 L 315 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 365 177.5 L 375 177.5" stroke="var(--a5)" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+        
+        <!-- Arrow marker definition -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--a5)"/>
+          </marker>
+        </defs>
+        
+        <!-- Labels -->
+        <text x="250" y="225" fill="var(--a2)" font-size="10" text-anchor="middle" font-family="JetBrains Mono" font-weight="700">Internal Nodes = Routing</text>
+        <text x="250" y="240" fill="var(--a1)" font-size="10" text-anchor="middle" font-family="JetBrains Mono" font-weight="700">Leaf Nodes = Actual Data + Linked List</text>
+        <text x="250" y="255" fill="var(--a5)" font-size="9" text-anchor="middle" font-family="JetBrains Mono">Range Query: 40-80 = 4 leafs directly!</text>
+      </svg>
+    </div>
+    <pre><span class="lt">Python</span>
+  # B+ Tree – Internal vs Leaf nodes
+  class BPNode:
+    def __init__(self, leaf=True):
+      if leaf:
+        self.data = []        # actual values
+        self.next = None      # linked list pointer
+      else:
+        self.keys = []        # routing keys only
+        self.children = []
+  
+  # Range query "30-80":
+  # 1. Internal nodes se traverse → leaf node par pahunch
+  # 2. Leaf ke linked list se walk karo → all values in range!
+  # 3. B-Tree se zyada better kyunki sirf leaves traverse karte ho
+
+    <h3>Heap (Min/Max)</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      Complete Binary Tree jisme parent hamesha child se chhota (Min-Heap) ya bada (Max-Heap) hota hai. Array mein store hota hai!<br>
+      • Parent of i = <code>(i-1)/2</code><br>
+      • Left child = <code>2*i + 1</code><br>
+      • Right child = <code>2*i + 2</code>
+    </div>
+    <div class="pt"><span class="pi">🔸</span><span>Insert: <span class="pill pg">O(log n)</span> | Extract Min/Max: <span class="pill pg">O(log n)</span> | Peek: <span class="pill pg">O(1)</span></span></div>
+    <div class="pt"><span class="pi">🔸</span><span>Java mein: <code>PriorityQueue</code> = Min-Heap by default</span></div>
+
+    <h3>Trie (Prefix Tree)</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      Strings store karne ke liye specialized tree. Har node ek character represent karta hai. Auto-complete, spell check, word search mein use hota hai.
+    </div>
+    <pre><span class="lt">Python</span>
+  class TrieNode:
+    def __init__(self):
+      self.children = [None] * 26
+      self.isEnd = False
+  # "cat", "car", "card" insert karo
+  # c→a→t(end), c→a→r(end)→d(end)
+  # "ca" prefix ke saare words O(m) mein milenge!</pre>
+
+    <h3>🔹 Comparison – Kaunsa Tree Kab Use Karo?</h3>
+    <table class="t">
+      <tr><th>Tree Type</th><th>Use Case</th><th>Search</th><th>Insert</th><th>Best For</th></tr>
+      <tr><td><strong>BST</strong></td><td>Simple cases</td><td>O(log n)</td><td>O(log n)</td><td>In-memory, sorted data</td></tr>
+      <tr><td><strong>AVL</strong></td><td>Strict balance</td><td>O(log n)</td><td>O(log n)</td><td>Frequent lookups, self-balancing needed</td></tr>
+      <tr><td><strong>Red-Black</strong></td><td>Balanced tree</td><td>O(log n)</td><td>O(log n)</td><td>Languages (TreeMap, std::map)</td></tr>
+      <tr><td><strong>B-Tree</strong></td><td>Disk I/O</td><td>O(log n)</td><td>O(log n)</td><td>File systems, databases</td></tr>
+      <tr><td><strong>B+ Tree</strong></td><td>Database indices</td><td>O(log n)</td><td>O(log n)</td><td>Range queries, SQL databases</td></tr>
+      <tr><td><strong>Heap</strong></td><td>Priority queue</td><td>O(n)</td><td>O(log n)</td><td>Top-k elements, Dijkstra</td></tr>
+      <tr><td><strong>Trie</strong></td><td>String search</td><td>O(m)</td><td>O(m)</td><td>Auto-complete, spell check</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 6. INTERVIEW TABLE -->
+<div class="card" id="c6">
+  <div class="ch" onclick="tog('c6')"><div class="ci">🎤</div>
+    <div class="ct"><h2>6. Top Interview Problems</h2><span>LeetCode Trees – must solve!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Key Concept</th><th>Level</th></tr>
+      <tr><td>104</td><td>Maximum Depth</td><td>Recursion</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>226</td><td>Invert Binary Tree</td><td>Recursion</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>112</td><td>Path Sum</td><td>DFS</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>543</td><td>Diameter of Tree</td><td>Post-order DFS</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>102</td><td>Level Order Traversal</td><td>BFS Queue</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>98</td><td>Validate BST</td><td>Range check</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>235</td><td>LCA of BST</td><td>BST property</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>236</td><td>LCA of Binary Tree</td><td>Post-order</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>124</td><td>Binary Tree Max Path Sum</td><td>Post-order DFS</td><td><span class="pill pr">Hard</span></td></tr>
+      <tr><td>297</td><td>Serialize/Deserialize Tree</td><td>BFS/DFS</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="note">#226 (Invert Tree) – Homebrew CEO ke interview mein yeh poochha gaya tha! Simple recursion: swap(root.left, root.right) phir recurse.</div>
+  </div>
+</div>
+
+</div>
+<footer>🌳 Trees – Poori Detail &nbsp;|&nbsp; Tree = Recursion ka playground. Base case banao, recursion trust karo! 🌿</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
