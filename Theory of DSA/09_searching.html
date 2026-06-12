@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Searching Algorithms – Poori Detail 🔍</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--a1:#c77dff;--a2:#ffd93d;--a3:#ff6b6b;--a4:#4ecdc4;--a5:#6bcb77;--text:#e6edf3;--muted:#7d8590;--border:#30363d;--code:#090d12;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Baloo 2',cursive;line-height:1.75;}
+header{background:linear-gradient(135deg,#0d001a,#0d1117,#001a1a);padding:52px 24px 40px;text-align:center;border-bottom:2px solid var(--a1);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(199,125,255,0.12) 0%,transparent 55%),radial-gradient(ellipse at 70% 50%,rgba(78,205,196,0.08) 0%,transparent 55%);}
+header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:var(--a1);position:relative;text-shadow:0 0 40px rgba(199,125,255,0.4);letter-spacing:-1px;}
+header p{color:var(--muted);font-size:1rem;margin-top:6px;position:relative;}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;position:relative;}
+.badge{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:3px 13px;font-size:.78rem;color:var(--a5);}
+.container{max-width:960px;margin:0 auto;padding:36px 20px 64px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.ch{padding:18px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background .2s;border-left:4px solid var(--a1);}
+.ch:hover{background:rgba(255,255,255,0.02);}
+.ci{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;background:rgba(199,125,255,0.1);}
+.ct{flex:1;}.ct h2{font-size:1.15rem;font-weight:700;}.ct span{font-size:.8rem;color:var(--muted);}
+.chv{margin-left:auto;color:var(--muted);transition:transform .3s;}
+.card.open .chv{transform:rotate(180deg);}
+.cb{display:none;padding:4px 24px 24px;border-top:1px solid var(--border);animation:fi .25s ease;}
+.card.open .cb{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ib{background:var(--card2);border-radius:10px;padding:16px 20px;margin:16px 0;font-size:.95rem;line-height:1.9;border-left:3px solid;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;color:#c9d1d9;position:relative;}
+.lt{position:absolute;top:8px;right:12px;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;}
+pre .kw{color:#ff79c6;}pre .fn{color:#50fa7b;}pre .str{color:#f1fa8c;}pre .cm{color:#6272a4;font-style:italic;}pre .num{color:#bd93f9;}pre .tp{color:#8be9fd;}
+table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem;}
+table.t th{background:rgba(199,125,255,0.1);color:var(--a1);padding:10px 14px;text-align:left;border:1px solid var(--border);font-weight:700;}
+table.t td{padding:9px 14px;border:1px solid var(--border);}
+table.t tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+.tip{background:rgba(107,203,119,0.08);border:1px solid rgba(107,203,119,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a5);margin:12px 0;}
+.tip::before{content:'💡 Tip: ';font-weight:700;}
+.warn{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a3);margin:12px 0;}
+.warn::before{content:'⚠️ Dhyan de: ';font-weight:700;}
+.note{background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.25);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--a4);margin:12px 0;}
+.note::before{content:'📌 Note: ';font-weight:700;}
+h3{color:var(--a2);font-size:1rem;margin:20px 0 8px;font-weight:700;}
+h4{color:var(--a4);font-size:.92rem;margin:14px 0 6px;font-weight:700;}
+.pt{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:.93rem;}
+.pi{flex-shrink:0;margin-top:2px;}
+code{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);border-radius:5px;padding:2px 7px;font-size:.83rem;color:var(--a1);}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.pg{background:rgba(107,203,119,0.15);color:var(--a5);border:1px solid rgba(107,203,119,0.3);}
+.py{background:rgba(255,217,61,0.15);color:var(--a2);border:1px solid rgba(255,217,61,0.3);}
+.pr{background:rgba(255,107,107,0.15);color:var(--a3);border:1px solid rgba(255,107,107,0.3);}
+.pp{background:rgba(199,125,255,0.15);color:var(--a1);border:1px solid rgba(199,125,255,0.3);}
+/* Binary search visual */
+.bs-vis{font-family:'JetBrains Mono',monospace;font-size:.82rem;background:var(--card2);border-radius:10px;padding:16px;margin:12px 0;line-height:2.2;}
+.bs-row{display:flex;gap:0;margin:4px 0;align-items:center;flex-wrap:wrap;}
+.bs-cell{width:46px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);font-weight:700;}
+.bs-cell.lo{border-color:var(--a5);background:rgba(107,203,119,0.1);color:var(--a5);}
+.bs-cell.hi{border-color:var(--a3);background:rgba(255,107,107,0.1);color:var(--a3);}
+.bs-cell.mid{border-color:var(--a2);background:rgba(255,217,61,0.2);color:var(--a2);}
+.bs-cell.found{border-color:var(--a4);background:rgba(78,205,196,0.2);color:var(--a4);}
+.bs-cell.norm{color:var(--text);}
+.bs-label{font-size:.7rem;color:var(--muted);margin-left:12px;}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔍 Searching Algorithms </h1>
+  <p>Linear se Binary Search tak – O(n) se O(log n) ka safar</p>
+  <div class="badges">
+    <span class="badge">🇮🇳 Hinglish</span><span class="badge">📊 Step Visuals</span>
+    <span class="badge">💻 Full Code</span><span class="badge">🎯 BS Patterns</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- 1. LINEAR SEARCH -->
+<div class="card open" id="c1">
+  <div class="ch" onclick="tog('c1')"><div class="ci">🚶</div>
+    <div class="ct"><h2>1. Linear Search</h2><span>Ek ek check karo – Simple par O(n)</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a1);">
+      Array mein ek ek element check karo jab tak target na mile. Unsorted ya small arrays ke liye theek hai. Koi precondition nahi chahiye!
+    </div>
+    <pre><span class="lt">Python</span>
+  def linearSearch(arr, target):
+    for i, val in enumerate(arr):
+      if val == target:
+        return i  # index return karo
+    return -1  # nahi mila
+  # Time: O(n) | Space: O(1)</pre>
+    <table class="t">
+      <tr><th>Case</th><th>Time</th><th>When</th></tr>
+      <tr><td>Best</td><td><span class="pill pg">O(1)</span></td><td>Target pehle index pe ho</td></tr>
+      <tr><td>Average</td><td><span class="pill py">O(n/2)</span></td><td>Target middle mein ho</td></tr>
+      <tr><td>Worst</td><td><span class="pill pr">O(n)</span></td><td>Target last mein ya nahi ho</td></tr>
+    </table>
+    <div class="pt"><span class="pi">✅</span><span>Unsorted arrays mein use karo</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Linked List mein (random access nahi)</span></div>
+    <div class="pt"><span class="pi">✅</span><span>Small arrays (n &lt; 50) ke liye binary se better (overhead nahi)</span></div>
+  </div>
+</div>
+
+<!-- 2. BINARY SEARCH -->
+<div class="card" id="c2">
+  <div class="ch" onclick="tog('c2')"><div class="ci">⚡</div>
+    <div class="ct"><h2>2. Binary Search ⭐</h2><span>Sorted array mein O(log n) – 1 Billion mein sirf 30 steps!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a4);">
+      <strong>Sorted array mein hi kaam karta hai!</strong> Har step mein search space <strong>half</strong> ho jaata hai. Mid dekho – target chhhota? Left jao. Bada? Right jao.<br><br>
+      📖 <em>Sochlo dictionary mein word dhundhna – pehle beech kholo, phir decide karo aage ya peeche!</em>
+    </div>
+
+    <h3>Step by Step Visual – Target = 23</h3>
+    <p style="font-size:.82rem;color:var(--muted);margin:8px 0;">Array: [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]</p>
+    <div class="bs-vis">
+      <div style="margin-bottom:6px;font-size:.75rem;color:var(--a5);">🟢 low &nbsp; 🟡 mid &nbsp; 🔴 high &nbsp; 🔵 found</div>
+      <div class="bs-row">
+        <div class="bs-cell lo">2</div><div class="bs-cell norm">5</div><div class="bs-cell norm">8</div><div class="bs-cell norm">12</div>
+        <div class="bs-cell mid">16</div><div class="bs-cell norm">23</div><div class="bs-cell norm">38</div><div class="bs-cell norm">56</div>
+        <div class="bs-cell norm">72</div><div class="bs-cell hi">91</div>
+        <span class="bs-label">Step 1: mid=16, target 23 &gt; 16 → go right</span>
+      </div>
+      <div class="bs-row">
+        <div class="bs-cell norm">2</div><div class="bs-cell norm">5</div><div class="bs-cell norm">8</div><div class="bs-cell norm">12</div>
+        <div class="bs-cell norm">16</div><div class="bs-cell lo">23</div><div class="bs-cell norm">38</div><div class="bs-cell mid">56</div>
+        <div class="bs-cell norm">72</div><div class="bs-cell hi">91</div>
+        <span class="bs-label">Step 2: mid=56, target 23 &lt; 56 → go left</span>
+      </div>
+      <div class="bs-row">
+        <div class="bs-cell norm">2</div><div class="bs-cell norm">5</div><div class="bs-cell norm">8</div><div class="bs-cell norm">12</div>
+        <div class="bs-cell norm">16</div><div class="bs-cell found">23</div><div class="bs-cell hi">38</div><div class="bs-cell norm">56</div>
+        <div class="bs-cell norm">72</div><div class="bs-cell norm">91</div>
+        <span class="bs-label">Step 3: mid=23 ✅ FOUND! Index 5</span>
+      </div>
+    </div>
+
+    <h3>Binary Search Template (Iterative)</h3>
+    <pre><span class="lt">Python</span>
+  def binarySearch(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+      mid = low + (high - low) // 2  # overflow-safe
+      if arr[mid] == target:
+        return mid
+      elif arr[mid] < target:
+        low = mid + 1
+      else:
+        high = mid - 1
+    return -1  # nahi mila
+  # Time: O(log n) | Space: O(1)</pre>
+    <div class="warn">mid = (low+high)/2 mat likho – integer overflow ho sakta hai jab low+high > Integer.MAX_VALUE! Hamesha <code>low + (high-low)/2</code> use karo.</div>
+    <h3>Recursive Version</h3>
+    <pre><span class="lt">Python</span>
+  def bsRecursive(arr, low, high, target):
+    if low > high:
+      return -1
+    mid = low + (high - low) // 2
+    if arr[mid] == target:
+      return mid
+    if arr[mid] < target:
+      return bsRecursive(arr, mid+1, high, target)
+    return bsRecursive(arr, low, mid-1, target)
+  # Space: O(log n) – recursion stack</pre>
+  </div>
+</div>
+
+<!-- 3. BS VARIATIONS -->
+<div class="card" id="c3">
+  <div class="ch" onclick="tog('c3')"><div class="ci">🔧</div>
+    <div class="ct"><h2>3. Binary Search Variations – Must Know!</h2><span>First/Last occurrence, Lower/Upper bound – sab patterns</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 First Occurrence (Lower Bound)</h3>
+    <div class="ib" style="border-color:var(--a4);">
+      Target ki pehli position – duplicates mein bhi kaam karta hai. Match milne ke baad bhi left jaate raho!
+    </div>
+    <pre><span class="lt">Python</span>
+  def firstOccurrence(arr, target):
+    low, high, result = 0, len(arr)-1, -1
+    while low <= high:
+      mid = low + (high - low) // 2
+      if arr[mid] == target:
+        result = mid
+        high = mid - 1  # phir bhi left jao
+      elif arr[mid] < target:
+        low = mid + 1
+      else:
+        high = mid - 1
+    return result
+  # [1,2,2,2,3,4] target=2 → returns index 1</pre>
+
+    <h3>🔹 Last Occurrence (Upper Bound)</h3>
+    <pre><span class="lt">Python</span>
+  def lastOccurrence(arr, target):
+    low, high, result = 0, len(arr)-1, -1
+    while low <= high:
+      mid = low + (high - low) // 2
+      if arr[mid] == target:
+        result = mid
+        low = mid + 1  # phir bhi right jao
+      elif arr[mid] < target:
+        low = mid + 1
+      else:
+        high = mid - 1
+    return result
+  # [1,2,2,2,3,4] target=2 → returns index 3</pre>
+
+    <h3>🔹 Count of Element in Sorted Array</h3>
+    <pre><span class="lt">Python</span>
+  def countOccurrences(arr, target):
+    first = firstOccurrence(arr, target)
+    if first == -1:
+      return 0
+    return lastOccurrence(arr, target) - first + 1
+  # O(log n) – linear scan se better!</pre>
+
+    <h3>🔹 Search in Rotated Sorted Array</h3>
+    <div class="ib" style="border-color:var(--a3);">
+      Array sorted tha, phir rotate ho gaya. Example: [4,5,6,7,0,1,2]. Binary search apply karo – ek half hamesha sorted hogi!
+    </div>
+    <pre><span class="lt">Python</span>
+  def searchRotated(arr, target):
+    low, high = 0, len(arr)-1
+    while low <= high:
+      mid = low + (high - low) // 2
+      if arr[mid] == target:
+        return mid
+      # Left half sorted?
+      if arr[low] <= arr[mid]:
+        if arr[low] <= target < arr[mid]:
+          high = mid - 1
+        else:
+          low = mid + 1
+      else:  # Right half sorted
+        if arr[mid] < target <= arr[high]:
+          low = mid + 1
+        else:
+          high = mid - 1
+    return -1</pre>
+    <div class="tip">Rotated array mein hamesha pehle check karo "kaun si half sorted hai" – phir decide karo kahan jaana hai!</div>
+  </div>
+</div>
+
+<!-- 4. BS ON ANSWER -->
+<div class="card" id="c4">
+  <div class="ch" onclick="tog('c4')"><div class="ci">🎯</div>
+    <div class="ct"><h2>4. Binary Search on Answer ⭐</h2><span>Array pe nahi, Answer Space pe – Advanced Trick!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <div class="ib" style="border-color:var(--a2);">
+      <strong>Concept:</strong> Kuch problems mein hum answer ki range pe Binary Search apply kar sakte hain. Yeh tab use hota hai jab:<br>
+      1. Answer ek range mein hota hai (min to max)<br>
+      2. Ek <strong>monotonic condition</strong> hoti hai – "agar X possible hai toh X-1 bhi possible hai" (ya ulta)
+    </div>
+    <h3>🔹 Problem: Koko Eating Bananas</h3>
+    <div class="pt"><span class="pi">📌</span><span>Koko bananas khaa rahi hai at speed k/hour. Minimum k dhundho jisme woh h hours mein saare bananas khaa sake.</span></div>
+    <pre><span class="lt">Python</span>
+  def minEatingSpeed(piles, h):
+    low, high = 1, max(piles)
+    while low < high:
+      mid = low + (high - low) // 2
+      if canFinish(piles, mid, h):
+        high = mid  # try smaller
+      else:
+        low = mid + 1
+    return low
+
+  def canFinish(piles, k, h):
+    hours = 0
+    for p in piles:
+      hours += (p + k - 1) // k  # ceil division
+    return hours <= h</pre>
+
+    <h3>🔹 Problem: Find Peak Element</h3>
+    <pre><span class="lt">Python</span>
+  def findPeakElement(nums):
+    low, high = 0, len(nums) - 1
+    while low < high:
+      mid = low + (high - low) // 2
+      if nums[mid] > nums[mid+1]:
+        high = mid  # peak left mein
+      else:
+        low = mid + 1  # peak right mein
+    return low</pre>
+
+    <h3>🔹 Sqrt(x) using Binary Search</h3>
+    <pre><span class="lt">Python</span>
+  def mySqrt(x):
+    if x < 2:
+      return x
+    low, high, ans = 1, x // 2, 1
+    while low <= high:
+      mid = (low + high) // 2
+      if mid * mid == x:
+        return mid
+      if mid * mid < x:
+        ans = mid; low = mid + 1
+      else:
+        high = mid - 1
+    return ans</pre>
+    <div class="note">Binary Search on Answer identify kaise karein? Agar problem "minimum X dhundho jisme condition satisfy ho" ya "maximum X dhundho" type hai – toh BS on Answer use karo!</div>
+  </div>
+</div>
+
+<!-- 5. OTHER SEARCHING -->
+<div class="card" id="c5">
+  <div class="ch" onclick="tog('c5')"><div class="ci">🗺️</div>
+    <div class="ct"><h2>5. Other Searching Techniques</h2><span>Jump Search, Interpolation, Ternary Search</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <h3>🔹 Jump Search – O(√n)</h3>
+    <div class="ib" style="border-color:var(--a5);">
+      √n steps jump karo, phir backward linear search. Binary se simple implement karna, sorted arrays ke liye.
+    </div>
+    <pre><span class="lt">Python</span>
+  import math
+  def jumpSearch(arr, target):
+    n = len(arr)
+    step = int(math.sqrt(n))
+    prev = 0
+    while arr[min(step, n) - 1] < target:
+      prev = step
+      step += int(math.sqrt(n))
+      if prev >= n:
+        return -1
+    while prev < min(step, n) and arr[prev] < target:
+      prev += 1
+      if prev == min(step, n):
+        return -1
+    return prev if arr[prev] == target else -1</pre>
+
+    <h3>🔹 Ternary Search – O(log₃n)</h3>
+    <div class="ib" style="border-color:var(--a1);">
+      Array ko teen parts mein baanto. Unimodal functions (pehle badhte hain phir ghatate hain) mein maximum dhundhne ke liye!<br>
+      Binary se thoda slow, lekin specific problems mein useful.
+    </div>
+    <pre><span class="lt">Python</span>
+  def ternarySearch(arr, l, r):
+    if r <= l:
+      return l
+    m1 = l + (r - l) // 3
+    m2 = r - (r - l) // 3
+    if arr[m1] < arr[m2]:
+      return ternarySearch(arr, m1+1, r)
+    return ternarySearch(arr, l, m2-1)</pre>
+
+    <h3>Comparison Table</h3>
+    <table class="t">
+      <tr><th>Algorithm</th><th>Time</th><th>Condition</th><th>Use When</th></tr>
+      <tr><td>Linear Search</td><td><span class="pill py">O(n)</span></td><td>None</td><td>Unsorted / small array</td></tr>
+      <tr><td>Binary Search</td><td><span class="pill pg">O(log n)</span></td><td>Sorted</td><td>Sorted array, most cases</td></tr>
+      <tr><td>Jump Search</td><td><span class="pill pg">O(√n)</span></td><td>Sorted</td><td>BS se easy implement</td></tr>
+      <tr><td>Ternary Search</td><td><span class="pill pg">O(log₃n)</span></td><td>Unimodal</td><td>Max/Min in unimodal fn</td></tr>
+      <tr><td>Interpolation</td><td><span class="pill pg">O(log log n)</span></td><td>Sorted+Uniform</td><td>Uniformly distributed data</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 6. INTERVIEW PROBLEMS -->
+<div class="card" id="c6">
+  <div class="ch" onclick="tog('c6')"><div class="ci">🎤</div>
+    <div class="ct"><h2>6. Top Interview Problems</h2><span>Binary Search wale classics – LeetCode must-do!</span></div><span class="chv">▼</span></div>
+  <div class="cb">
+    <table class="t">
+      <tr><th>#</th><th>Problem</th><th>Technique</th><th>Level</th></tr>
+      <tr><td>704</td><td>Binary Search</td><td>Classic BS</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>278</td><td>First Bad Version</td><td>BS on answer</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>35</td><td>Search Insert Position</td><td>Lower bound</td><td><span class="pill pg">Easy</span></td></tr>
+      <tr><td>74</td><td>Search 2D Matrix</td><td>BS on matrix</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>33</td><td>Search in Rotated Array</td><td>Modified BS</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>34</td><td>First & Last Position</td><td>Lower+Upper bound</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>153</td><td>Find Min in Rotated Array</td><td>Modified BS</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>162</td><td>Find Peak Element</td><td>BS</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>875</td><td>Koko Eating Bananas</td><td>BS on answer</td><td><span class="pill py">Medium</span></td></tr>
+      <tr><td>4</td><td>Median of Two Sorted Arrays</td><td>BS on partition</td><td><span class="pill pr">Hard</span></td></tr>
+    </table>
+    <div class="tip">Binary Search ke saare problems ek hi template pe based hain – low, high, mid. Sirf condition aur update change hota hai. Template yaad karo, baaki sab apply hoga!</div>
+    <div class="note"><strong>Universal Binary Search Template:</strong><br>
+    • Agar <code>low &lt;= high</code> use karo → exact match dhundhna<br>
+    • Agar <code>low &lt; high</code> use karo → boundary dhundhna (lower/upper bound)</div>
+  </div>
+</div>
+
+</div>
+<footer>🔍 Searching – Poori Detail &nbsp;|&nbsp; Binary Search = Interview ka sabse important O(log n) tool! 🎯</footer>
+<script>function tog(id){document.getElementById(id).classList.toggle('open');}</script>
+</body>
+</html>
